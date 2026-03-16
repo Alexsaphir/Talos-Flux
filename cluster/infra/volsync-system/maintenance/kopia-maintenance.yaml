@@ -7,5 +7,11 @@ spec:
   enabled: true
   trigger:
     schedule: 0 3/24 * * *
+  moverVolumes:
+    - mountPath: repository
+      volumeSource:
+        nfs:
+          path: /mnt/user/VolsyncKopia
+          server: nas.hosts.alexsaphir.com
   repository:
     repository: volsync-maintenance-secret

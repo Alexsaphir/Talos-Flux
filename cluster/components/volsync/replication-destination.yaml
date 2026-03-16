@@ -36,3 +36,10 @@ spec:
       fsGroup: ${VOLSYNC_PGID:=1000}
       fsGroupChangePolicy: OnRootMismatch
       seccompProfile: {type: 'RuntimeDefault'}
+
+  moverVolumes:
+    - mountPath: repository
+      volumeSource:
+        nfs:
+          path: /mnt/user/VolsyncKopia
+          server: nas.hosts.alexsaphir.com
