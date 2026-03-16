@@ -25,16 +25,16 @@ spec:
       fsGroupChangePolicy: OnRootMismatch
       seccompProfile: {type: 'RuntimeDefault'}
 
+    moverVolumes:
+      - mountPath: repository
+        volumeSource:
+          nfs:
+            path: /mnt/user/VolsyncKopia
+            server: nas.hosts.alexsaphir.com
+
     parallelism: 2
     repository: ${PVC_NAME}-volsync-secret
     retain:
       hourly: 24
       daily: 7
       weekly: 5
-
-  moverVolumes:
-    - mountPath: repository
-      volumeSource:
-        nfs:
-          path: /mnt/user/VolsyncKopia
-          server: nas.hosts.alexsaphir.com
