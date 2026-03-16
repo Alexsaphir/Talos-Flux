@@ -105,7 +105,7 @@ spec:
         runAsUser: 1022
         runAsGroup: 1022
         fsGroup: 1022
-        fsGroupChangePolicy: OnRootMismatch
+        fsGroupChangePolicy: Always
         seccompProfile: { type: RuntimeDefault }
 
       nodeSelector:
