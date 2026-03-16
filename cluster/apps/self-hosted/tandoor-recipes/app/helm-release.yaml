@@ -110,7 +110,7 @@ spec:
               SORT_TREE_BY_NAME: 1
 
               # Email
-              EMAIL_HOST: mailpit.mail.svc.cluster.local
+              EMAIL_HOST: mailpit.kube-system.svc.cluster.local
               # email sender address (default 'webmaster@localhost')
               DEFAULT_FROM_EMAIL: tandoor-recipes@domain.com
 
