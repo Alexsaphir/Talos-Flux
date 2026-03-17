@@ -27,6 +27,8 @@ access_control:
         - 'minio.${DOMAIN_NAME}'
         - 's3.${DOMAIN_NAME}'
         - 'gitlab.${DOMAIN_NAME}'
+        - 'plan.${DOMAIN_NAME}'
+        - 'planka.${DOMAIN_NAME}'
       policy: bypass
 
 
