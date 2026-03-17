@@ -27,7 +27,17 @@ spec:
       max_slot_wal_keep_size: 5GB
       shared_buffers: '128MB'
 
+      max_locks_per_transaction: '128'  # recommended for TimescaleDB
+      timescaledb.telemetry_level: 'off'
+
     extensions:
+      - name: timescaledb
+        image:
+          reference: ghcr.io/vember31/timescaledb:2.25.2
+      - name: timescaledb-toolkit
+        image:
+          reference: ghcr.io/vember31/timescaledb-toolkit:1.22.0
+
       - name: vchord
         image:
           reference: ghcr.io/tensorchord/vchord-scratch:pg18-v1.1.1@sha256:bdea43bed2a414e21bbf71767bf6f0739747ac480b267b51772dc214ac28dcb3
@@ -37,6 +47,7 @@ spec:
           - /usr/share/postgresql/18/
 
     shared_preload_libraries:
+      - 'timescaledb'
       - 'vchord.so'
 
   bootstrap:
