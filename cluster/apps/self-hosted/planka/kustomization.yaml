@@ -8,4 +8,4 @@ replacements:
   - path: ../../../components/replacements/ks.yaml
 resources:
   - home/ks.yaml
-  - prod/ks.yaml
+  #- prod/ks.yaml

@@ -1,0 +1,129 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: planka
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.6.2
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: planka
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: planka
+
+  values:
+    oidc:
+      issuerUrl: https://auth.${DOMAIN_NAME}
+      admin:
+        roles:
+          - planka-admin
+
+    controllers:
+      planka:
+        annotations:
+          reloader.stakater.com/auto: 'true'
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/plankanban/planka
+              tag: 2.0.3@sha256:d58fb823f9b206c525cd1438546d3035e7a90f37635a8fc704c8b443f515384a
+
+            envFrom:
+              - secretRef:
+                  name: planka-secret
+
+            env:
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: database-planka
+                    key: POSTGRES_URL
+              BASE_URL:
+                value: &BASE_URL '{{ printf "https://%s" (first .Values.route.app.hostnames) }}'
+              REACT_APP_SERVER_BASE_URL:
+                value: *BASE_URL
+
+              TRUST_PROXY: 'true'
+
+              OIDC_ENFORCED: 'true'
+              OIDC_ISSUER:
+                value: '{{ .Values.oidc.issuerUrl}}'
+              OIDC_SCOPES: openid profile groups email
+              OIDC_ADMIN_ROLES: planka-admin
+              OIDC_ROLES_ATTRIBUTE: groups
+
+              SMTP_HOST: mailpit.kube-system.svc.cluster.local
+              SMTP_PORT: 1025
+              SMTP_SECURE: false
+              SMTP_FROM: 'Planka <planka@domain.com>'
+
+              S3_ENABLE: true
+              S3_REGION: us-east-1
+              S3_ENDPOINT: https://s3.${DOMAIN_NAME}
+              S3_BUCKET: planka
+              S3_FORCE_PATH_STYLE: true
+
+            probes:
+              liveness: &probe
+                type: HTTP
+                path: /
+              readiness: *probe
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250Mi
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: [ 'ALL' ] }
+
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
+    service:
+      app:
+        ports:
+          http:
+            port: 1337
+
+    route:
+      app:
+        hostnames:
+          - 'planka.${DOMAIN_NAME}'
+        parentRefs:
+          - name: envoy
+            namespace: envoy-system
+
+    persistence:
+      tmp:
+        type: emptyDir
+      tmp-dir:
+        type: emptyDir
+        globalMounts:
+          - path: /app/logs
+            subPath: logs
+
+          - path: /app/.tmp
+            subPath: tmp

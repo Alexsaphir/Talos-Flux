@@ -1,0 +1,19 @@
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: &app planka
+spec:
+  database: *app # db name in postgres cluster
+  dropOnDelete: false
+
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: &app planka
+spec:
+  role: *app
+  database: *app # references the CR
+  secretName: database
+  privileges: OWNER
