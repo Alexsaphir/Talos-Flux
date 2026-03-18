@@ -1,0 +1,30 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app radarr-k3s
+  namespace: media
+spec:
+  components:
+    - ../../../../components/nfs-scaler
+    - ../../../../components/volsync
+
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+
+    - name: prowlarr
+
+  postBuild:
+    substitute:
+      APP: *app
+      PVC_NAME: *app
+      VOLSYNC_CAPACITY: 10Gi
+
+  prune: true
+  interval: 1h
+  path: cluster/apps/media/arr/radarr-k3s
+  sourceRef:
+    kind: GitRepository
+    name: talos-kubernetes
+    namespace: flux-system

@@ -1,0 +1,126 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: sonarr-k3s
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.6.2
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sonarr-k3s
+spec:
+  interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: sonarr-k3s
+
+  values:
+    controllers:
+      sonarr:
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          app:
+            image:
+              repository: ghcr.io/home-operations/sonarr
+              tag: 4.0.17.2950@sha256:bdc787fe07bb7c0b6af9c030764902f70092ec9a426e52a36716d3a13917fe2d
+
+            env:
+              TZ: ${TIMEZONE}
+
+              SONARR__AUTH__METHOD: External
+              SONARR__AUTH__REQUIRED: Enabled
+
+              SONARR__APP__INSTANCENAME: '{{ .Release.Name }}'
+              SONARR__APP__THEME: light
+              SONARR__SERVER__PORT: &port 80
+              SONARR__LOG__LEVEL: info
+              SONARR__LOG__ANALYTICSENABLED: 'false'
+              SONARR__LOG__DBENABLED: 'False'
+              SONARR__UPDATE__BRANCH: develop
+
+            envFrom:
+              - secretRef:
+                  name: '{{ .Release.Name }}-secret'
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: [ 'ALL' ] }
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 4Gi
+
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+
+    route:
+      app:
+        annotations:
+          gethomepage.dev/enabled: 'true'
+          gethomepage.dev/icon: sonarr.svg
+          gethomepage.dev/name: Sonarr-K3s
+          gethomepage.dev/group: Media
+          gatus.home-operations.com/endpoint: |-
+            conditions: ['[STATUS] == 200']
+            group: media
+        hostnames:
+          - '{{ .Release.Name }}.${DOMAIN_NAME}'
+        parentRefs:
+          - name: envoy
+            namespace: envoy-system
+
+    persistence:
+      config:
+        existingClaim: '{{ .Release.Name }}'
+
+      tmp:
+        type: emptyDir
+
+      media:
+        enabled: true
+        type: nfs
+        server: nas.hosts.alexsaphir.com
+        path: /mnt/user/Media
+        globalMounts:
+          - path: /media
+            readOnly: false
