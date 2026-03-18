@@ -22,6 +22,10 @@ spec:
     kind: OCIRepository
     name: cilium
 
+  #valuesFrom:
+  #  - kind: ConfigMap
+  #    name: values-hubble
+
   values:
     cluster:
       id: 1
@@ -142,32 +146,7 @@ spec:
 
     dashboards:
       enabled: true
-    hubble:
-      enabled: true
 
-      metrics:
-        enabled:
-          - dns
-          - drop
-          - tcp
-          - flow
-          - port-distribution
-          - icmp
-          - "httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,destination_ip,destination_namespace,destination_workload,traffic_direction;sourceContext=workload-name|reserved-identity;destinationContext=workload-name|reserved-identity"
-        serviceMonitor:
-          enabled: true
-        dashboards:
-          enabled: true
-
-      relay:
-        enabled: true
-        rollOutPods: true
-        prometheus:
-          serviceMonitor:
-            enabled: true
-      ui:
-        enabled: true
-        rollOutPods: true
     operator:
       replicas: 3
 
