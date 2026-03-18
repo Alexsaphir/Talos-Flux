@@ -8,6 +8,12 @@ access_control:
 
   rules:
     - domain:
+        - 'vaultwarden.${DOMAIN_NAME}'
+      resources:
+        - '^/admin([/?].*)?$'
+      policy: two_factor
+
+    - domain:
         - 'auth.${DOMAIN_NAME}'
         - 'homer.${DOMAIN_NAME}'
         - 'vaultwarden.${DOMAIN_NAME}'
