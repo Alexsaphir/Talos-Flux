@@ -38,7 +38,7 @@ spec:
               - { name: TZ, value: '${TIMEZONE}' }
 
               - { name: MAX_METRICS, value: 0 }
-              - { name: LOG_LEVEL, value: DEBUG }
+              - { name: LOG_LEVEL, value: INFO }
               - { name: LOG_MQTT_MESSAGE, value: 'True' }
               - { name: MQTT_ADDRESS, value: 'mosquitto.{{ .Release.Namespace }}.svc.cluster.local' }
               - { name: MQTT_TOPIC, value: 'zigbee2mqtt/#' }
