@@ -105,7 +105,7 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: '192.168.0.130'
+        server: nas.hosts.alexsaphir.com
         path: /mnt/user/Media/talos
         globalMounts:
           - path: /media/Downloads/nzbget
