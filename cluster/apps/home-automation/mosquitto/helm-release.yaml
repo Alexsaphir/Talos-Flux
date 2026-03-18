@@ -85,13 +85,10 @@ spec:
       config:
         data:
           mosquitto.conf: |-
-            allow_anonymous true
-            autosave_interval 60
-            connection_messages false
             listener 1883
-            per_listener_settings false
-            persistence true
-            persistence_location /config
+            allow_anonymous true
+            persistence false
+            connection_messages false
 
     persistence:
       config-file:
