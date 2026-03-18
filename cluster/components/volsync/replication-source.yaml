@@ -7,7 +7,7 @@ spec:
   sourcePVC: '${PVC_NAME}'
 
   trigger:
-    schedule: 0 0/24 * * *
+    schedule: 0 */12 * * *
 
   kopia:
     accessModes:
