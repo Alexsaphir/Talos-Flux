@@ -47,7 +47,6 @@ spec:
           - /usr/share/postgresql/18/
 
     shared_preload_libraries:
-      - 'timescaledb'
       - 'vchord.so'
 
   bootstrap:
