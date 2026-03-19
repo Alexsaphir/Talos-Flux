@@ -10,6 +10,7 @@ metadata:
     gethomepage.dev/group: Dev
     gethomepage.dev/app: *name
     gethomepage.dev/pod-selector: app=renovate-operator
+    gethomepage.dev/weight: '-90'
 spec:
   # noinspection KubernetesUnknownValues
   hostnames: [ 'renovate.${DOMAIN_NAME}' ]

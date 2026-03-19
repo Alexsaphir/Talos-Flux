@@ -71,6 +71,7 @@ spec:
           gethomepage.dev/icon: gitlab.svg
           gethomepage.dev/name: Gitlab
           gethomepage.dev/group: Dev
+          gethomepage.dev/weight: '-100'
           gethomepage.dev/app: *name
         hostnames:
           - 'gitlab.${DOMAIN_NAME}'

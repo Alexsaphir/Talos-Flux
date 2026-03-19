@@ -181,6 +181,7 @@ spec:
     route:
       app:
         annotations:
+          gethomepage.dev/href: 'https://{{.Values.codecov.host }}'
           gethomepage.dev/enabled: 'true'
           gethomepage.dev/name: Codecov
           gethomepage.dev/group: Dev
