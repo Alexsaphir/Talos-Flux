@@ -7,6 +7,7 @@ spec:
   image: ghcr.io/dragonflydb/dragonfly:v1.37.0
 
   replicas: 3
+  networkPolicyEnabled: false
 
   env:
     - name: MAX_MEMORY
