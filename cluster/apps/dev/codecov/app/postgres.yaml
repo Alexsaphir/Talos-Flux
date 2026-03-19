@@ -6,8 +6,6 @@ metadata:
 spec:
   database: *app # db name in postgres cluster
   dropOnDelete: false
-  extensions:
-    - timescaledb
 ---
 apiVersion: db.movetokube.com/v1alpha1
 kind: PostgresUser
