@@ -28,7 +28,7 @@ packages:
   - name: cilium/cilium-cli@v0.19.2
 
   # Kubernetes
-  - name: kubernetes/kubectl@v1.35.2
+  - name: kubernetes/kubectl@v1.35.3
   - name: kubernetes-sigs/krew@v0.5.0
   - name: brumhard/krewfile@v0.7.0
 
