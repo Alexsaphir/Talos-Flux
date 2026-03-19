@@ -55,6 +55,14 @@ spec:
               readOnlyRootFilesystem: false
               capabilities: { drop: [ 'ALL' ] }
 
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+
       api:
         containers:
           app:
@@ -90,7 +98,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
               capabilities: { drop: [ 'ALL' ] }
-
 
       worker:
         containers:
