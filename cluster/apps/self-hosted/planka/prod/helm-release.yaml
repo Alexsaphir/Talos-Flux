@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/plankanban/planka
-              tag: 2.0.3@sha256:d58fb823f9b206c525cd1438546d3035e7a90f37635a8fc704c8b443f515384a
+              tag: 2.1.0@sha256:32c919d9e65b0479d1bbf0e4fb8e00fb11403a5234242b9f5fc900e595c2e2ce
 
             envFrom:
               - secretRef:
