@@ -65,7 +65,7 @@ access_control:
         - '^/webhook([/?].*)?$'
       policy: bypass
     # API protected with secret
-    - domain_regex: '^(sonarr|radarr|prowlarr)\.${DOMAIN_NAME}$'
+    - domain_regex: '^(sonarr|radarr|sonarr4k|radarr4k|prowlarr)\.${DOMAIN_NAME}$'
       policy: bypass
       resources:
         - "^/api([/?].*)?$"
