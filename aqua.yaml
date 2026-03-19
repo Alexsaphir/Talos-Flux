@@ -20,7 +20,7 @@ packages:
   - name: bitwarden/sdk-sm@bws-v1.0.0
 
   # Talos
-  - name: siderolabs/talos@v1.12.5
+  - name: siderolabs/talos@v1.12.6
   - name: budimanjojo/talhelper@v3.1.6
 
   # Cluster
