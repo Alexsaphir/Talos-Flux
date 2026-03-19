@@ -1,0 +1,259 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: codecov
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.6.2
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &name codecov
+spec:
+  interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: *name
+
+
+  values:
+    codecov:
+      host: codecov.${DOMAIN_NAME}
+      scheme: https
+
+    controllers:
+      frontend:
+        containers:
+          app:
+            image:
+              repository: codecov/self-hosted-frontend
+              tag: 26.3.4
+
+            env:
+              CODECOV_BASE_HOST: '{{ .Values.codecov.host }}'
+              CODECOV_API_HOST: '{{ .Values.codecov.host }}'
+              CODECOV_IA_HOST: '{{ .Values.codecov.host }}'
+              CODECOV_SCHEME: '{{ .Values.codecov.scheme }}'
+
+            resources:
+              requests:
+                cpu: 10m
+                memory: 16M
+              limits:
+                cpu: 100m
+                memory: 128M
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: [ 'ALL' ] }
+
+      api:
+        containers:
+          app:
+            image:
+              repository: codecov/self-hosted-api
+              tag: 26.3.4
+
+            envFrom:
+              - secretRef:
+                  name: &config-secret '{{ .Release.Name }}-config-secret'
+
+            env:
+              services__database_url:
+                valueFrom:
+                  secretKeyRef:
+                    name: 'database-{{ .Release.Name }}'
+                    key: POSTGRES_URL
+
+            ports:
+              - containerPort: &port_api 8000
+                name: http
+                protocol: TCP
+
+            resources:
+              limits:
+                cpu: 1000m
+                memory: 2048M
+              requests:
+                cpu: 100m
+                memory: 512M
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: [ 'ALL' ] }
+
+
+      worker:
+        containers:
+          app:
+            image:
+              repository: codecov/self-hosted-worker
+              tag: 26.3.4
+
+            envFrom:
+              - secretRef:
+                  name: *config-secret
+
+            env:
+              RUN_ENV: 'ENTERPRISE'
+              services__database_url:
+                valueFrom:
+                  secretKeyRef:
+                    name: 'database-{{ .Release.Name }}'
+                    key: POSTGRES_URL
+
+            resources:
+              limits:
+                cpu: 1000m
+                memory: 2048M
+              requests:
+                cpu: 100m
+                memory: 768M
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: [ 'ALL' ] }
+
+
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      frontend:
+        controller: frontend
+        ports:
+          http:
+            port: &port_frontend 8080
+      api:
+        controller: api
+        ports:
+          http:
+            port: *port_api
+
+    route:
+      app:
+        annotations:
+          gethomepage.dev/enabled: 'true'
+          gethomepage.dev/name: Codecov
+          gethomepage.dev/group: Dev
+          gethomepage.dev/app: *name
+        hostnames:
+          - '{{ .Release.Name }}.${DOMAIN_NAME}'
+        parentRefs:
+          - name: envoy
+            namespace: envoy-system
+        rules:
+          - backendRefs:
+              - name: '{{ .Release.Name }}-api'
+                port: *port_api
+            matches:
+              - path: { type: RegularExpression, value: "^/validate(/)?$" }
+              - path: { type: RegularExpression, value: "^/static(/.*)?$" }
+              - path: { type: RegularExpression, value: "^/internal(/.*)?$" }
+              - path: { type: RegularExpression, value: "^/graphql(/.*)?$" }
+              - path: { type: RegularExpression, value: "^/webhooks(/.*)?$" }
+              - path: { type: RegularExpression, value: "^/api_health(/)?$" }
+              - path: { type: RegularExpression, value: "^/upload/v2(/)?$" }
+              - path: { type: RegularExpression, value: "^/upload/v4(/)?$" }
+              - path: { type: RegularExpression, value: "^/api(/.*)?$" }
+              - path: { type: RegularExpression, value: "^/upload/bundle_analysis/v1(/)?$" }
+              - path: { type: RegularExpression, value: "^/upload/test_results/v1(/)?$" }
+              - path: { type: RegularExpression, value: "^/upload/(gh|github|ghe|github_enterprise|bb|bitbucket|bbs|bitbucket_server|gl|gitlab|gle|gitlab_enterprise|okta|sentry)(/.*)?$" }
+              - path: { type: RegularExpression, value: "^/login/(gh|github|ghe|github_enterprise|bb|bitbucket|bbs|bitbucket_server|gl|gitlab|gle|gitlab_enterprise|okta|sentry)" }
+              - path: { type: RegularExpression, value: "^/logout(/(gh|github|ghe|github_enterprise|bb|bitbucket|bbs|bitbucket_server|gl|gitlab|gle|gitlab_enterprise|okta|sentry))?$" }
+              # SVG badges
+              - path: { type: RegularExpression, value: "^/[^/]+/[^/]+/[^/]+/branch/.+/(graph|graphs)/badge\\.svg$" }
+              - path: { type: RegularExpression, value: "^/[^/]+/[^/]+/[^/]+/(graph|graphs)/badge\\.svg$" }
+              - path: { type: RegularExpression, value: "^/[^/]+/[^/]+/[^/]+/branch/.+/(graph|graphs)/bundle/.+/badge\\.svg$" }
+              - path: { type: RegularExpression, value: "^/[^/]+/[^/]+/[^/]+/(graph|graphs)/bundle/.+/badge\\.svg$" }
+              - path: { type: RegularExpression, value: "^/[^/]+/[^/]+/[^/]+/pull/[^/]+/(graph|graphs)/(tree|icicle|sunburst|commits)\\.svg$" }
+              - path: { type: RegularExpression, value: "^/[^/]+/[^/]+/[^/]+/branch/[^/].+/(graph|graphs)/(tree|icicle|sunburst|commits)\\.svg$" }
+              - path: { type: RegularExpression, value: "^/[^/]+/[^/]+/[^/]+/(graph|graphs)/(tree|icicle|sunburst|commits)\\.svg$" }
+
+          - backendRefs:
+              - name: '{{ .Release.Name }}-frontend'
+                port: *port_frontend
+            matches:
+              - path: { type: Exact, value: "/frontend_health" }
+              - path: { type: RegularExpression, value: "^(/.*)?$" }
+
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: '{{ .Release.Name }}'
+        globalMounts:
+          - path: /config/codecov.yml
+            subPath: codecov.yml
+            readOnly: false
+
+    configMaps:
+      config:
+        data:
+          # language=yaml
+          codecov.yml: |
+            setup:
+              codecov_url: https://{{.Values.codecov.host }}
+              codecov_api_url: https://{{.Values.codecov.host }}
+
+              debug: no
+              loglvl: INFO
+
+              guest_access: off
+              admins:
+                - service: gitlab_enterprise
+                  username: Saphir
+                - service: gitlab_enterprise
+                  username: Alexsaphir
+
+              http:
+                cookies_domain: {{.Values.codecov.host }}
+
+              timeseries:
+                enabled: false
+              ta_timeseries:
+                enabled: false
+
+              telemetry:
+                enabled: false
+
+            gitlab_enterprise:
+              enabled: true
+              url: https://gitlab.${DOMAIN_NAME}
+              global_upload_token_enabled: false
+
+              bot:
+                username: Codecov
+
+            services:
+              redis_url: redis://dragonfly.database.svc.cluster.local:6379/4
+              minio:
+                host: minio.minio-system.svc.cluster.local
+                bucket: codecov
+                region: us-east-1
+                verify_ssl: false
+                port: 9000
+
+            notifications:
+              slack: off
+              gitter: off
+              webhook: off
+              irc: off
+              hipchat: off

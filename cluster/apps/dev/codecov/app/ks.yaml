@@ -5,9 +5,6 @@ metadata:
   name: &app codecov
   namespace: codecov
 spec:
-  dependsOn:
-    - name: timescaledb
-      namespace: database
 
   postBuild:
     substitute:

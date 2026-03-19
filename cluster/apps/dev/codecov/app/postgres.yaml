@@ -3,8 +3,6 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: Postgres
 metadata:
   name: &app codecov
-  annotations:
-    postgres.db.movetokube.com/instance: timescaledb
 spec:
   database: *app # db name in postgres cluster
   dropOnDelete: false
@@ -15,9 +13,6 @@ apiVersion: db.movetokube.com/v1alpha1
 kind: PostgresUser
 metadata:
   name: &app codecov
-  annotations:
-    postgres.db.movetokube.com/instance: timescaledb
-
 spec:
   role: *app
   database: *app # references the CR
