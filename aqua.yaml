@@ -21,7 +21,7 @@ packages:
 
   # Talos
   - name: siderolabs/talos@v1.12.6
-  - name: budimanjojo/talhelper@v3.1.6
+  - name: budimanjojo/talhelper@v3.1.7
 
   # Cluster
   - name: fluxcd/flux2@v2.8.3
