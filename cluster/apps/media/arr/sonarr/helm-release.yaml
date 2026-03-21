@@ -117,10 +117,9 @@ spec:
         type: emptyDir
 
       media:
-        enabled: true
         type: nfs
         server: nas.hosts.alexsaphir.com
-        path: /mnt/user/Media/talos
+        path: /mnt/user/Media
         globalMounts:
           - path: /media
             readOnly: false

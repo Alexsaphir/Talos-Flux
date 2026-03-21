@@ -147,9 +147,10 @@ spec:
       media:
         type: nfs
         server: nas.hosts.alexsaphir.com
-        path: /mnt/user/Media
+        path: /mnt/user/Media/
         globalMounts:
-          - path: /MediaCloud
+          - path: /media/ByProfile
+            subPath: ByProfile
 
       tmpfs:
         type: emptyDir
