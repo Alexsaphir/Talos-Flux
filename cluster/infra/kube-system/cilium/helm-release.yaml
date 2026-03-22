@@ -136,7 +136,7 @@ spec:
       # Required for pairing with Multus CNI
       exclusive: false
 
-    devices: enp+
+    devices: enp+ bond+
     endpointRoutes:
       enabled: true
     envoy:
