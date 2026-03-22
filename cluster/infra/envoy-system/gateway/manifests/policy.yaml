@@ -11,10 +11,13 @@ spec:
   compressor:
     - type: Brotli
       brotli: { }
+      minContentLength: 1024
     - type: Gzip
       gzip: { }
+      minContentLength: 1024
     - type: Zstd
       zstd: { }
+      minContentLength: 1024
 
   retry:
     numRetries: 2

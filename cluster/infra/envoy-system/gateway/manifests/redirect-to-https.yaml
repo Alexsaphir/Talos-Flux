@@ -9,8 +9,6 @@ spec:
   parentRefs:
     - name: envoy
       sectionName: http
-    - name: envoy
-      sectionName: http-root
 
   rules:
     - filters:
