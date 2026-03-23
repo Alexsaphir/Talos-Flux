@@ -2,7 +2,7 @@
 version: "3"
 
 vars:
-  PG_SRC: 192.168.0.200
+  PG_SRC: old-postgres.svc.talos.alexsaphir.com
   PG_DST: postgres.svc.talos.alexsaphir.com
 
   PG_PORT: 5432
@@ -14,13 +14,12 @@ tasks:
     requires:
       vars:
         - TARGET
-        - NS
 
     vars:
       SRC_LOGIN:
-        sh: KUBECONFIG={{ .SRC_KUBECONFIG }} kubectl get secrets -n {{ .NS }} database-{{ .TARGET }} -o yaml | yq '.data.LOGIN' | base64 --decode
+        sh: kubectl get secrets -n database old-postgres-superuser -o yaml | yq '.data.user' | base64 --decode
       SRC_PASSWORD:
-        sh: KUBECONFIG={{ .SRC_KUBECONFIG }} kubectl get secrets -n {{ .NS }} database-{{ .TARGET }} -o yaml | yq '.data.PASSWORD' | base64 --decode
+        sh: kubectl get secrets -n database old-postgres-superuser -o yaml | yq '.data.password' | base64 --decode
     env:
       PGPASSWORD: '{{ .SRC_PASSWORD }}'
     cmds:
@@ -50,8 +49,28 @@ tasks:
     cmds:
       - >
         pg_restore
+        --clean --if-exists
         -h {{ .PG_DST }}
         -p {{ .PG_PORT }}
         -U {{ .DST_LOGIN }}
         -d {{ .TARGET }}
         postgres-{{ .TARGET }}.dump
+
+
+  planka-upgrade:
+    requires:
+      vars:
+        - TARGET
+
+    vars:
+      PG_URL:
+        sh: kubectl get secrets -n planka database-{{ .TARGET }} -o yaml | yq '.data.POSTGRES_URL' | base64 --decode
+    cmds:
+      - >
+        kubectl run db-upgrade
+        --image=ghcr.io/plankanban/planka:2.1.0
+        --restart=Never
+        --env=DATABASE_URL={{ .PG_URL }}
+        --namespace=planka
+        --command
+        -- npm run db:upgrade
