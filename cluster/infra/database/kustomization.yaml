@@ -11,5 +11,3 @@ resources:
   - ext-postgres-operator/ks.yaml
 
   - dragonfly/ks.yaml
-
-  - old-postgres/ks.yaml
