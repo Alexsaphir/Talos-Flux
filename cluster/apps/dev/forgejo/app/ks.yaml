@@ -5,9 +5,15 @@ metadata:
   name: &app forgejo
   namespace: forgejo
 spec:
+  components:
+    - ../../../../components/volsync
+
   postBuild:
     substitute:
       APP: *app
+      PVC_NAME: *app
+      VOLSYNC_CAPACITY: 20Gi
+      VOLSYNC_CACHE_CAPACITY: 20Gi
 
   prune: true
   interval: 1h
