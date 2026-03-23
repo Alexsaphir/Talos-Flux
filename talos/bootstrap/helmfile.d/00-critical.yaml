@@ -16,7 +16,7 @@ releases:
     namespace: kube-system
     atomic: true
     chart: oci://quay.io/cilium/charts/cilium
-    version: 1.19.1
+    version: 1.19.2
     values: [ '../templates/values.yaml.gotmpl' ]
     needs: [ observability/prometheus-operator-crds ]
     hooks:
