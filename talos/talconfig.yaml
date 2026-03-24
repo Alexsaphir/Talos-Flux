@@ -36,8 +36,17 @@ nodes:
       serial: S7GCNL0XA11778T
 
     networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: 58:47:ca:7a:c6:c9
+      - interface: bond0
+        bond:
+          mode: 802.3ad
+          deviceSelectors:
+            - hardwareAddr: 58:47:ca:7a:c6:c9
+            - hardwareAddr: 58:47:ca:7a:c6:c8
+          lacpRate: fast
+          xmitHashPolicy: layer3+4
+          miimon: 100
+          updelay: 200
+          downdelay: 200
         dhcp: true
         mtu: 9000
 
@@ -79,8 +88,17 @@ nodes:
       serial: 'S7GCNL0XA16201K'
 
     networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: '58:47:ca:76:79:a6'
+      - interface: bond0
+        bond:
+          mode: 802.3ad
+          deviceSelectors:
+            - hardwareAddr: 58:47:ca:76:79:a6
+            - hardwareAddr: 58:47:ca:76:79:a5
+          lacpRate: fast
+          xmitHashPolicy: layer3+4
+          miimon: 100
+          updelay: 200
+          downdelay: 200
         dhcp: true
         mtu: 9000
 
@@ -104,8 +122,17 @@ nodes:
       serial: 'S7GCNL0XA16195E'
 
     networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: '58:47:ca:76:6f:42'
+      - interface: bond0
+        bond:
+          mode: 802.3ad
+          deviceSelectors:
+            - hardwareAddr: 58:47:ca:76:6f:42
+            - hardwareAddr: 58:47:ca:76:6f:41
+          lacpRate: fast
+          xmitHashPolicy: layer3+4
+          miimon: 100
+          updelay: 200
+          downdelay: 200
         dhcp: true
         mtu: 9000
 
