@@ -1,0 +1,88 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: recyclarr
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.6.2
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: recyclarr
+spec:
+  interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: recyclarr
+
+  values:
+    controllers:
+      recyclarr:
+        type: cronjob
+        cronjob:
+          schedule: '@daily'
+          timeZone: &timezone ${TIMEZONE}
+          backoffLimit: 0
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+          ttlSecondsAfterFinished: 86400
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/recyclarr/recyclarr
+              tag: 8.5.1@sha256:734cecf44ae9be7cf0cb05b2c1bc7da0abef9d938cc11b605e58b3146205e5c0
+
+            env:
+              RECYCLARR_DATA_DIR: /tmp
+              TZ: *timezone
+            envFrom:
+              - secretRef:
+                  name: '{{ .Release.Name }}-secret'
+
+            args: [ 'sync' ]
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: [ 'ALL' ] }
+
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
+        pod:
+          restartPolicy: Never
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    persistence:
+      config:
+        existingClaim: '{{ .Release.Name }}'
+
+      config-file:
+        type: configMap
+        name: '{{ .Release.Name }}-configmap'
+        globalMounts:
+          - path: /config/recyclarr.yaml
+            subPath: recyclarr.yaml
+            readOnly: true
+
+      tmp:
+        type: emptyDir
