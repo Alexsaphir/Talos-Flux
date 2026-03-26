@@ -1,0 +1,119 @@
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: renovate-gitlab-in2p3
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: bitwarden
+
+  target:
+    name: renovate-gitlab-in2p3-secret
+    template:
+      data:
+        # tokens to reduce the impact of rate limits
+        RENOVATE_GITHUB_COM_TOKEN: '{{ .RENOVATE_GITHUB_COM_TOKEN }}'
+        DOCKER_HUB_USER: '{{ .DOCKER_HUB_USER }}'
+        DOCKER_HUB_PASSWORD: '{{ .DOCKER_HUB_PASSWORD }}'
+
+        # s3 storage
+        AWS_ENDPOINT_URL: 'https://s3.alexsaphir.com'
+        AWS_ACCESS_KEY_ID: '{{ .AWS_ACCESS_KEY_ID }}'
+        AWS_SECRET_ACCESS_KEY: '{{ .AWS_SECRET_ACCESS_KEY }}'
+        AWS_REGION: us-east-1
+        RENOVATE_S3_PATH_STYLE: 'true'
+
+        # renovate bot
+        RENOVATE_TOKEN: '{{ .RENOVATE_GITLAB_PAT }}'
+        RENOVATE_GIT_AUTHOR: '{{ .RENOVATE_GIT_AUTHOR }}'
+        RENOVATE_GIT_PRIVATE_KEY: '{{ .RENOVATE_GIT_PRIVATE_KEY }}'
+
+        RENOVATE_REPOSITORY_CACHE: 'enabled'
+        RENOVATE_REPOSITORY_CACHE_TYPE: 's3://renovate/cache-operator/'
+
+        #RENOVATE_REPORT_TYPE: 's3'
+        #RENOVATE_REPORT_PATH: 's3://renovate/report-operator/'
+
+        # cache lookup using redis
+        RENOVATE_REDIS_URL: 'redis://renovate-dragonfly:6379/0'
+        #RENOVATE_REDIS_PREFIX: ''
+
+        RENOVATE_PAGINATE_ALL: 'true'
+  dataFrom:
+    - extract:
+        key: docker-hub
+    - extract:
+        key: renovate-gitlab
+    - extract:
+        key: gitlab-in2p3-bot
+
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: renovate-gitlab-in2p3-webhook
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: bitwarden
+
+  target:
+    name: renovate-gitlab-in2p3-webhook-secret
+    template:
+      data:
+        webhook-token: '{{ .RENOVATE_WEBHOOK_GITLAB }}'
+
+  dataFrom:
+    - extract:
+        key: renovate-gitlab
+
+---
+apiVersion: renovate-operator.mogenius.com/v1alpha1
+kind: RenovateJob
+metadata:
+  name: gitlab-in2p3
+spec:
+  parallelism: 4
+  schedule: '0 */2 * * *'
+  image: ghcr.io/renovatebot/renovate:43.91.1
+
+  provider:
+    name: gitlab
+    endpoint: https://gitlab.in2p3.fr/api/v4
+
+  secretRef: renovate-gitlab-in2p3-secret
+  extraEnv:
+    - name: LOG_LEVEL
+      value: info
+
+    - name: RENOVATE_CONFIG_FILE
+      value: /config/config.js
+
+    - name: RENOVATE_ONBOARDING_CONFIG
+      valueFrom:
+        configMapKeyRef:
+          name: &renovate-config gitlab-renovate-config
+          key: onboardingConfig
+
+  extraVolumes:
+    - name: *renovate-config
+      configMap:
+        name: *renovate-config
+  extraVolumeMounts:
+    - name: *renovate-config
+      mountPath: /config/config.js
+      subPath: config.js
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+  webhook:
+    enabled: true
+    authentication:
+      enabled: true
+      secretRef:
+        name: renovate-gitlab-in2p3-webhook-secret
+        key: webhook-token
