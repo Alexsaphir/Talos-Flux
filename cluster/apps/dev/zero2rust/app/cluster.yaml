@@ -1,0 +1,44 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: &name zero2rust
+spec:
+  imageCatalogRef:
+    apiGroup: postgresql.cnpg.io
+    kind: ClusterImageCatalog
+    name: postgresql
+    major: 18
+
+  instances: 1
+  enablePDB: false
+
+  bootstrap:
+    initdb:
+      database: *name
+      owner: *name
+
+  resources:
+    requests:
+      memory: '2Gi'
+
+
+  storage:
+    size: 10Gi
+    storageClass: openebs-hostpath
+
+  managed:
+    services:
+      disabledDefaultServices: [ 'ro', 'r' ]
+      additional:
+        - selectorType: rw
+          serviceTemplate:
+            metadata:
+              name: zero2rust-lb
+              annotations:
+                external-dns.alpha.kubernetes.io/hostname: zero2rust.svc.talos.${DOMAIN_NAME}
+
+            spec:
+              type: LoadBalancer
+              ipFamilyPolicy: PreferDualStack
+              externalTrafficPolicy: Local

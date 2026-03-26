@@ -8,3 +8,5 @@ resources:
   - gitlab-minerva
   - gitlab-runner
   - renovate-operator
+
+  - zero2rust
