@@ -28,6 +28,12 @@ spec:
     storageClass: openebs-hostpath
 
   managed:
+    roles:
+      - name: *name
+        ensure: present
+        login: true
+        createdb: true
+
     services:
       disabledDefaultServices: [ 'ro', 'r' ]
       additional:
