@@ -8,5 +8,6 @@ resources:
   - gateway.yaml
 
   - policy.yaml
+  - policy-robot.yaml
   - security-policy.yaml
   - redirect-to-https.yaml
