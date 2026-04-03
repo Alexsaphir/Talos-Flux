@@ -8,6 +8,12 @@ access_control:
 
   rules:
     - domain:
+        - '${DOMAIN_NAME}'
+      resources:
+        - '^/robots\.txt$'
+      policy: bypass
+
+    - domain:
         - 'vaultwarden.${DOMAIN_NAME}'
       resources:
         - '^/admin([/?].*)?$'
