@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: codecov/self-hosted-frontend
-              tag: 26.3.4
+              tag: 26.4.1
 
             env:
               CODECOV_BASE_HOST: '{{ .Values.codecov.host }}'
