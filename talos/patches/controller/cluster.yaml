@@ -14,8 +14,11 @@ cluster:
 
     resources:
       requests:
-        memory: 2Gi
+        memory: 3Gi
         cpu: 500m
+      limits:
+        memory: 4Gi
+        cpu: 1000m
 
   controllerManager:
     extraArgs:
