@@ -38,7 +38,7 @@ spec:
   values:
     immich:
       # renovate: datasource=github-releases depName=immich-app/immich
-      version: v2.6.3
+      version: v2.7.2
 
     controllers:
       immich:
