@@ -57,6 +57,7 @@ spec:
             env:
               TZ: ${TIMEZONE}
               NODE_ENV: &node-env production
+              IMMICH_HELMET_FILE: 'true'
 
               DB_URL:
                 valueFrom:
