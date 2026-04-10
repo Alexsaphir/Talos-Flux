@@ -68,7 +68,7 @@ spec:
           app:
             image:
               repository: codecov/self-hosted-api
-              tag: 26.3.4
+              tag: 26.4.1
 
             envFrom:
               - secretRef:
@@ -116,7 +116,7 @@ spec:
           app:
             image:
               repository: codecov/self-hosted-worker
-              tag: 26.3.4
+              tag: 26.4.1
 
             envFrom:
               - secretRef:
