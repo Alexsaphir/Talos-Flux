@@ -2,7 +2,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: &name zero2rust
+  name: &name calibre-scrapper
 spec:
   imageCatalogRef:
     apiGroup: postgresql.cnpg.io
@@ -40,9 +40,9 @@ spec:
         - selectorType: rw
           serviceTemplate:
             metadata:
-              name: zero2rust-lb
+              name: calibre-scrapper-lb
               annotations:
-                external-dns.alpha.kubernetes.io/hostname: zero2rust.svc.talos.${DOMAIN_NAME}
+                external-dns.alpha.kubernetes.io/hostname: calibre-scrapper.svc.talos.${DOMAIN_NAME}
 
             spec:
               type: LoadBalancer

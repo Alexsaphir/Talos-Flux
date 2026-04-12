@@ -2,12 +2,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: zero2rust
-  namespace: zero2rust
+  name: calibre-scrapper
+  namespace: calibre-scrapper
 spec:
   prune: true
   interval: 1h
-  path: cluster/apps/dev/zero2rust/app
+  path: cluster/apps/dev/calibre-scrapper/app
   sourceRef:
     kind: GitRepository
     name: talos-kubernetes
