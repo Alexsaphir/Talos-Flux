@@ -10,5 +10,5 @@ spec:
       sectionName: ssh
   rules:
     - backendRefs:
-        - name: gitlab
+        - name: gitlab-minerva
           port: 22
