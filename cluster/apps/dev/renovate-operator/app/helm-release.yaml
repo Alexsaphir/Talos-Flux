@@ -24,6 +24,22 @@ spec:
 
   values:
     fullnameOverride: *name
+    replicaCount: 3
+
+    auth:
+      oidc:
+        enabled: true
+        issuerUrl: https://gitlab.alexsaphir.com
+        clientId: 3b606bbc31526e35cb039268231686d629519a4f50420226f6faf4580e0ee098
+        existingSecret: &secret renovate-operator-secret
+        secretKey: client-secret
+        sessionSecretKey: session-secret
+        redirectUrl: https://renovate.${DOMAIN_NAME}/auth/callback
+
+    valkey:
+      existingSecret: *secret
+      existingSecretKey: 'dragonfly-url'
+
 
     rbac:
       ownNamespaceOnly: true
