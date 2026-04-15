@@ -39,6 +39,7 @@ access_control:
         - 'minio.${DOMAIN_NAME}'
         - 's3.${DOMAIN_NAME}'
         - 'gitlab.${DOMAIN_NAME}'
+        - 'renovate.${DOMAIN_NAME}'
         - 'plan.${DOMAIN_NAME}'
         - 'planka.${DOMAIN_NAME}'
       policy: bypass
@@ -64,11 +65,6 @@ access_control:
         - 'flux-webhook.${DOMAIN_NAME}'
       resources:
         - '^/hook([/?].*)?$'
-      policy: bypass
-    - domain:
-        - 'renovate.${DOMAIN_NAME}'
-      resources:
-        - '^/webhook([/?].*)?$'
       policy: bypass
     # API protected with secret
     - domain_regex: '^(sonarr|radarr|sonarr4k|radarr4k|sonarr-k3s|radarr-k3s|prowlarr)\.${DOMAIN_NAME}$'
