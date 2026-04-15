@@ -84,9 +84,6 @@ spec:
 
   secretRef: renovate-gitlab-secret
   extraEnv:
-    - name: LOG_LEVEL
-      value: info
-
     - name: RENOVATE_CONFIG_FILE
       value: /config/config.js
 
