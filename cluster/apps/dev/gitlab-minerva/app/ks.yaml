@@ -12,8 +12,8 @@ spec:
     substitute:
       APP: *app
       PVC_NAME: *app
-      VOLSYNC_CAPACITY: 50Gi
-      VOLSYNC_CACHE_CAPACITY: 50Gi
+      VOLSYNC_CAPACITY: 100Gi
+      VOLSYNC_CACHE_CAPACITY: 100Gi
 
 #  healthChecks:
 #    - apiVersion: helm.toolkit.fluxcd.io/v2
