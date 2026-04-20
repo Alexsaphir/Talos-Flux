@@ -13,6 +13,11 @@ spec:
     name: letsencrypt
     kind: ClusterIssuer
 
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+    rotationPolicy: Always
+
   duration: 160h
   usages:
     - digital signature
