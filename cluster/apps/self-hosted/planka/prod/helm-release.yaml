@@ -39,16 +39,15 @@ spec:
                   name: planka-prod-secret
 
             env:
+              LOG_LEVEL: debug
+
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
                     name: database-planka-prod
                     key: POSTGRES_URL
               BASE_URL:
-                value: &BASE_URL '{{ printf "https://%s" (first .Values.route.app.hostnames) }}'
-              REACT_APP_SERVER_BASE_URL:
-                value: *BASE_URL
-
+                value: '{{ printf "https://%s" (first .Values.route.app.hostnames) }}'
               TRUST_PROXY: 'true'
 
               OIDC_ENFORCED: 'true'
