@@ -40,7 +40,6 @@ spec:
       existingSecret: *secret
       existingSecretKey: 'dragonfly-url'
 
-
     rbac:
       ownNamespaceOnly: true
 
@@ -49,7 +48,11 @@ spec:
 
     config:
       defaultJobBackoffLimit: 5
-      defaultJobActiveDeadlineSeconds: 3600
+      deleteSuccessfulJobs: true
+
+      logStorage:
+        mode: memory
+      forwardCacheToJobs: true
 
     metrics:
       enabled: true

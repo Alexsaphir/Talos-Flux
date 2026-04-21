@@ -35,10 +35,6 @@ spec:
         #RENOVATE_REPORT_TYPE: 's3'
         #RENOVATE_REPORT_PATH: 's3://renovate/report-operator/'
 
-        # cache lookup using redis
-        RENOVATE_REDIS_URL: 'redis://renovate-dragonfly:6379/0'
-        #RENOVATE_REDIS_PREFIX: ''
-
         RENOVATE_PAGINATE_ALL: 'true'
   dataFrom:
     - extract:
