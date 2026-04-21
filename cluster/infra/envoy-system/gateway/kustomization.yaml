@@ -5,4 +5,4 @@ resources:
   - manifests
   - dns-endpoint.yaml
 
-  - service-monitor.yaml
+  - observability.yaml
