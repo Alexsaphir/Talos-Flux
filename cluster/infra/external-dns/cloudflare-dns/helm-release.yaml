@@ -48,6 +48,7 @@ spec:
       - --crd-source-kind=DNSEndpoint
       - --gateway-name=envoy
       - --zone-id-filter=$(CF_ZONE_ID)
+      - --cloudflare-record-comment="Provisionned by Exteranl-DNS (Talos)"
 
     triggerLoopOnEvent: true
     policy: sync
