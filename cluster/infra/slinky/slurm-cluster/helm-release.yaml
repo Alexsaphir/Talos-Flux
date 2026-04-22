@@ -38,3 +38,8 @@ spec:
       slinky:
         enabled: true
         rootSshAuthorizedKeys: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHF3kflkI15MWtCp3FkXi2L19MsjNdQvQ7jKfWomFkvl SuperUser'
+
+        service:
+          metadata:
+            annotations:
+              external-dns.alpha.kubernetes.io/hostname: slurm.svc.talos.${DOMAIN_NAME}
