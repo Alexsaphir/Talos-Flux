@@ -1,0 +1,48 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: slurm-operator
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 1.1.0
+  url: oci://ghcr.io/slinkyproject/charts/slurm-operator
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: slurm-operator
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: slurm-operator
+
+  values:
+    crds:
+      enabled: true
+
+    operator:
+      replicas: 1
+
+      # -- Set the max concurrent workers for the Accounting controller.
+      accountingWorkers: 4
+      # -- Set the max concurrent workers for the Controller controller.
+      controllerWorkers: 4
+      # -- Set the max concurrent workers for the LoginSet controller.
+      loginsetWorkers: 4
+      # -- Set the max concurrent workers for the NodeSet controller.
+      nodesetWorkers: 4
+      # -- Set the max concurrent workers for the Restapi controller.
+      restapiWorkers: 4
+      # -- Set the max concurrent workers for the Token controller.
+      tokenWorkers: 4
+      # -- Set the max concurrent workers for the SlurmClient controller.
+      slurmclientWorkers: 2
+
+    webhook:
+      replicas: 1
