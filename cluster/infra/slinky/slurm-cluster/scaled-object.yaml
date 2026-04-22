@@ -1,0 +1,22 @@
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: &name slurm-cluster-worker-slinky
+spec:
+  scaleTargetRef:
+    apiVersion: slinky.slurm.net/v1beta1
+    kind: NodeSet
+    name: *name
+
+  idleReplicaCount: 0
+  minReplicaCount: 1
+  maxReplicaCount: 3
+
+  triggers:
+    - type: prometheus
+      metricType: Value
+      metadata:
+        serverAddress: http://prometheus-operated.observability.svc.cluster.local:9090
+        query: slurm_partition_jobs_pending{partition="all"}
+        threshold: '1'
