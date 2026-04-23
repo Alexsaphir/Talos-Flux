@@ -22,6 +22,14 @@ spec:
     kind: OCIRepository
     name: slurm-cluster
 
+  driftDetection:
+    ignore:
+      - paths: [ '/spec/replicas' ]
+        target:
+          group: slinky.slurm.net
+          kind: NodeSet
+          name: slurm-cluster-worker-slinky
+
   values:
     clusterName: 'talos-slurm'
 
