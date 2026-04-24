@@ -7,6 +7,7 @@ resources:
   #  - gitlab
   - gitlab-minerva
   - gitlab-runner
+  - gitlab-runner-in2p3
   - renovate-operator
 
   - calibre-scrapper

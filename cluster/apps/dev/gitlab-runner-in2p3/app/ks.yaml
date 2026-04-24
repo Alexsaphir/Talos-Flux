@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app gitlab-runner-in2p3
+  namespace: &namespace gitlab-runner-in2p3
+spec:
+  postBuild:
+    substitute:
+      APP: *app
+
+  prune: true
+  interval: 1h
+  path: cluster/apps/dev/gitlab-runner-in2p3/app
+  sourceRef:
+    kind: GitRepository
+    name: talos-kubernetes
+    namespace: flux-system

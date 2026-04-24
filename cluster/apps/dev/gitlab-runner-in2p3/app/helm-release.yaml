@@ -1,0 +1,98 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: gitlab-runner
+spec:
+  interval: 1h
+  url: https://charts.gitlab.io
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: gitlab-runner
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: gitlab-runner
+      version: 0.88.0
+      sourceRef:
+        kind: HelmRepository
+        name: gitlab-runner
+
+  values:
+    nameOverride: gitlab-runner
+
+    podAnnotations:
+      reloader.stakater.com/auto: 'true'
+
+    revisionHistoryLimit: 1
+
+    gitlabUrl: https://gitlab.in2p3.fr
+
+    # Disable registration token (deprecated)
+    runnerRegistrationToken: ''
+
+    replicas: 1
+
+    unregisterRunners: true
+
+    concurrent: 10
+    checkInterval: 10
+
+    logLevel: info  # debug, info, warn, error, fatal, panic
+    logFormat: json # runner, text, json
+
+    rbac:
+      create: true
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+    service:
+      enabled: true
+    env:
+      TZ: '${TIMEZONE}'
+
+    extraEnv:
+      CACHE_S3_SERVER_ADDRESS: s3.${DOMAIN_NAME}
+      CACHE_S3_BUCKET_NAME: gitlab-runner
+      CACHE_S3_BUCKET_LOCATION: us-east-1
+      CACHE_SHARED: true
+    extraEnvFrom:
+      CACHE_S3_ACCESS_KEY:
+        secretKeyRef:
+          name: &s3secret gitlab-runner-s3-secret
+          key: accesskey
+      CACHE_S3_SECRET_KEY:
+        secretKeyRef:
+          name: *s3secret
+          key: secretkey
+
+    runners:
+      secret: gitlab-runner-secret
+      cache:
+        secretName: *s3secret
+
+      executor: kubernetes
+      name: Talos
+
+      # language=toml
+      config: |
+        [[runners]]
+        [runners.cache]
+        Type = "s3"
+        Shared = true
+        Path = "in2p3"
+        [runners.cache.s3]
+        ServerAddress = "s3.alexsaphir.com"
+        BucketName = "gitlab-runner"
+        BucketLocation = "us-east-1"
+        AuthenticationType = "access-key"
+
+        [runners.kubernetes]
+        namespace = "{{.Release.Namespace}}"
+        image = "ubuntu:22.04"
+        privileged = false
