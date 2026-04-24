@@ -46,15 +46,11 @@ spec:
           routes:
             - receiver: blackhole
               matchers:
-                - name: alertname
-                  value: InfoInhibitor
-                  matchType: =
+                - alertname = InfoInhibitor
 
             - receiver: pushover
               matchers:
-                - name: severity
-                  value: critical
-                  matchType: =
+                - severity = "critical"
 
         inhibit_rules:
           - equal:
