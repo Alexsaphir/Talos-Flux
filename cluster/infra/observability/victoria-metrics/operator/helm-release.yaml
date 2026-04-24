@@ -42,4 +42,4 @@ spec:
 
     serviceMonitor:
       enabled: true
-      vm: false
+      vm: true
