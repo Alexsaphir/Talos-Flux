@@ -2,7 +2,7 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: fluent-bit
+  name: victoria-logs-single-node
 spec:
   allowCrossNamespaceImport: true
   instanceSelector:
@@ -10,9 +10,9 @@ spec:
       grafana.internal/instance: grafana
 
   datasources:
-    - datasourceName: prometheus
+    - datasourceName: VictoriaMetrics
       inputName: DS_PROMETHEUS
 
   configMapRef:
-    name: fluent-bit-dashboard-fluent-bit
-    key: fluent-bit-fluent-bit.json
+    name: victoria-logs-single-node
+    key: victorialogs-single-node.json

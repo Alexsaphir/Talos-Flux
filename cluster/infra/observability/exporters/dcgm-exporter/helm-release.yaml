@@ -56,9 +56,3 @@ spec:
       limits:
         memory: 1024Mi
         nvidia.com/gpu: 1
-
-    serviceMonitor:
-      interval: 15s
-      honorLabels: true
-      labels:
-        prometheus: kube-prometheus-stack

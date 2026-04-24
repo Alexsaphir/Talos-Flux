@@ -7,18 +7,17 @@ components:
 replacements:
   - path: ../../components/replacements/ks.yaml
 resources:
-  - kube-prometheus-stack/ks.yaml
+  - prometheus-operator-crds/ks.yaml
 
+  - victoria-metrics/ks.yaml
   - victoria-logs/ks.yaml
-  - fluent-bit/ks.yaml
+  - prometheus-adapter/ks.yaml
 
-  - keda/ks.yaml
+  - gatus/ks.yaml
+  - kromgo/ks.yaml
+  - silence-operator/ks.yaml
 
   - grafana-operator/ks.yaml
   - grafana/ks.yaml
 
-  - gatus/ks.yaml
-  - kromgo/ks.yaml
-
   - exporters
-  - silence-operator

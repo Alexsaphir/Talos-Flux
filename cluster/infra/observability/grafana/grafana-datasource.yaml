@@ -2,7 +2,7 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: prometheus
+  name: &name victoria-metrics
 spec:
   instanceSelector:
     matchLabels:
@@ -10,22 +10,25 @@ spec:
 
   uid: 659d3647-1d87-4fca-aaf7-dbf3647a2764
   datasource:
-    type: prometheus
-    name: prometheus
+    type: victoriametrics-metrics-datasource
+    name: *name
     editable: true
     access: proxy
     isDefault: true
-    url: http://prometheus-operated.observability.svc.cluster.local:9090
+    url: http://vmsingle-victoria-metrics-cluster.observability.svc.cluster.local:8428
 
   plugins:
+    - name: victoriametrics-metrics-datasource
+      version: latest
+
     - name: grafana-clock-panel
-      version: 'latest'
+      version: latest
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: alertmanager
+  name: &name alertmanager
 spec:
   instanceSelector:
     matchLabels:
@@ -34,18 +37,18 @@ spec:
   uid: f9c06a73-1fc7-4212-8751-424e2019b944
   datasource:
     type: alertmanager
-    name: alertmanager
+    name: *name
     editable: true
     access: proxy
     jsonData:
       implementation: prometheus
-    url: http://alertmanager-operated.observability.svc.cluster.local:9093
+    url: http://vmalertmanager-victoria-metrics-cluster.observability.svc.cluster.local:9093
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: victoria-logs
+  name: &name victoria-logs
 spec:
   instanceSelector:
     matchLabels:
@@ -54,7 +57,7 @@ spec:
   uid: 1db34a36-8be5-454d-8f10-bce05fc5f931
   datasource:
     type: victoriametrics-logs-datasource
-    name: victoria-logs-server
+    name: *name
     editable: true
     access: proxy
     url: http://victoria-logs-server.observability.svc.cluster.local:9428

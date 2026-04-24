@@ -7,8 +7,10 @@ spec:
   matchers:
     - name: alertname
       value: CephNodeDiskspaceWarning
+
     - name: mountpoint
       value: /etc/nfsmount.conf
+
 ---
 apiVersion: observability.giantswarm.io/v1alpha2
 kind: Silence
@@ -18,9 +20,11 @@ spec:
   matchers:
     - name: alertname
       value: CephNodeDiskspaceWarning
+
     - name: device
       value: /dev/sd.*
       matchType: '=~'
+
 ---
 apiVersion: observability.giantswarm.io/v1alpha2
 kind: Silence

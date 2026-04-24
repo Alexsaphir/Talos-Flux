@@ -13,6 +13,23 @@ spec:
       targetLabel: job
       replacement: *name
 
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: &name jetkvm
+spec:
+  staticConfigs:
+    - targets:
+        - jetkvm-0.hosts.alexsaphir.com
+        - jetkvm-1.hosts.alexsaphir.com
+        - jetkvm-2.hosts.alexsaphir.com
+  metricsPath: /metrics
+  relabelings:
+    - action: replace
+      targetLabel: job
+      replacement: *name
+
 #---
 #apiVersion: monitoring.coreos.com/v1alpha1
 #kind: ScrapeConfig

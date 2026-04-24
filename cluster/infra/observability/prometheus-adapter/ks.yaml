@@ -1,0 +1,17 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: prometheus-adapter
+  namespace: observability
+spec:
+  dependsOn:
+    - name: victoria-metrics-cluster
+
+  prune: true
+  interval: 1h
+  path: cluster/infra/observability/prometheus-adapter
+  sourceRef:
+    kind: GitRepository
+    name: talos-kubernetes
+    namespace: flux-system
