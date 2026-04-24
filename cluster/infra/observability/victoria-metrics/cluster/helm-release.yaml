@@ -108,13 +108,13 @@ spec:
       route:
         enabled: true
         hostnames:
-          - vmalertmanager.${DOMAIN_NAME}
+          - alertmanager.${DOMAIN_NAME}
         parentRefs:
           - name: envoy
             namespace: envoy-system
 
       spec:
-        externalURL: https://vmalertmanager.${DOMAIN_NAME}
+        externalURL: https://alertmanager.${DOMAIN_NAME}
         image:
           repository: quay.io/prometheus/alertmanager
         storage:
@@ -248,14 +248,14 @@ spec:
     vmalert:
       spec:
         extraArgs:
-          external.url: https://vmalert.${DOMAIN_NAME}
+          external.url: https://alert.${DOMAIN_NAME}
         datasource:
           url: http://vmauth-victoria-metrics-cluster.observability.svc.cluster.local:8427
 
       route:
         enabled: true
         hostnames:
-          - vmalert.${DOMAIN_NAME}
+          - alert.${DOMAIN_NAME}
         parentRefs:
           - name: envoy
             namespace: envoy-system
