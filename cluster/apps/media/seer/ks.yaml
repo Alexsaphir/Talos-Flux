@@ -6,15 +6,12 @@ metadata:
   namespace: media
 spec:
   components:
-    - ../../../components/nfs-scaler
+    - ../../../components/zero-scaler
     - ../../../components/volsync
 
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    #- name: plex
-    #- name: sonarr
-    #- name: radarr
 
   postBuild:
     substitute:
