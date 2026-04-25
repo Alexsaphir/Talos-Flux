@@ -2,16 +2,15 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: &name victoria-metrics
+  name: victoria-metrics
 spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
 
-  uid: 659d3647-1d87-4fca-aaf7-dbf3647a2764
   datasource:
     type: victoriametrics-metrics-datasource
-    name: *name
+    name: VictoriaMetrics
     editable: true
     access: proxy
     isDefault: true
@@ -28,16 +27,15 @@ spec:
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: &name alertmanager
+  name: alertmanager
 spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
 
-  uid: f9c06a73-1fc7-4212-8751-424e2019b944
   datasource:
     type: alertmanager
-    name: *name
+    name: AlertManager
     editable: true
     access: proxy
     jsonData:
@@ -48,16 +46,15 @@ spec:
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: &name victoria-logs
+  name: victoria-logs
 spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
 
-  uid: 1db34a36-8be5-454d-8f10-bce05fc5f931
   datasource:
     type: victoriametrics-logs-datasource
-    name: *name
+    name: VictoriaLogs
     editable: true
     access: proxy
     url: http://victoria-logs-server.observability.svc.cluster.local:9428

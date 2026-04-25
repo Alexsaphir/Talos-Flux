@@ -129,19 +129,19 @@ spec:
 
     defaultDashboards:
       grafanaOperator:
-        enabled: true
-        spec:
-          allowCrossNamespaceImport: true
+        enabled: false
 
     defaultDatasources:
       grafanaOperator:
-        enabled: true
-        spec:
-          allowCrossNamespaceImport: true
+        enabled: false
 
     grafana:
       enabled: false
-      forceDeployDatasource: true
+      forceDeployDatasource: false
+
+      plugins:
+        - victoriametrics-metrics-datasource
+        - victoriametrics-logs-datasource
 
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
