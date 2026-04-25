@@ -15,7 +15,7 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: victoria-logs
+  name: &app victoria-logs
 spec:
   interval: 1h
   chartRef:
@@ -23,6 +23,8 @@ spec:
     name: victoria-logs
 
   values:
+    nameOverride: *app
+
     global:
       image:
         registry: quay.io
@@ -31,7 +33,7 @@ spec:
       enabled: true
 
     server:
-      fullnameOverride: victoria-logs
+      fullnameOverride: *app
       retentionPeriod: 90d
 
       persistentVolume:
