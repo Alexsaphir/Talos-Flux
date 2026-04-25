@@ -9,17 +9,14 @@ spec:
       grafana.internal/instance: grafana
 
   datasource:
-    type: victoriametrics-metrics-datasource
-    name: prometheus
+    type: prometheus
+    name: VictoriaMetrics
     editable: true
     access: proxy
     isDefault: true
     url: http://vmsingle-victoria-metrics-cluster.observability.svc.cluster.local:8428
 
   plugins:
-    - name: victoriametrics-metrics-datasource
-      version: latest
-
     - name: grafana-clock-panel
       version: latest
 
