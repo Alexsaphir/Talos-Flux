@@ -10,7 +10,7 @@ spec:
       grafana.internal/instance: grafana
 
   datasources:
-    - datasourceName: VictoriaMetrics
+    - datasourceName: prometheusMetrics
       inputName: DS_PROMETHEUS
 
   configMapRef:

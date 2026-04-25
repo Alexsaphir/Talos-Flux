@@ -10,7 +10,7 @@ spec:
       grafana.internal/instance: grafana
 
   datasources:
-    - datasourceName: VictoriaMetrics
+    - datasourceName: prometheus
       inputName: DS_PROMETHEUS
 
   url: https://grafana.com/api/dashboards/24459/revisions/1/download
@@ -27,7 +27,7 @@ spec:
       grafana.internal/instance: grafana
 
   datasources:
-    - datasourceName: VictoriaMetrics
+    - datasourceName: prometheus
       inputName: DS_PROMETHEUS
 
   url: https://grafana.com/api/dashboards/24457/revisions/1/download
@@ -44,7 +44,7 @@ spec:
       grafana.internal/instance: grafana
 
   datasources:
-    - datasourceName: VictoriaMetrics
+    - datasourceName: prometheus
       inputName: DS_PROMETHEUS
 
   url: https://grafana.com/api/dashboards/24458/revisions/1/download

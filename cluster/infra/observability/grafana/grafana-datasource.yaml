@@ -10,7 +10,7 @@ spec:
 
   datasource:
     type: victoriametrics-metrics-datasource
-    name: VictoriaMetrics
+    name: prometheus
     editable: true
     access: proxy
     isDefault: true
