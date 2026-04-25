@@ -40,3 +40,18 @@ spec:
     spegel:
       containerdSock: /run/containerd/containerd.sock
       containerdRegistryConfigPath: /etc/cri/conf.d/hosts
+
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              group: grafana.integreatly.org
+              version: v1beta1
+              kind: GrafanaDashboard
+              name: spegel
+            patch: |
+              - op: add
+                path: /spec/datasources
+                value:
+                  - datasourceName: VictoriaMetrics
+                    inputName: DS_PROMETHEUS
