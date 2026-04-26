@@ -362,3 +362,18 @@ kube-state-metrics:
                   webhook_path:
                     - status
                     - webhookPath
+  vmScrape:
+    spec:
+      endpoints:
+        - port: http
+          honorLabels: true
+          metricRelabelConfigs:
+            - action: labeldrop
+              regex: (uid|container_id|image_id)
+          relabelConfigs:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - '__meta_kubernetes_pod_node_name'
+              targetLabel: kubernetes_node

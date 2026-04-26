@@ -115,6 +115,8 @@ spec:
 
       spec:
         externalURL: https://alertmanager.${DOMAIN_NAME}
+        rollingUpdateStrategy: RollingUpdate
+        useStrictSecurity: true
         image:
           repository: quay.io/prometheus/alertmanager
         storage:
@@ -128,8 +130,15 @@ spec:
       useManagedConfig: true
 
     defaultDashboards:
+      enabled: true
       grafanaOperator:
-        enabled: false
+        enabled: true
+        spec:
+          allowCrossNamespaceImport: true
+          instanceSelector:
+            matchLabels:
+              dashboards: null
+              grafana.internal/instance: grafana
 
     defaultDatasources:
       grafanaOperator:
@@ -137,7 +146,7 @@ spec:
 
     grafana:
       enabled: false
-      forceDeployDatasource: false
+      forceDeployDatasource: true
 
       plugins:
         - victoriametrics-metrics-datasource
@@ -234,19 +243,58 @@ spec:
 
     prometheus-node-exporter:
       fullnameOverride: node-exporter
+      hostNetwork: false
+      vmScrape:
+        spec:
+          endpoints:
+            - port: metrics
+              metricRelabelConfigs:
+                - action: drop
+                  source_labels:
+                    - mountpoint
+                  regex: '/var/lib/kubelet/pods.+'
+              relabelConfigs:
+                - action: replace
+                  regex: (.*)
+                  replacement: $1
+                  sourceLabels:
+                    - '__meta_kubernetes_pod_node_name'
+                  targetLabel: kubernetes_node
+
+
+      resources:
+        requests:
+          cpu: 23m
+          memory: 64M
+        limits:
+          memory: 64M
+
+    coreDns:
+      enabled: true
 
     victoria-metrics-operator:
       enabled: false
 
     vmagent:
       spec:
+        useStrictSecurity: true
+        # scrapeInterval: 30s
         extraArgs:
+          enableTCP6: 'true'
+
           promscrape.dropOriginalLabels: 'true'
           promscrape.maxScrapeSize: 50MiB
           promscrape.streamParse: 'true'
 
+        resources:
+          requests:
+            cpu: 150m
+          limits:
+            memory: 1Gi
+
     vmalert:
       spec:
+        useStrictSecurity: true
         extraArgs:
           external.url: https://alert.${DOMAIN_NAME}
         datasource:
@@ -278,6 +326,7 @@ spec:
               url_prefix: http://victoria-logs.observability.svc.cluster.local:9428
 
     vmsingle:
+      useStrictSecurity: true
       route:
         enabled: true
         hostnames:
@@ -288,6 +337,9 @@ spec:
 
       spec:
         retentionPeriod: 90d
+        useStrictSecurity: true
+        extraArgs:
+          enableTCP6: 'true'
         storage:
           accessModes:
             - ReadWriteOnce
@@ -295,6 +347,11 @@ spec:
             requests:
               storage: 50Gi
           storageClassName: ceph-block
+        resources:
+          requests:
+            cpu: 100m
+          limits:
+            memory: 2Gi
 
     additionalVictoriaMetricsMap:
       dockerhub-rules:

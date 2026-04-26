@@ -6,6 +6,5 @@ resources:
   - external-secret.yaml
 
   - grafana.yaml
-  - grafana-datasource.yaml
 
   - service-monitor.yaml
