@@ -4,4 +4,5 @@ kind: Kustomization
 resources:
   - external-secret.yaml
   - helm-release.yaml
+  - grafana-folder.yaml
   - grafana-dashboard.yaml

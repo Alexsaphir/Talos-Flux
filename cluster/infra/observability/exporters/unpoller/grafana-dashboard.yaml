@@ -9,6 +9,7 @@ spec:
     matchLabels:
       grafana.internal/instance: grafana
 
+  folderRef: unifi
   datasources:
     - datasourceName: VictoriaMetrics
       inputName: DS_PROMETHEUS
@@ -26,6 +27,7 @@ spec:
     matchLabels:
       grafana.internal/instance: grafana
 
+  folderRef: unifi
   datasources:
     - datasourceName: VictoriaMetrics
       inputName: DS_PROMETHEUS
@@ -43,6 +45,7 @@ spec:
     matchLabels:
       grafana.internal/instance: grafana
 
+  folderRef: unifi
   datasources:
     - datasourceName: VictoriaMetrics
       inputName: DS_PROMETHEUS
@@ -60,6 +63,7 @@ spec:
     matchLabels:
       grafana.internal/instance: grafana
 
+  folderRef: unifi
   datasources:
     - datasourceName: VictoriaMetrics
       inputName: DS_PROMETHEUS

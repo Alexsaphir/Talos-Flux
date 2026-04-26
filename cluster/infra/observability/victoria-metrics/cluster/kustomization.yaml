@@ -5,6 +5,7 @@ resources:
   - external-secret.yaml
   - helm-release.yaml
   - scrape-config.yaml
+  - grafana-folder.yaml
   - grafana-datasource.yaml
 
 configMapGenerator:
