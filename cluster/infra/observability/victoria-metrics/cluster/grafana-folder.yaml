@@ -2,12 +2,13 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaFolder
 metadata:
-  name: observability-kubernetes
+  name: &name observability-kubernetes
 spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
 
-  parentFolderRef: observability
+  parentFolderUID: dfk427h43u3ggc
 
+  uid: *name
   title: kubernetes

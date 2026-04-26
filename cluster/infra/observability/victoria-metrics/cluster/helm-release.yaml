@@ -135,7 +135,7 @@ spec:
         enabled: true
         spec:
           allowCrossNamespaceImport: true
-          folderRef: kubernetes
+          folderRef: observability-kubernetes
           instanceSelector:
             matchLabels:
               dashboards: null

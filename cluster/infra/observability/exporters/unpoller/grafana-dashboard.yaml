@@ -27,7 +27,7 @@ spec:
     matchLabels:
       grafana.internal/instance: grafana
 
-  folderRef: unifi
+  folderRef: observability-unifi
   datasources:
     - datasourceName: VictoriaMetrics
       inputName: DS_PROMETHEUS
