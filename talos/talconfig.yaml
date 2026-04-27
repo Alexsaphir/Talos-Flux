@@ -181,7 +181,9 @@ controlPlane:
         udev:
           rules:
             # set owner and group on the zigbee USB device
-            - SUBSYSTEMS=="usb", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", OWNER="1022", GROUP="1022"
+            #- SUBSYSTEMS=="usb", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", OWNER="1022", GROUP="1022"
+            # https://github.com/haraldkoch/kochhaus-home/commit/ed5b578ae9a41834c82fbc940ec03be13469ac89
+            - KERNEL=="ttyACM*", MODE="0666"
 
     - "@./patches/nodes/sysfs.yaml"
 
