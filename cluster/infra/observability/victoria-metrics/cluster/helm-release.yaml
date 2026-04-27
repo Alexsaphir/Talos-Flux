@@ -95,7 +95,7 @@ spec:
 
 
                 url_title: View in Alertmanager
-                send_resolved: true
+                send_resolved: false
                 sound: gamelan
 
                 token:
