@@ -30,3 +30,16 @@ spec:
 
     - name: device
       value: shfs
+
+---
+apiVersion: observability.giantswarm.io/v1alpha2
+kind: Silence
+metadata:
+  name: nas-ceph-diskspace-warning
+spec:
+  matchers:
+    - name: alertname
+      value: CephNodeDiskspaceWarning
+
+    - name: instance
+      value: nas.hosts.alexsaphir.com:9100
