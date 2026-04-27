@@ -297,7 +297,8 @@ spec:
       spec:
         useStrictSecurity: true
         extraArgs:
-          external.url: https://alert.${DOMAIN_NAME}
+          external.url: https://grafana.${DOMAIN_NAME}
+          external.alert.source: 'explore?orgId=1&left={"datasource":"VictoriaMetrics","queries":[{"expr":{{ "{{" }}.Expr|jsonEscape|queryEscape{{ "}}" }},"refId":"A"}],"range":{"from":"{{ "{{" }} .ActiveAt.UnixMilli {{ "}}" }}","to":"now"}}'
         datasource:
           url: http://vmauth-victoria-metrics-cluster.observability.svc.cluster.local:8427
 
