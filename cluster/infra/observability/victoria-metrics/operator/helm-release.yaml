@@ -31,6 +31,9 @@ spec:
 
     crds:
       enabled: true
+      upgrade:
+        enabled: true
+        forceConflicts: true
 
     admissionWebhooks:
       enabled: true
