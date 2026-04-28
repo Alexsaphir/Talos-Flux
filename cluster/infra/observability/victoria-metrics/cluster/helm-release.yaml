@@ -119,6 +119,11 @@ spec:
         useStrictSecurity: true
         image:
           repository: quay.io/prometheus/alertmanager
+        securityContext:
+          runAsGroup: 2000
+          runAsNonRoot: true
+          runAsUser: 1000
+          fsGroup: 2000
         storage:
           volumeClaimTemplate:
             spec:
