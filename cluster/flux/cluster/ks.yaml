@@ -15,7 +15,6 @@ spec:
   interval: 1h
   path: cluster/apps
   prune: true
-  deletionPolicy: WaitForTermination
 
   sourceRef:
     kind: GitRepository
@@ -32,7 +31,6 @@ spec:
         spec:
           decryption:
             provider: sops
-          deletionPolicy: WaitForTermination
 
           interval: 1h
           timeout: 5m
@@ -97,7 +95,6 @@ spec:
   interval: 1h
   path: cluster/infra
   prune: true
-  deletionPolicy: WaitForTermination
 
   sourceRef:
     kind: GitRepository
@@ -114,7 +111,6 @@ spec:
         spec:
           decryption:
             provider: sops
-          deletionPolicy: WaitForTermination
 
           interval: 1h
           timeout: 5m
