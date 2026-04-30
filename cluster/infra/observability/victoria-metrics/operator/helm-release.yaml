@@ -25,23 +25,22 @@ spec:
   values:
     fullnameOverride: victoria-metrics
 
-    global:
-      image:
-        registry: quay.io
+    image:
+      registry: quay.io
 
     crds:
-      plain: true
+      enabled: true
       upgrade:
         enabled: true
         forceConflicts: true
 
         busybox:
           image:
-            repository: quay/busybox
+            repository: quay.io/quay/busybox
 
     operator:
       enable_converter_ownership: true
 
     serviceMonitor:
       enabled: true
-      vm: true
+      vm: false
