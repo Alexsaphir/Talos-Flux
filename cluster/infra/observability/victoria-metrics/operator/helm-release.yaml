@@ -35,6 +35,10 @@ spec:
         enabled: true
         forceConflicts: true
 
+        busybox:
+          image:
+            repository: quay/busybox
+
     operator:
       enable_converter_ownership: true
 
