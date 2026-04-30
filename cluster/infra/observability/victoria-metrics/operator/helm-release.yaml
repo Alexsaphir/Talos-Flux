@@ -30,15 +30,10 @@ spec:
         registry: quay.io
 
     crds:
-      enabled: true
+      plain: true
       upgrade:
         enabled: true
         forceConflicts: true
-
-    admissionWebhooks:
-      enabled: true
-      certManager:
-        enabled: true
 
     operator:
       enable_converter_ownership: true

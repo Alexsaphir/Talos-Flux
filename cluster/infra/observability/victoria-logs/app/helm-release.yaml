@@ -31,6 +31,14 @@ spec:
 
     dashboards:
       enabled: true
+      grafanaOperator:
+        enabled: true
+        spec:
+          instanceSelector:
+            matchLabels:
+              dashboards: null
+              grafana.internal/instance: grafana
+
 
     server:
       fullnameOverride: *app
