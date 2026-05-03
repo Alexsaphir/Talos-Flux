@@ -36,6 +36,7 @@ access_control:
       policy: bypass
 
     - domain:
+        - 'schemas.${DOMAIN_NAME}'
         - 'minio.${DOMAIN_NAME}'
         - 's3.${DOMAIN_NAME}'
         - 'gitlab.${DOMAIN_NAME}'
