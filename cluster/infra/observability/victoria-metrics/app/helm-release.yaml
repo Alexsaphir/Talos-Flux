@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: victoria-metrics-cluster
+  name: victoria-metrics
 spec:
   interval: 1h
   layerSelector:
@@ -15,20 +15,19 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: victoria-metrics-cluster
+  name: victoria-metrics
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: victoria-metrics-cluster
-
-  valuesFrom:
-    - kind: ConfigMap
-      name: flux-metrics-configmap
-      valuesKey: flux-metrics.yaml
+    name: victoria-metrics
 
   values:
-    fullnameOverride: victoria-metrics-cluster
+    fullnameOverride: victoria-metrics
+
+    global:
+      image:
+        registry: quay.io
 
     alertmanager:
       config:
@@ -140,7 +139,6 @@ spec:
         enabled: true
         spec:
           allowCrossNamespaceImport: true
-          folderRef: observability-kubernetes
           instanceSelector:
             matchLabels:
               dashboards: null
@@ -148,7 +146,13 @@ spec:
 
     defaultDatasources:
       grafanaOperator:
-        enabled: false
+        enabled: true
+        spec:
+          allowCrossNamespaceImport: true
+          instanceSelector:
+            matchLabels:
+              dashboards: null
+              grafana.internal/instance: grafana
 
     grafana:
       enabled: false
@@ -159,7 +163,7 @@ spec:
         - victoriametrics-logs-datasource
 
     kube-state-metrics:
-      fullnameOverride: kube-state-metrics
+      enabled: false
 
     kubeControllerManager:
       vmScrape:
@@ -193,46 +197,24 @@ spec:
                 insecureSkipVerify: true
 
     prometheus-node-exporter:
-      fullnameOverride: node-exporter
-      hostNetwork: false
-      vmScrape:
-        spec:
-          endpoints:
-            - port: metrics
-              metricRelabelConfigs:
-                - action: drop
-                  source_labels:
-                    - mountpoint
-                  regex: '/var/lib/kubelet/pods.+'
-              relabelConfigs:
-                - action: replace
-                  regex: (.*)
-                  replacement: $1
-                  sourceLabels:
-                    - '__meta_kubernetes_pod_node_name'
-                  targetLabel: kubernetes_node
-
-
-      resources:
-        requests:
-          cpu: 23m
-          memory: 64M
-        limits:
-          memory: 64M
-
-    coreDns:
-      enabled: true
+      enabled: false
 
     victoria-metrics-operator:
-      enabled: false
+      crds:
+        cleanup:
+          enabled: false
+
+      admissionWebhooks:
+        policy: Ignore
+
+      operator:
+        enable_converter_ownership: true
 
     vmagent:
       spec:
         useStrictSecurity: true
         # scrapeInterval: 30s
         extraArgs:
-          enableTCP6: 'true'
-
           promscrape.dropOriginalLabels: 'true'
           promscrape.maxScrapeSize: 50MiB
           promscrape.streamParse: 'true'
@@ -250,7 +232,7 @@ spec:
           external.url: https://grafana.${DOMAIN_NAME}
           external.alert.source: 'explore?orgId=1&left={"datasource":"VictoriaMetrics","queries":[{"expr":{{ "{{" }}.Expr|jsonEscape|queryEscape{{ "}}" }},"refId":"A"}],"range":{"from":"{{ "{{" }} .ActiveAt.UnixMilli {{ "}}" }}","to":"now"}}'
         datasource:
-          url: http://vmauth-victoria-metrics-cluster.observability.svc.cluster.local:8427
+          url: http://vmauth-victoria-metrics.observability.svc.cluster.local:8427
 
       route:
         enabled: true
@@ -271,7 +253,7 @@ spec:
             - src_paths:
                 - /api/v1/query.*
                 - /api/v1/label/.*
-              url_prefix: http://vmsingle-victoria-metrics-cluster.observability.svc.cluster.local:8428
+              url_prefix: http://vmsingle-victoria-metrics.observability.svc.cluster.local:8428
 
             - src_paths:
                 - /select/logsql/.*
@@ -290,8 +272,6 @@ spec:
       spec:
         retentionPeriod: 90d
         useStrictSecurity: true
-        extraArgs:
-          enableTCP6: 'true'
         storage:
           accessModes:
             - ReadWriteOnce

@@ -23,7 +23,7 @@ spec:
     name: silence-operator
 
   values:
-    alertmanagerAddress: http://vmalertmanager-victoria-metrics-cluster.observability.svc.cluster.local:9093
+    alertmanagerAddress: http://vmalertmanager-victoria-metrics.observability.svc.cluster.local:9093
 
     networkPolicy:
       enabled: false

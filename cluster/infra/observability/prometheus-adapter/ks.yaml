@@ -6,7 +6,7 @@ metadata:
   namespace: observability
 spec:
   dependsOn:
-    - name: victoria-metrics-cluster
+    - name: victoria-metrics
 
   prune: true
   interval: 1h
