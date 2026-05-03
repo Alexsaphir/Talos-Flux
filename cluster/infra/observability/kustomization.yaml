@@ -8,6 +8,8 @@ replacements:
   - path: ../../components/replacements/ks.yaml
 resources:
   - prometheus-operator-crds/ks.yaml
+  - kube-state-metrics/ks.yaml
+  - node-exporter/ks.yaml
 
   # - victoria-metrics/ks.yaml
   - victoria-logs/ks.yaml
