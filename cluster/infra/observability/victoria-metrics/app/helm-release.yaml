@@ -116,6 +116,7 @@ spec:
         externalURL: https://alertmanager.${DOMAIN_NAME}
         rollingUpdateStrategy: RollingUpdate
         useStrictSecurity: true
+        disableNamespaceMatcher: true
         image:
           repository: quay.io/prometheus/alertmanager
         securityContext:
