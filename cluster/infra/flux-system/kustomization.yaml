@@ -10,4 +10,3 @@ resources:
   - flux-operator/ks.yaml
   - flux-instance/ks.yaml
   - tofu-controller/ks.yaml
-  - crd-schema-publisher/ks.yaml
