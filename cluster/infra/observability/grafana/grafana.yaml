@@ -61,7 +61,7 @@ spec:
       news_feed_enabled: 'false'
     plugins:
       plugin_admin_enabled: 'false'
-      disable_plugins: "grafana-lokiexplore-app,grafana-metricsdrilldown-app,grafana-pyroscope-app,grafana-exploretraces-app,loki,alertlist,alertmanager"
+      disable_plugins: 'grafana-lokiexplore-app,grafana-pyroscope-app,grafana-exploretraces-app,loki'
     security:
       angular_support_enabled: 'true'
 
