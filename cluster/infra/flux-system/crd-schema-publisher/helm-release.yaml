@@ -90,7 +90,7 @@ spec:
                     output stdout
                     format json
                 }
-                root * /srv
+                root * /srv/current
                 file_server browse
             }
 
