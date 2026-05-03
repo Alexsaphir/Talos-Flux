@@ -215,6 +215,8 @@ spec:
         useStrictSecurity: true
         # scrapeInterval: 30s
         extraArgs:
+          enableTCP6: 'true'
+
           promscrape.dropOriginalLabels: 'true'
           promscrape.maxScrapeSize: 50MiB
           promscrape.streamParse: 'true'
@@ -272,6 +274,10 @@ spec:
       spec:
         retentionPeriod: 90d
         useStrictSecurity: true
+
+        extraArgs:
+          enableTCP6: 'true'
+
         storage:
           accessModes:
             - ReadWriteOnce
