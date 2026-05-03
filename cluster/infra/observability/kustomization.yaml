@@ -9,7 +9,7 @@ replacements:
 resources:
   - prometheus-operator-crds/ks.yaml
 
-  - victoria-metrics/ks.yaml
+  # - victoria-metrics/ks.yaml
   - victoria-logs/ks.yaml
   - prometheus-adapter/ks.yaml
 
