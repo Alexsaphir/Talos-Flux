@@ -23,7 +23,7 @@ spec:
     name: tuppr
 
   values:
-    replicaCount: 1
+    replicaCount: 2
 
     monitoring:
       serviceMonitor:
