@@ -90,14 +90,14 @@ spec:
 
     rawResources:
       no-compression:
-        apiVersion: gateway.envoyproxy.io/v1alpha1
-        kind: BackendTrafficPolicy
-        spec:
+        manifest:
+          apiVersion: gateway.envoyproxy.io/v1alpha1
+          kind: BackendTrafficPolicy
           spec:
             targetRefs:
               - group: gateway.networking.k8s.io
                 kind: HTTPRoute
-                name: "{{ .Release.Name }}-s3"
+                name: '{{ .Release.Name }}-s3'
 
     route:
       app:
