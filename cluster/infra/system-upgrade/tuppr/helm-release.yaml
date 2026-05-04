@@ -28,3 +28,19 @@ spec:
     monitoring:
       serviceMonitor:
         enabled: true
+
+      prometheusRule:
+        enabled: true
+
+
+      dashboards:
+        monitoring:
+          dashboards:
+            grafanaOperator:
+              matchLabels:
+        enabled: true
+        grafanaOperator:
+          enabled: true
+          allowCrossNamespaceImport: true
+          matchLabels:
+            grafana.internal/instance: grafana
