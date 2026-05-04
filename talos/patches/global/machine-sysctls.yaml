@@ -25,6 +25,9 @@ machine:
     net.ipv6.conf.all.accept_ra: 2
     net.ipv6.conf.all.forwarding: 1
 
+    # Painful: https://github.com/siderolabs/talos/issues/5632
+    net.ipv6.conf.bond0.accept_ra: 2
+
     sunrpc.tcp_slot_table_entries: 128     # 10Gb/s | NFS
     sunrpc.tcp_max_slot_table_entries: 128 # 10Gb/s | NFS
 
