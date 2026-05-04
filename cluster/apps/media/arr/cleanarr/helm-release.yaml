@@ -42,8 +42,6 @@ spec:
                   name: '{{ .Release.Name }}-secret'
 
     defaultPodOptions:
-      automountServiceAccountToken: false
-      enableServiceLinks: false
       securityContext:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch

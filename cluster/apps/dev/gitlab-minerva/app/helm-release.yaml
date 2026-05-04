@@ -46,8 +46,6 @@ spec:
 
 
     defaultPodOptions:
-      automountServiceAccountToken: false
-      enableServiceLinks: false
       securityContext:
         runAsNonRoot: false
         fsGroupChangePolicy: OnRootMismatch

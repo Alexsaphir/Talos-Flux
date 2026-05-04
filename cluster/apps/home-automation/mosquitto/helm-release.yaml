@@ -66,8 +66,6 @@ spec:
               size: 5Gi
 
     defaultPodOptions:
-      automountServiceAccountToken: false
-      enableServiceLinks: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

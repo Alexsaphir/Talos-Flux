@@ -129,8 +129,6 @@ spec:
               SOCIAL_PROVIDERS: allauth.socialaccount.providers.openid_connect
 
     defaultPodOptions:
-      automountServiceAccountToken: false
-      enableServiceLinks: false
       securityContext:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }

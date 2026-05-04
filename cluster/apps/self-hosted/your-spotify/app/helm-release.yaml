@@ -24,8 +24,6 @@ spec:
 
   values:
     defaultPodOptions:
-      automountServiceAccountToken: false
-      enableServiceLinks: false
       securityContext:
         seccompProfile: { type: RuntimeDefault }
 
