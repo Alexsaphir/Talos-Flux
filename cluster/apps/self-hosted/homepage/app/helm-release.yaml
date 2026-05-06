@@ -48,8 +48,14 @@ spec:
               limits:
                 memory: 2G
 
-        serviceAccount:
-          identifier: homepage
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false # does funky uid stuff
+              capabilities: { drop: [ 'ALL' ] }
+
+    defaultPodOptions:
+      automountServiceAccountToken: true
+      hostUsers: false
 
     service:
       main:
@@ -82,8 +88,6 @@ spec:
           - subPath: widgets.yaml
             path: /app/config/widgets.yaml
 
-    serviceAccount:
-      homepage: { }
     rbac:
       bindings:
         homepage:
