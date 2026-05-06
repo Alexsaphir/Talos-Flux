@@ -9,6 +9,7 @@ resources:
   - immich
   # - kguardian
   - planka
+  - radar
   - tandoor-recipes
   - vaultwarden
   - your-spotify
