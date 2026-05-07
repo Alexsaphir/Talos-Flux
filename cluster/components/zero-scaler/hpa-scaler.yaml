@@ -29,7 +29,7 @@ spec:
       policies:
         - type: Pods
           value: 1
-          periodSeconds: 30
+          periodSeconds: 15
       selectPolicy: Max
       stabilizationWindowSeconds: 0
 
