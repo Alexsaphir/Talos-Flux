@@ -38,5 +38,5 @@ packages:
 
   # Infrastructure
   - name: opentofu/opentofu@v1.11.6
-  - name: gruntwork-io/terragrunt@v1.0.3
+  - name: gruntwork-io/terragrunt@v1.0.4
   - name: hashicorp/terraform@v1.15.2
