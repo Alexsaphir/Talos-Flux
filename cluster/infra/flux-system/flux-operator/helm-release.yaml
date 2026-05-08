@@ -32,6 +32,13 @@ spec:
       create: true
 
     web:
+      httpRoute:
+        enabled: true
+        hostnames: [ 'flux.${DOMAIN_NAME}' ]
+        parentRefs:
+          - name: envoy
+            namespace: envoy-system
+
       networkPolicy:
         create: false
 
