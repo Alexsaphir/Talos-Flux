@@ -24,7 +24,7 @@ spec:
     name: cloudflare-dns
 
   values:
-    logLevel: debug
+    logLevel: info
 
     fullnameOverride: *app
     provider:
