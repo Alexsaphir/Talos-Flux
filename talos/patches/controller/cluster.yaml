@@ -31,6 +31,9 @@ cluster:
   etcd:
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
+      # Prevent database bloat with auto-compaction
+      auto-compaction-mode: periodic
+      auto-compaction-retention: "1h"
     advertisedSubnets:
       - ${nodeSubnetV4}
       - ${nodeSubnetV6}
