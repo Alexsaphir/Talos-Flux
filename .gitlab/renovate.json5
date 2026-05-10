@@ -17,6 +17,7 @@
     'local>Homelab/Talos-Flux//.gitlab/renovate/overrides.json5',
     'local>Homelab/Talos-Flux//.gitlab/renovate/packageRules.json5',
     'local>Homelab/Talos-Flux//.gitlab/renovate/semanticCommits.json5',
+    'local>Homelab/Talos-Flux//.gitlab/renovate/talosFactory.json5',
     'security:openssf-scorecard',
     'github>aquaproj/aqua-renovate-config#2.12.0',
   ],
