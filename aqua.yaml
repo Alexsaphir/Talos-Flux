@@ -4,7 +4,7 @@
 # https://aquaproj.github.io/
 registries:
   - type: standard
-    ref: v4.511.1 # renovate: depName=aquaproj/aqua-registry
+    ref: v4.512.0 # renovate: depName=aquaproj/aqua-registry
 packages:
   # Utils
   - name: direnv/direnv@v2.37.1
@@ -21,7 +21,7 @@ packages:
 
   # Talos
   - name: siderolabs/talos@v1.13.2
-  - name: budimanjojo/talhelper@v3.1.9
+  - name: budimanjojo/talhelper@v3.1.10
 
   # Cluster
   - name: fluxcd/flux2@v2.8.7
@@ -32,11 +32,11 @@ packages:
   - name: kubernetes-sigs/krew@v0.5.0
   - name: brumhard/krewfile@v0.7.0
 
-  - name: helm/helm@v4.1.4
+  - name: helm/helm@v4.2.0
   - name: kubernetes-sigs/kustomize@kustomize/v5.8.1
   - name: helmfile/helmfile@v1.5.1
 
   # Infrastructure
-  - name: opentofu/opentofu@v1.11.7
+  - name: opentofu/opentofu@v1.12.0
   - name: gruntwork-io/terragrunt@v1.0.4
   - name: hashicorp/terraform@v1.15.3
