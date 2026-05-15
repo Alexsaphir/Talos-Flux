@@ -8,3 +8,4 @@ replacements:
   - path: ../../components/replacements/ks.yaml
 resources:
   - phanpy/ks.yaml
+  - gotosocial/ks.yaml

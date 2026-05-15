@@ -22,6 +22,7 @@ access_control:
     - domain:
         - 'auth.${DOMAIN_NAME}'
         - 'homer.${DOMAIN_NAME}'
+        - 'gts.${DOMAIN_NAME}'
         - 'vaultwarden.${DOMAIN_NAME}'
       policy: bypass
     - domain:
