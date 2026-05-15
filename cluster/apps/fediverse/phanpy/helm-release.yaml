@@ -1,0 +1,57 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: phanpy
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 5.0.0
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app phanpy
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: *app
+
+  values:
+    controllers:
+      *app :
+        containers:
+          main:
+            image:
+              repository: ghcr.io/jjgadgets/phanpy
+              tag: 2026.01.31.8b98d5a@sha256:dc40489af8056ff6aa3c390913f06346504a1f2a91297d503f4310a3b4bd43ee
+
+            env:
+              PHANPY_WEBSITE: &hostname '{{ .Release.Name }}.${DOMAIN_NAME}'
+              PHANPY_DEFAULT_INSTANCE: '${DOMAIN_NAME}'
+
+            resources:
+              requests:
+                cpu: 10m
+              # limits:
+              #   memory: 512Mi
+
+    service:
+      main:
+        controller: phanpy
+        ports:
+          http:
+            port: 80
+            targetPort: 8080
+
+    route:
+      app:
+        hostnames: [ *hostname ]
+        parentRefs:
+          - name: envoy
+            namespace: envoy-system
