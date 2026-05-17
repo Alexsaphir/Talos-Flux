@@ -77,6 +77,10 @@ spec:
                     name: 'database-{{ .Release.Name }}'
                     key: POSTGRES_URL
 
+              OTEL_EXPORTER_PROMETHEUS_HOST: 0.0.0.0
+              OTEL_METRICS_PRODUCERS: prometheus
+              OTEL_METRICS_EXPORTER: prometheus
+
             resources:
               requests:
                 cpu: 10m
