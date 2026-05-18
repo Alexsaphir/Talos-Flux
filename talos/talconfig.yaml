@@ -78,6 +78,10 @@ nodes:
           - security=none           # Less security, faster puter
           - talos.auditd.disabled=1 # Less security, faster puter
 
+          # mitigate dirty frag, CVE-2026-43284 & CVE-2026-43500
+          # https://github.com/V4bel/dirtyfrag
+          - module_blacklist=esp4,esp6,rxrpc
+
     patches:
       - "@./patches/nodes/nvidia.yaml"
 
