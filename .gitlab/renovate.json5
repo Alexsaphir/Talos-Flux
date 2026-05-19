@@ -19,7 +19,7 @@
     'local>Homelab/Talos-Flux//.gitlab/renovate/semanticCommits.json5',
     'local>Homelab/Talos-Flux//.gitlab/renovate/talosFactory.json5',
     'security:openssf-scorecard',
-    'github>aquaproj/aqua-renovate-config#2.12.0',
+    'github>aquaproj/aqua-renovate-config#2.12.1',
   ],
   dependencyDashboard: true,
   dependencyDashboardTitle: 'Renovate Dashboard 🤖',
