@@ -199,9 +199,6 @@ gitlab_pages['log_format'] = "json"
 gitlab_pages['log_verbose'] = false
 gitlab_pages['enable_disk'] = false
 
-# GitLab Mattermost
-mattermost['enable'] = false
-
 
 ################################################################################
 ## GitLab CI
