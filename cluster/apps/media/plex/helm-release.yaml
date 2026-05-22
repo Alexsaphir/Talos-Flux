@@ -46,7 +46,7 @@ spec:
 
             env:
               TIMEZONE: '${TIMEZONE}'
-              PLEX_ADVERTISE_URL: '{{ printf "https://%s:443" (first .Values.route.app.hostnames) }}'
+              PLEX_ADVERTISE_URL: '{{ printf "https://%s:443" (first .Values.route.app.hostnames) }},http://plex.{{ .Release.Namespace }}.svc.cluster.local:32400'
 
             probes:
               liveness: &probes
