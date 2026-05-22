@@ -11,7 +11,7 @@ releases:
     namespace: kube-system
     atomic: true
     chart: oci://ghcr.io/spegel-org/helm-charts/spegel
-    version: 0.7.0
+    version: 0.7.1
     values: [ '../templates/values.yaml.gotmpl' ]
 
   - name: cert-manager
