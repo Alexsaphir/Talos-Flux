@@ -90,5 +90,5 @@ releases:
     namespace: observability
     atomic: true
     chart: oci://ghcr.io/grafana/helm-charts/grafana-operator
-    version: 5.22.2
+    version: 5.23.0
     values: [ '../templates/values.yaml.gotmpl' ]
