@@ -6,7 +6,7 @@ metadata:
 spec:
   enabled: true
   trigger:
-    schedule: 0 3/24 * * *
+    schedule: 45 4,16 * * *
   moverVolumes:
     - mountPath: repository
       volumeSource:
