@@ -1,0 +1,42 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: kaniop
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.5.7
+  url: oci://ghcr.io/pando85/helm-charts/kaniop
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app kaniop
+spec:
+  interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: *app
+
+  values:
+    deploymentAnnotations:
+      reloader.stakater.com/auto: 'true'
+
+    env:
+      - name: LISTEN_ADDRESS
+        value: '::'
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+
+      prometheusRules:
+        enabled: true
+
+      dashboards:
+        enabled: true

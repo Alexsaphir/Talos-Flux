@@ -7,6 +7,7 @@ resources:
   - homepage
   - homer
   - immich
+  - kanidm
   # - kguardian
   - planka
   - radar
