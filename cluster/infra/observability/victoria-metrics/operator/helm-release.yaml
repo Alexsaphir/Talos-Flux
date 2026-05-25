@@ -1,0 +1,52 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: victoria-metrics-operator
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.63.1
+  url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app victoria-metrics-operator
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: *app
+
+  values:
+    fullnameOverride: *app
+
+    global:
+      image:
+        registry: quay.io
+
+    crds:
+      enabled: false
+      plain: false
+
+    admissionWebhooks:
+      enabled: true
+      certManager:
+        enabled: true
+
+    env:
+      - name: 'VM_VMALERTMANAGER_ALERTMANAGERDEFAULTBASEIMAGE'
+        value: 'quay.io/prometheus/alertmanager'
+
+    image:
+      registry: 'quay.io'
+
+    operator:
+      enable_converter_ownership: true # Required to allow VM to remove VM rules it imports if a prometheus rule is deleted
+
+    serviceMonitor:
+      enabled: true # use prometheus-operator ServiceMonitor CRD

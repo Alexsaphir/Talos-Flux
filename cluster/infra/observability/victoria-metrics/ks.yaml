@@ -2,23 +2,56 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app victoria-metrics
-  namespace: &namespace observability
+  name: victoria-metrics-crds
+  namespace: observability
 spec:
-  dependsOn:
-    - name: prometheus-operator-crds
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-
-  healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2
-      kind: HelmRelease
-      name: *app
-      namespace: *namespace
+  wait: true
 
   prune: true
   interval: 1h
   path: cluster/infra/observability/victoria-metrics/app
+  sourceRef:
+    kind: GitRepository
+    name: talos-kubernetes
+    namespace: flux-system
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: victoria-metrics-operator
+  namespace: observability
+spec:
+  dependsOn:
+    - name: prometheus-operator-crds
+    - name: victoria-metrics-crds
+
+  wait: true
+
+  prune: true
+  interval: 1h
+  path: cluster/infra/observability/victoria-metrics/operator
+  sourceRef:
+    kind: GitRepository
+    name: talos-kubernetes
+    namespace: flux-system
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: victoria-metrics
+  namespace: observability
+spec:
+  dependsOn:
+    - name: victoria-metrics-operator
+    - name: victoria-logs-collector
+
+  wait: true
+
+  prune: true
+  interval: 1h
+  path: cluster/infra/observability/victoria-metrics/cluster
   sourceRef:
     kind: GitRepository
     name: talos-kubernetes

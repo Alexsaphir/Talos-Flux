@@ -1,0 +1,350 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: victoria-metrics
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.80.0
+  url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-k8s-stack
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app victoria-metrics
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: *app
+
+  values:
+    fullnameOverride: *app
+
+    global:
+      image:
+        registry: quay.io
+
+    victoria-metrics-operator:
+      enabled: false
+
+
+    defaultDashboards:
+      enabled: true
+      grafanaOperator:
+        enabled: true
+        spec:
+          allowCrossNamespaceImport: true
+          instanceSelector:
+            matchLabels:
+              dashboards: null
+              grafana.internal/instance: grafana
+    defaultDatasources:
+      grafanaOperator:
+        enabled: true
+        spec:
+          allowCrossNamespaceImport: true
+          instanceSelector:
+            matchLabels:
+              dashboards: null
+              grafana.internal/instance: grafana
+    defaultRules:
+      rules:
+        groups:
+          etcd:
+            create: false
+          kubernetesSystemControllerManager:
+            create: false
+          kubernetesSystemScheduler:
+            create: false
+
+
+    grafana:
+      enabled: false
+      forceDeployDatasource: true
+
+      plugins:
+        - victoriametrics-metrics-datasource
+        - victoriametrics-logs-datasource
+
+
+    vmsingle:
+      useStrictSecurity: true
+      route:
+        enabled: true
+        hostnames:
+          - vmsingle.${DOMAIN_NAME}
+        parentRefs:
+          - name: envoy
+            namespace: envoy-system
+
+      spec:
+        retentionPeriod: 90d
+        useStrictSecurity: true
+
+        extraArgs:
+          enableTCP6: 'true'
+
+        storage:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 50Gi
+          storageClassName: ceph-block
+
+    vmalert:
+      spec:
+        useStrictSecurity: true
+        extraArgs:
+          external.url: https://grafana.${DOMAIN_NAME}
+          external.alert.source: 'explore?orgId=1&left={"datasource":"VictoriaMetrics","queries":[{"expr":{{ "{{" }}.Expr|jsonEscape|queryEscape{{ "}}" }},"refId":"A"}],"range":{"from":"{{ "{{" }} .ActiveAt.UnixMilli {{ "}}" }}","to":"now"}}'
+        datasource:
+          url: http://vmauth-victoria-metrics.observability.svc.cluster.local:8427
+
+      route:
+        enabled: true
+        hostnames:
+          - alert.${DOMAIN_NAME}
+        parentRefs:
+          - name: envoy
+            namespace: envoy-system
+
+    vmagent:
+      spec:
+        useStrictSecurity: true
+        # scrapeInterval: 30s
+        extraArgs:
+          enableTCP6: 'true'
+
+          promscrape.dropOriginalLabels: 'true'
+          promscrape.maxScrapeSize: 50MiB
+          promscrape.streamParse: 'true'
+
+        resources:
+          requests:
+            cpu: 150m
+          limits:
+            memory: 1Gi
+
+    vmauth:
+      enabled: true
+      spec:
+        extraArgs:
+          requestBufferSize: '65536'
+
+        unauthorizedUserAccessSpec:
+          url_map:
+            - src_paths:
+                - /api/v1/query.*
+                - /api/v1/label/.*
+              url_prefix: http://vmsingle-victoria-metrics.observability.svc.cluster.local:8428
+
+            - src_paths:
+                - /select/logsql/.*
+              url_prefix: http://victoria-logs.observability.svc.cluster.local:9428
+
+
+    alertmanager:
+      config:
+        route:
+          group_interval: 5m
+          group_wait: 1m
+          group_by:
+            - alertname
+            - cluster
+            - job
+
+          receiver: pushover
+          repeat_interval: 12h
+
+          routes:
+            - receiver: blackhole
+              matchers:
+                - alertname = InfoInhibitor
+
+            - receiver: pushover
+              matchers:
+                - severity = "critical"
+
+        inhibit_rules:
+          - equal:
+              - alertname
+              - namespace
+            source_matchers:
+              - severity = "critical"
+            target_matchers:
+              - severity = "warning"
+
+        receivers:
+          - name: blackhole
+
+          - name: pushover
+            pushover_configs:
+              - html: true
+                message: |-
+                  {{- range .Alerts }}
+                    {{- if ne .Annotations.description "" }}
+                      {{ .Annotations.description }}
+                    {{- else if ne .Annotations.summary "" }}
+                      {{ .Annotations.summary }}
+                    {{- else if ne .Annotations.message "" }}
+                      {{ .Annotations.message }}
+                    {{- else }}
+                      Alert description not available
+                    {{- end }}
+                    {{- if gt (len .Labels.SortedPairs) 0 }}
+                      <small>
+                        {{- range .Labels.SortedPairs }}
+                          <b>{{ .Name }}:</b> {{ .Value }}
+                        {{- end }}
+                      </small>
+                    {{- end }}
+                  {{- end }}
+
+                title: >-
+                  [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+
+                priority: |-
+                  {{ if eq .Status "firing" }}1{{ else }}0{{ end }}
+
+
+                url_title: View in Alertmanager
+                send_resolved: false
+                sound: gamelan
+
+                token:
+                  name: &secret vmalertmanager-secret
+                  key: ALERTMANAGER_PUSHOVER_TOKEN
+                user_key:
+                  name: *secret
+                  key: PUSHOVER_USER_KEY
+
+      route:
+        enabled: true
+        hostnames:
+          - alertmanager.${DOMAIN_NAME}
+        parentRefs:
+          - name: envoy
+            namespace: envoy-system
+
+      spec:
+        externalURL: https://alertmanager.${DOMAIN_NAME}
+        rollingUpdateStrategy: RollingUpdate
+        useStrictSecurity: true
+        disableNamespaceMatcher: true
+        image:
+          repository: quay.io/prometheus/alertmanager
+        securityContext:
+          runAsGroup: 2000
+          runAsNonRoot: true
+          runAsUser: 1000
+          fsGroup: 2000
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: ceph-block
+              resources:
+                requests:
+                  storage: 1Gi
+
+      useManagedConfig: true
+
+    kube-state-metrics:
+      enabled: false
+    prometheus-node-exporter:
+      enabled: false
+
+    kubeApiServer:
+      vmScrape:
+        spec:
+          metricRelabelConfigs:
+            # Drop high-cardinality histogram buckets (keep _sum/_count for averages).
+            # Trade-off: K8s SLI dashboards lose P99 latency panels.
+            - action: drop
+              sourceLabels: [ __name__ ]
+              regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+            - action: drop
+              sourceLabels: [ __name__ ]
+              regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+            # Admission control is patched out by Talos; no point in scraping.
+            - action: drop
+              sourceLabels: [ __name__ ]
+              regex: apiserver_admission_.+
+            # Watch cache & long-running rq are platform-engineering metrics.
+            - action: drop
+              sourceLabels: [ __name__ ]
+              regex: apiserver_(longrunning_requests|registered_watchers|init_events_total)
+
+    kubelet:
+      vmScrape:
+        spec:
+          metricRelabelConfigs:
+            # Drop high-cardinality labels.
+            - action: labeldrop
+              regex: (uid|id|name)
+            - action: drop
+              sourceLabels: [ __name__ ]
+              regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
+            # Optional, Drop cgroup metrics with no pod.
+            - sourceLabels: [ id, pod ]
+              action: drop
+              regex: '.+;'
+            # KEEP container_blkio_device_usage_total — needed for per-pod IOPS panels.
+            # Optional, Drop less useful container blkio metrics.
+            # - sourceLabels: [__name__]
+            #   action: drop
+            #   regex: 'container_blkio_device_usage_total'
+            # Optional, Drop less useful container filesystem io metrics.
+            - sourceLabels: [ __name__ ]
+              action: drop
+              regex: 'container_fs_(io_current|io_time_seconds_total|io_time_weighted_seconds_total|reads_merged_total|sector_reads_total|sector_writes_total|writes_merged_total)'
+            # Optional, Drop less useful container process metrics.
+            - sourceLabels: [ __name__ ]
+              action: drop
+              regex: 'container_(tasks_state|threads_max)'
+            # Drop kubelet runtime/PLEG/volume_manager bucket histograms — Talos changes
+            # are infrequent, panels rarely consulted.
+            - action: drop
+              sourceLabels: [ __name__ ]
+              regex: (kubelet_runtime_operations|kubelet_pod_worker_duration_seconds|kubelet_pleg_relist_duration_seconds|volume_manager_.+)_bucket
+
+
+    kubeControllerManager:
+      enabled: false
+    kubeEtcd:
+      enabled: false
+    kubeProxy:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+
+
+    additionalVictoriaMetricsMap:
+      dockerhub-rules:
+        create: true
+        groups:
+          - name: dockerhub
+            rules:
+              - alert: DockerhubRateLimitRisk
+                annotations:
+                  summary: There are {{ $value }} containers pulling from Dockerhub. This may lead to rate limiting.
+                expr: count(time() - container_last_seen{image=~"(docker.io).*",container!=""} < 30) > 100
+                labels:
+                  severity: critical
+
+      oom-rules:
+        create: true
+        groups:
+          - name: oom
+            rules:
+              - alert: OomKilled
+                annotations:
+                  summary: Container {{ $labels.container }} in pod {{ $labels.namespace }}/{{ $labels.pod }} has been OOMKilled {{ $value }} times in the last 10 minutes.
+                expr: (kube_pod_container_status_restarts_total - kube_pod_container_status_restarts_total offset 10m >= 1) and ignoring (reason) min_over_time(kube_pod_container_status_last_terminated_reason{reason="OOMKilled"}[10m]) == 1
+                labels:
+                  severity: critical
