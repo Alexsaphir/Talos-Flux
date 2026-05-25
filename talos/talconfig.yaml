@@ -167,7 +167,6 @@ controlPlane:
     secureboot: false
 
   nodeLabels:
-    topology.kubernetes.io/region: *clusterName
     topology.kubernetes.io/zone: controlPlane
 
   patches:
