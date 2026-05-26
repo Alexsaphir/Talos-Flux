@@ -25,6 +25,8 @@ spec:
   values:
     fullnameOverride: *app
 
+    replicaCount: 1
+
     global:
       image:
         registry: quay.io
@@ -32,6 +34,9 @@ spec:
     crds:
       enabled: false
       plain: false
+
+      upgrade:
+        enabled: false
 
     admissionWebhooks:
       enabled: true
