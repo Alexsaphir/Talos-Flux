@@ -263,9 +263,6 @@ spec:
     kubeApiServer:
       vmScrape:
         spec:
-          # metricRelabelConfigs is an endpoint-level field on VMServiceScrape
-          # (not spec-level — that only exists on VMNodeScrape). Overriding
-          # endpoints replaces the chart default list, so it's reproduced here.
           endpoints:
             - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
               port: https
@@ -307,9 +304,9 @@ spec:
               regex: '.+;'
             # KEEP container_blkio_device_usage_total — needed for per-pod IOPS panels.
             # Optional, Drop less useful container blkio metrics.
-            # - sourceLabels: [__name__]
-            #   action: drop
-            #   regex: 'container_blkio_device_usage_total'
+            - sourceLabels: [ __name__ ]
+              action: drop
+              regex: 'container_blkio_device_usage_total'
             # Optional, Drop less useful container filesystem io metrics.
             - sourceLabels: [ __name__ ]
               action: drop
