@@ -4,7 +4,7 @@
 # https://aquaproj.github.io/
 registries:
   - type: standard
-    ref: v4.516.0 # renovate: depName=aquaproj/aqua-registry
+    ref: v4.517.0 # renovate: depName=aquaproj/aqua-registry
 packages:
   # Utils
   - name: direnv/direnv@v2.37.1
@@ -37,6 +37,6 @@ packages:
   - name: helmfile/helmfile@v1.5.2
 
   # Infrastructure
-  - name: opentofu/opentofu@v1.12.0
+  - name: opentofu/opentofu@v1.12.1
   - name: gruntwork-io/terragrunt@v1.0.6
-  - name: hashicorp/terraform@v1.15.4
+  - name: hashicorp/terraform@v1.15.5
