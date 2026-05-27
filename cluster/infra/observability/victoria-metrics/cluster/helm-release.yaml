@@ -53,7 +53,7 @@ spec:
               dashboards: null
               grafana.internal/instance: grafana
     defaultRules:
-      create: false
+      create: true
       rules:
         groups:
           etcd:
