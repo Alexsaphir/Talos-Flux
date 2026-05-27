@@ -110,7 +110,7 @@ spec:
       route:
         enabled: true
         hostnames:
-          - alert.${DOMAIN_NAME}
+          - vmalert.${DOMAIN_NAME}
         parentRefs:
           - name: envoy
             namespace: envoy-system
