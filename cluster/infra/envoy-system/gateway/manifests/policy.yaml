@@ -57,6 +57,4 @@ spec:
   http2:
     onInvalidMessage: TerminateStream
 
-  http3: { }
-
   tcpKeepalive: { }
