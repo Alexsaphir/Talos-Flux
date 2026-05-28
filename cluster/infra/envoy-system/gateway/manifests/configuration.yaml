@@ -11,11 +11,17 @@ spec:
 
   ipFamily: DualStack
 
+  backendTLS:
+    ecdhCurves:
+      - X25519
+      - P-256
+      - P-384
+
   provider:
     type: Kubernetes
     kubernetes:
       envoyDeployment:
-        replicas: 2
+        replicas: 3
 
         container:
           image: mirror.gcr.io/envoyproxy/envoy:v1.38.0
