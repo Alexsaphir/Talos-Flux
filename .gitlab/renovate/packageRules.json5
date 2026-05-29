@@ -11,29 +11,5 @@
         "minio"
       ]
     },
-    {
-      description: "Custom schedule for pre-commmit",
-      matchDatasources: [
-        "pre-commit"
-      ],
-      schedule: [
-        "weekly"
-      ]
-    },
-    {
-      "matchPackageNames": [
-        "renovate",
-        "renovatebot/renovate",
-        "renovatebot/pre-commit-hooks"
-      ],
-      "schedule": [
-        "before 6am on monday"
-      ],
-      "automerge": true,
-      "automergeType": "branch",
-      "addLabels": [
-        "renovate/weekly-schedule"
-      ]
-    }
   ]
 }
