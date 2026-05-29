@@ -33,7 +33,7 @@ spec:
     extensions:
       - name: timescaledb
         image:
-          reference: ghcr.io/vember31/timescaledb:2.25.2
+          reference: ghcr.io/vember31/timescaledb:2.27.1
       - name: timescaledb-toolkit
         image:
           reference: ghcr.io/vember31/timescaledb-toolkit:1.22.0
