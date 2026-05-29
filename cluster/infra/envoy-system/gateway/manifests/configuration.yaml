@@ -11,6 +11,12 @@ spec:
 
   ipFamily: DualStack
 
+  backendTLS:
+    ecdhCurves:
+      - X25519
+      - P-256
+      - P-384
+
   provider:
     type: Kubernetes
     kubernetes:
