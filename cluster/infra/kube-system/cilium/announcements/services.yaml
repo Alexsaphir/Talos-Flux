@@ -9,7 +9,7 @@ metadata:
 spec:
   type: LoadBalancer
   ipFamilyPolicy: PreferDualStack
-  externalTrafficPolicy: Local
+  externalTrafficPolicy: Cluster
 
   selector:
     k8s-app: kube-apiserver
