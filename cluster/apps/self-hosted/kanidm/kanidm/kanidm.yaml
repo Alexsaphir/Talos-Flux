@@ -1,0 +1,51 @@
+---
+apiVersion: kaniop.rs/v1beta1
+kind: Kanidm
+metadata:
+  name: sso
+spec:
+  domain: sso.${DOMAIN_NAME}
+  ldapPortName: ldaps
+
+  # renovate: datasource=docker depName=kanidm/server
+  image: kanidm/server:1.10.3
+
+
+  oauth2ClientNamespaceSelector:
+    matchLabels: { }
+
+  groupNamespaceSelector:
+    matchLabels: { }
+
+  personNamespaceSelector:
+    matchLabels: { }
+
+  serviceAccountNamespaceSelector:
+    matchLabels: { }
+
+  disableUpgradeChecks: true
+
+  replicaGroups:
+    - name: default
+      replicas: 1
+      primaryNode: true
+
+      statefulSetAnnotations:
+        reloader.stakater.com/auto: 'true'
+
+      resources:
+        requests:
+          cpu: 100m
+          memory: 140Mi
+        limits:
+          memory: 200Mi
+
+  storage:
+    volumeClaimTemplate:
+      spec:
+        storageClassName: ceph-block
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi

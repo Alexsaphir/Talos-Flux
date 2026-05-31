@@ -1,0 +1,15 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: BackendTLSPolicy
+metadata:
+  name: kanidm-upstream
+spec:
+  targetRefs:
+    - group: ''
+      kind: Service
+      name: sso
+
+  validation:
+    wellKnownCACertificates: System
+    # noinspection KubernetesUnknownValues
+    hostname: sso.${DOMAIN_NAME}
