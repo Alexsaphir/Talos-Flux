@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kanidm
+  namespace: kanidm
+
+spec:
+  dependsOn:
+    - name: kaniop
+
+  prune: true
+  interval: 1h
+  path: cluster/apps/self-hosted/kanidm/kanidm
+  sourceRef:
+    kind: GitRepository
+    name: talos-kubernetes
+    namespace: flux-system

@@ -8,3 +8,4 @@ replacements:
   - path: ../../../components/replacements/ks.yaml
 resources:
   - app/ks.yaml
+  - kanidm/ks.yaml
