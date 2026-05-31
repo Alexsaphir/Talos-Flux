@@ -21,6 +21,4 @@
     'prIgnoreNotification',
   ],
   rebaseWhen: 'behind-base-branch',
-  assigneesFromCodeOwners: true,
-  reviewersFromCodeOwners: true,
 }
