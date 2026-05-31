@@ -65,7 +65,7 @@ spec:
     sources: [ 'gateway-httproute', 'service' ]
 
     txtOwnerId: talos
-    txtPrefix: txt.
+    txtPrefix: k8s.%{record_type}-
 
     domainFilters: [ '${DOMAIN_NAME}', 'talos.${DOMAIN_NAME}', 'cluster.${DOMAIN_NAME}' ]
 

@@ -54,8 +54,8 @@ spec:
     policy: sync
     sources: [ 'gateway-httproute', 'crd' ]
 
-    txtOwnerId: talos
-    txtPrefix: k8s.
+    txtOwnerId: talosyqa
+    txtPrefix: k8s.%{record_type}-
 
     domainFilters: [ '${DOMAIN_NAME}' ]
 
