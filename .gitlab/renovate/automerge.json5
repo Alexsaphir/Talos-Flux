@@ -11,6 +11,7 @@
         "patch"
       ],
       automerge: true,
+      autoApprove: true,
       automergeType: "branch",
       ignoreTests: true,
     },
@@ -24,6 +25,7 @@
         "patch"
       ],
       automerge: true,
+      autoApprove: true,
       automergeType: "branch",
       ignoreTests: true,
     },
