@@ -10,6 +10,11 @@ spec:
   # renovate: datasource=docker depName=kanidm/server
   image: kanidm/server:1.10.3
 
+  mailSender:
+    relay: 'smtp://mailpit.kube-system.svc.cluster.local:1025'
+    fromAddress: kanidm@talos.${DOMAIN_NAME}
+    credentialsSecret:
+      name: kanidm-mail-secret
 
   oauth2ClientNamespaceSelector:
     matchLabels: { }
