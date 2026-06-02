@@ -18,7 +18,6 @@ spec:
       PVC_NAME: *app
       VOLSYNC_CAPACITY: 5Gi
 
-
   prune: true
   interval: 1h
   path: cluster/apps/self-hosted/your-spotify/app

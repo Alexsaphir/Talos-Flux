@@ -8,11 +8,11 @@ spec:
   dependsOn:
     - name: lldap
 
-#  healthChecks:
-#    - apiVersion: helm.toolkit.fluxcd.io/v2
-#      kind: HelmRelease
-#      name: *app
-#      namespace: *namespace
+  #  healthChecks:
+  #    - apiVersion: helm.toolkit.fluxcd.io/v2
+  #      kind: HelmRelease
+  #      name: *app
+  #      namespace: *namespace
 
   prune: true
   interval: 1h

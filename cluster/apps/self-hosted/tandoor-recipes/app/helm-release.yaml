@@ -177,7 +177,6 @@ spec:
               }
             }
 
-
     persistence:
       static:
         existingClaim: '{{ .Release.Name }}'

@@ -16,9 +16,6 @@
   configWarningReuseIssue: true,
   configMigration: true,
   gitLabIgnoreApprovals: true,
-  suppressNotifications: [
-    'prEditedNotification',
-    'prIgnoreNotification',
-  ],
+  suppressNotifications: ['prEditedNotification', 'prIgnoreNotification'],
   rebaseWhen: 'behind-base-branch',
 }

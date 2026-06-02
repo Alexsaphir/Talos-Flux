@@ -1,33 +1,23 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "packageRules": [
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  packageRules: [
     {
-      description: "Auto-merge Renovate Presents",
-      matchManagers: [
-        "renovate-config"
-      ],
-      matchUpdateTypes: [
-        "minor",
-        "patch"
-      ],
+      description: 'Auto-merge Renovate Presents',
+      matchManagers: ['renovate-config'],
+      matchUpdateTypes: ['minor', 'patch'],
       automerge: true,
       autoApprove: true,
-      automergeType: "branch",
+      automergeType: 'branch',
       ignoreTests: true,
     },
     {
-      description: "Auto-merge pre-commit",
-      matchManagers: [
-        "pre-commit"
-      ],
-      matchUpdateTypes: [
-        "minor",
-        "patch"
-      ],
+      description: 'Auto-merge pre-commit',
+      matchManagers: ['pre-commit'],
+      matchUpdateTypes: ['minor', 'patch'],
       automerge: true,
       autoApprove: true,
-      automergeType: "branch",
+      automergeType: 'branch',
       ignoreTests: true,
     },
-  ]
+  ],
 }

@@ -2,103 +2,73 @@
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   packageRules: [
     {
-      description: "Flux Operator Group",
-      groupName: "flux-operator",
-      matchDatasources: [
-        "docker"
-      ],
-      matchPackageNames: [
-        "/flux-operator/",
-        "/flux-instance/"
-      ],
+      description: 'Flux Operator Group',
+      groupName: 'flux-operator',
+      matchDatasources: ['docker'],
+      matchPackageNames: ['/flux-operator/', '/flux-instance/'],
       group: {
-        commitMessageTopic: "{{{groupName}}} group",
+        commitMessageTopic: '{{{groupName}}} group',
       },
       minimumGroupSize: 2,
     },
     {
-      description: "Rook-Ceph Group",
-      groupName: "rook-ceph",
-      matchDatasources: [
-        "docker"
-      ],
-      matchPackageNames: [
-        "/rook-ceph/",
-        "/rook-ceph-cluster/"
-      ],
+      description: 'Rook-Ceph Group',
+      groupName: 'rook-ceph',
+      matchDatasources: ['docker'],
+      matchPackageNames: ['/rook-ceph/', '/rook-ceph-cluster/'],
       group: {
-        commitMessageTopic: "{{{groupName}}} group",
+        commitMessageTopic: '{{{groupName}}} group',
       },
       minimumGroupSize: 2,
     },
     {
-      description: "Dragonfly Operator Group",
-      groupName: "DragonflyOperator",
+      description: 'Dragonfly Operator Group',
+      groupName: 'DragonflyOperator',
       matchPackagePatterns: [
-        "docker.dragonflydb.io/dragonflydb/operator",
-        "dragonflydb/dragonfly-operator"
+        'docker.dragonflydb.io/dragonflydb/operator',
+        'dragonflydb/dragonfly-operator',
       ],
       group: {
-        commitMessageTopic: "{{{groupName}}} group"
+        commitMessageTopic: '{{{groupName}}} group',
       },
-      separateMinorPatch: false
+      separateMinorPatch: false,
     },
     {
-      description: "Immich Group",
-      groupName: "Immich",
-      matchPackagePatterns: [
-        "immich"
-      ],
-      matchDatasources: [
-        "docker",
-        "github-releases",
-        "helm"
-      ],
-      matchUpdateTypes: [
-        "minor",
-        "patch"
-      ],
+      description: 'Immich Group',
+      groupName: 'Immich',
+      matchPackagePatterns: ['immich'],
+      matchDatasources: ['docker', 'github-releases', 'helm'],
+      matchUpdateTypes: ['minor', 'patch'],
       group: {
-        commitMessageTopic: "{{{groupName}}} group"
+        commitMessageTopic: '{{{groupName}}} group',
       },
-      separateMinorPatch: false
+      separateMinorPatch: false,
     },
 
     {
       description: 'Codecov Group',
       groupName: 'Codecov',
-      matchPackagePatterns: [
-        'codecov'
-      ],
-      matchDatasources: [
-        'docker',
-        'github-releases'
-      ],
+      matchPackagePatterns: ['codecov'],
+      matchDatasources: ['docker', 'github-releases'],
       group: {
-        'commitMessageTopic': '{{{groupName}}} group'
+        commitMessageTopic: '{{{groupName}}} group',
       },
-      separateMinorPatch: true
+      separateMinorPatch: true,
     },
     {
-      description: "Pre-Commit",
+      description: 'Pre-Commit',
       groupName: 'Pre-Commit',
-      matchManagers: [
-        'pre-commit'
-      ]
+      matchManagers: ['pre-commit'],
     },
     {
-      description: "Aquaproj/aqua group",
+      description: 'Aquaproj/aqua group',
       groupName: 'Aqua',
-      matchFileNames: [
-        '**/aqua.yaml',
-        '**/.aqua.yaml',
-        '**/.devcontainer.json'
-      ]
+      matchFileNames: ['**/aqua.yaml', '**/.aqua.yaml', '**/.devcontainer.json'],
     },
     {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["ghcr.io/yooooomi/your_spotify_*"],
-      "groupName": "yooooomi/your_spotify"
+      matchDatasources: ['docker'],
+      matchPackageNames: ['ghcr.io/yooooomi/your_spotify_*'],
+      groupName: 'yooooomi/your_spotify',
     },
-  ]
+  ],
 }

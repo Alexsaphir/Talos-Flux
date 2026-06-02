@@ -42,7 +42,7 @@ spec:
       containerdRegistryConfigPath: /etc/cri/conf.d/hosts
 
       registryFilters:
-        - ".*:latest$"
+        - '.*:latest$'
 
   postRenderers:
     - kustomize:

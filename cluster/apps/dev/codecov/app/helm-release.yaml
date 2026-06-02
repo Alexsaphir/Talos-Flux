@@ -22,7 +22,6 @@ spec:
     kind: OCIRepository
     name: *name
 
-
   values:
     codecov:
       host: codecov.${DOMAIN_NAME}
@@ -194,35 +193,75 @@ spec:
               - name: '{{ .Release.Name }}-api'
                 port: *port_api
             matches:
-              - path: { type: RegularExpression, value: "^/validate(/)?$" }
-              - path: { type: RegularExpression, value: "^/static(/.*)?$" }
-              - path: { type: RegularExpression, value: "^/internal(/.*)?$" }
-              - path: { type: RegularExpression, value: "^/graphql(/.*)?$" }
-              - path: { type: RegularExpression, value: "^/webhooks(/.*)?$" }
-              - path: { type: RegularExpression, value: "^/api_health(/)?$" }
-              - path: { type: RegularExpression, value: "^/upload/v2(/)?$" }
-              - path: { type: RegularExpression, value: "^/upload/v4(/)?$" }
-              - path: { type: RegularExpression, value: "^/api(/.*)?$" }
-              - path: { type: RegularExpression, value: "^/upload/bundle_analysis/v1(/)?$" }
-              - path: { type: RegularExpression, value: "^/upload/test_results/v1(/)?$" }
-              - path: { type: RegularExpression, value: "^/upload/(gh|github|ghe|github_enterprise|bb|bitbucket|bbs|bitbucket_server|gl|gitlab|gle|gitlab_enterprise|okta|sentry)(/.*)?$" }
-              - path: { type: RegularExpression, value: "^/login/(gh|github|ghe|github_enterprise|bb|bitbucket|bbs|bitbucket_server|gl|gitlab|gle|gitlab_enterprise|okta|sentry)" }
-              - path: { type: RegularExpression, value: "^/logout(/(gh|github|ghe|github_enterprise|bb|bitbucket|bbs|bitbucket_server|gl|gitlab|gle|gitlab_enterprise|okta|sentry))?$" }
+              - path: { type: RegularExpression, value: '^/validate(/)?$' }
+              - path: { type: RegularExpression, value: '^/static(/.*)?$' }
+              - path: { type: RegularExpression, value: '^/internal(/.*)?$' }
+              - path: { type: RegularExpression, value: '^/graphql(/.*)?$' }
+              - path: { type: RegularExpression, value: '^/webhooks(/.*)?$' }
+              - path: { type: RegularExpression, value: '^/api_health(/)?$' }
+              - path: { type: RegularExpression, value: '^/upload/v2(/)?$' }
+              - path: { type: RegularExpression, value: '^/upload/v4(/)?$' }
+              - path: { type: RegularExpression, value: '^/api(/.*)?$' }
+              - path: { type: RegularExpression, value: '^/upload/bundle_analysis/v1(/)?$' }
+              - path: { type: RegularExpression, value: '^/upload/test_results/v1(/)?$' }
+              - path:
+                  {
+                    type: RegularExpression,
+                    value: '^/upload/(gh|github|ghe|github_enterprise|bb|bitbucket|bbs|bitbucket_server|gl|gitlab|gle|gitlab_enterprise|okta|sentry)(/.*)?$',
+                  }
+              - path:
+                  {
+                    type: RegularExpression,
+                    value: '^/login/(gh|github|ghe|github_enterprise|bb|bitbucket|bbs|bitbucket_server|gl|gitlab|gle|gitlab_enterprise|okta|sentry)',
+                  }
+              - path:
+                  {
+                    type: RegularExpression,
+                    value: '^/logout(/(gh|github|ghe|github_enterprise|bb|bitbucket|bbs|bitbucket_server|gl|gitlab|gle|gitlab_enterprise|okta|sentry))?$',
+                  }
               # SVG badges
-              - path: { type: RegularExpression, value: "^/[^/]+/[^/]+/[^/]+/branch/.+/(graph|graphs)/badge\\.svg$" }
-              - path: { type: RegularExpression, value: "^/[^/]+/[^/]+/[^/]+/(graph|graphs)/badge\\.svg$" }
-              - path: { type: RegularExpression, value: "^/[^/]+/[^/]+/[^/]+/branch/.+/(graph|graphs)/bundle/.+/badge\\.svg$" }
-              - path: { type: RegularExpression, value: "^/[^/]+/[^/]+/[^/]+/(graph|graphs)/bundle/.+/badge\\.svg$" }
-              - path: { type: RegularExpression, value: "^/[^/]+/[^/]+/[^/]+/pull/[^/]+/(graph|graphs)/(tree|icicle|sunburst|commits)\\.svg$" }
-              - path: { type: RegularExpression, value: "^/[^/]+/[^/]+/[^/]+/branch/[^/].+/(graph|graphs)/(tree|icicle|sunburst|commits)\\.svg$" }
-              - path: { type: RegularExpression, value: "^/[^/]+/[^/]+/[^/]+/(graph|graphs)/(tree|icicle|sunburst|commits)\\.svg$" }
+              - path:
+                  {
+                    type: RegularExpression,
+                    value: "^/[^/]+/[^/]+/[^/]+/branch/.+/(graph|graphs)/badge\\.svg$",
+                  }
+              - path:
+                  {
+                    type: RegularExpression,
+                    value: "^/[^/]+/[^/]+/[^/]+/(graph|graphs)/badge\\.svg$",
+                  }
+              - path:
+                  {
+                    type: RegularExpression,
+                    value: "^/[^/]+/[^/]+/[^/]+/branch/.+/(graph|graphs)/bundle/.+/badge\\.svg$",
+                  }
+              - path:
+                  {
+                    type: RegularExpression,
+                    value: "^/[^/]+/[^/]+/[^/]+/(graph|graphs)/bundle/.+/badge\\.svg$",
+                  }
+              - path:
+                  {
+                    type: RegularExpression,
+                    value: "^/[^/]+/[^/]+/[^/]+/pull/[^/]+/(graph|graphs)/(tree|icicle|sunburst|commits)\\.svg$",
+                  }
+              - path:
+                  {
+                    type: RegularExpression,
+                    value: "^/[^/]+/[^/]+/[^/]+/branch/[^/].+/(graph|graphs)/(tree|icicle|sunburst|commits)\\.svg$",
+                  }
+              - path:
+                  {
+                    type: RegularExpression,
+                    value: "^/[^/]+/[^/]+/[^/]+/(graph|graphs)/(tree|icicle|sunburst|commits)\\.svg$",
+                  }
 
           - backendRefs:
               - name: '{{ .Release.Name }}-frontend'
                 port: *port_frontend
             matches:
-              - path: { type: Exact, value: "/frontend_health" }
-              - path: { type: RegularExpression, value: "^(/.*)?$" }
+              - path: { type: Exact, value: '/frontend_health' }
+              - path: { type: RegularExpression, value: '^(/.*)?$' }
 
     persistence:
       config:

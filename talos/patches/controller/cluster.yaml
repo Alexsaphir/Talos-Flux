@@ -22,7 +22,7 @@ cluster:
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
-      node-cidr-mask-size-ipv6: "112"
+      node-cidr-mask-size-ipv6: '112'
       feature-gates: HPAScaleToZero=true
 
   coreDNS:
@@ -33,7 +33,7 @@ cluster:
       listen-metrics-urls: http://0.0.0.0:2381
       # Prevent database bloat with auto-compaction
       auto-compaction-mode: periodic
-      auto-compaction-retention: "1h"
+      auto-compaction-retention: '1h'
     advertisedSubnets:
       - ${nodeSubnetV4}
       - ${nodeSubnetV6}

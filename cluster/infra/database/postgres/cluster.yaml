@@ -27,7 +27,7 @@ spec:
       max_slot_wal_keep_size: 5GB
       shared_buffers: '128MB'
 
-      max_locks_per_transaction: '128'  # recommended for TimescaleDB
+      max_locks_per_transaction: '128' # recommended for TimescaleDB
       timescaledb.telemetry_level: 'off'
 
     extensions:

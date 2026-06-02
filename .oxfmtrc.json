@@ -1,0 +1,14 @@
+{
+  "printWidth": 100,
+  "singleQuote": true,
+  "bracketSpacing": true,
+
+  "overrides": [
+    {
+      "files": ["*.sops.yaml"],
+      "options": {
+        "singleQuote": false
+      }
+    }
+  ]
+}

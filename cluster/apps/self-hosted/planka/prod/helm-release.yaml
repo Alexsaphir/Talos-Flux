@@ -54,7 +54,6 @@ spec:
               OIDC_SCOPES: openid profile email
               OIDC_IGNORE_ROLES: 'true'
 
-
               SMTP_HOST: mailpit.kube-system.svc.cluster.local
               SMTP_PORT: 1025
               SMTP_SECURE: false

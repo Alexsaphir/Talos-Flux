@@ -41,7 +41,7 @@ spec:
     concurrent: 10
     checkInterval: 10
 
-    logLevel: info  # debug, info, warn, error, fatal, panic
+    logLevel: info # debug, info, warn, error, fatal, panic
     logFormat: json # runner, text, json
 
     rbac:

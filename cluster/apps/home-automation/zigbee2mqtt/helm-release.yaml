@@ -100,7 +100,6 @@ spec:
                 cpu: 500m
                 memory: 256Mi
 
-
     defaultPodOptions:
       securityContext:
         runAsUser: 1022

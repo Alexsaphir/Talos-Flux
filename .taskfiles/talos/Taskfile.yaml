@@ -1,5 +1,5 @@
 ---
-version: "3"
+version: '3'
 
 tasks:
   talhelper:generate-config:
@@ -38,14 +38,13 @@ tasks:
           var: CLUSTERCONFIG_FILES
         task: _apply-machineconfig
         vars:
-
-          FILENAME: "{{.ITEM}}"
+          FILENAME: '{{.ITEM}}'
           NODE:
           HOSTNAME:
             sh: >-
               yq '.hostname | select(. != null)' < '{{.ITEM}}'
-          DRY_RUN: "{{ .DRY_RUN }}"
-          INSECURE: "{{ .INSECURE }}"
+          DRY_RUN: '{{ .DRY_RUN }}'
+          INSECURE: '{{ .INSECURE }}'
 
   apply-node:
     desc: Apply Talos config to a node [NODE=required]
@@ -65,8 +64,8 @@ tasks:
     cmds:
       - task: _apply-machineconfig
         vars:
-          FILENAME: "{{.FILE}}"
-          HOSTNAME: "{{.NODE}}"
+          FILENAME: '{{.FILE}}'
+          HOSTNAME: '{{.NODE}}'
       - talosctl --nodes {{.NODE}} health
 
   upgrade-node:

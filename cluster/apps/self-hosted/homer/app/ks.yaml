@@ -5,7 +5,6 @@ metadata:
   name: &app homer
   namespace: homer
 spec:
-
   postBuild:
     substitute:
       APP: *app

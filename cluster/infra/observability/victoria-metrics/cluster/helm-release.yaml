@@ -331,7 +331,6 @@ spec:
     kubeScheduler:
       enabled: false
 
-
     additionalVictoriaMetricsMap:
       dockerhub-rules:
         create: true

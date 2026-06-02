@@ -23,7 +23,7 @@ spec:
       runAsGroup: ${VOLSYNC_PGID:=1000}
       fsGroup: ${VOLSYNC_PGID:=1000}
       fsGroupChangePolicy: OnRootMismatch
-      seccompProfile: {type: 'RuntimeDefault'}
+      seccompProfile: { type: 'RuntimeDefault' }
 
     moverVolumes:
       - mountPath: repository

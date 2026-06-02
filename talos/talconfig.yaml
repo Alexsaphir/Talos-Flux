@@ -2,8 +2,8 @@
 ---
 clusterName: &clusterName talos-cluster
 
-talosVersion: "${talosVersion}"
-kubernetesVersion: "${kubernetesVersion}"
+talosVersion: '${talosVersion}'
+kubernetesVersion: '${kubernetesVersion}'
 
 endpoint: https://talos.cluster.alexsaphir.com:6443
 
@@ -11,7 +11,6 @@ additionalApiServerCertSans: &sans
   - talos.cluster.alexsaphir.com
   - 127.0.0.1 # KubePrism
 additionalMachineCertSans: *sans
-
 
 # UDA generated using https://unique-local-ipv6.com/#
 clusterPodNets:
@@ -27,9 +26,8 @@ cniConfig:
 
 allowSchedulingOnControlPlanes: true
 
-
 nodes:
-  - hostname: "ms-01"
+  - hostname: 'ms-01'
     ipAddress: 192.168.42.10
     controlPlane: true
     installDiskSelector:
@@ -83,9 +81,9 @@ nodes:
           - module_blacklist=esp4,esp6,rxrpc
 
     patches:
-      - "@./patches/nodes/nvidia.yaml"
+      - '@./patches/nodes/nvidia.yaml'
 
-  - hostname: "ms-02"
+  - hostname: 'ms-02'
     ipAddress: 192.168.42.11
     controlPlane: true
     installDiskSelector:
@@ -119,7 +117,7 @@ nodes:
 
         extraKernelArgs: *extraKernelArgs
 
-  - hostname: "ms-03"
+  - hostname: 'ms-03'
     ipAddress: 192.168.42.12
     controlPlane: true
     installDiskSelector:
@@ -154,10 +152,9 @@ nodes:
         extraKernelArgs: *extraKernelArgs
 
 patches:
-  - "@./patches/global/machine-kubelet.yaml"
-  - "@./patches/global/machine-network.yaml"
-  - "@./patches/global/machine-sysctls.yaml"
-
+  - '@./patches/global/machine-kubelet.yaml'
+  - '@./patches/global/machine-network.yaml'
+  - '@./patches/global/machine-sysctls.yaml'
 
 controlPlane:
   nodeAnnotations:
@@ -170,8 +167,8 @@ controlPlane:
     topology.kubernetes.io/zone: controlPlane
 
   patches:
-    - "@./patches/controller/cluster.yaml"
-    - "@./patches/controller/machine-features.yaml"
+    - '@./patches/controller/cluster.yaml'
+    - '@./patches/controller/machine-features.yaml'
 
     - |-
       machine:
@@ -188,7 +185,7 @@ controlPlane:
             # https://github.com/haraldkoch/kochhaus-home/commit/ed5b578ae9a41834c82fbc940ec03be13469ac89
             - KERNEL=="ttyACM*", MODE="0666"
 
-    - "@./patches/nodes/sysfs.yaml"
+    - '@./patches/nodes/sysfs.yaml'
 
     - '@./manifests/disks.yaml'
     - '@./manifests/lldpd.yaml'

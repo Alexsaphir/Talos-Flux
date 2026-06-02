@@ -71,8 +71,7 @@ access_control:
     - domain_regex: '^(sonarr|radarr|sonarr4k|radarr4k|sonarr-k3s|radarr-k3s|prowlarr)\.${DOMAIN_NAME}$'
       policy: bypass
       resources:
-        - "^/api([/?].*)?$"
-
+        - '^/api([/?].*)?$'
 
     - domain:
         - '*.${DOMAIN_NAME}'

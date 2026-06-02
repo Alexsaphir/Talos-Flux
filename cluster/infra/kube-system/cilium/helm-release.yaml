@@ -42,7 +42,7 @@ spec:
     k8sServicePort: 7445
     cgroup:
       automount:
-        enabled: false  # TALOS REQUIRED - Talos provides mounts
+        enabled: false # TALOS REQUIRED - Talos provides mounts
       hostRoot: /sys/fs/cgroup
     securityContext:
       capabilities:
@@ -76,11 +76,11 @@ spec:
     bpfClockProbe: true
     bpf:
       datapathMode: netkit
-      masquerade: true  # Required for installNoConntrackIptablesRules
+      masquerade: true # Required for installNoConntrackIptablesRules
       preallocateMaps: true
 
       # Policy enforcement acceleration
-      policyMapMax: 65536    # Max policy entries
+      policyMapMax: 65536 # Max policy entries
 
     # https://docs.cilium.io/en/stable/network/concepts/ipam/
     ipam:
@@ -111,14 +111,13 @@ spec:
     # https://docs.cilium.io/en/stable/network/kubernetes/bandwidth-manager/
     bandwidthManager:
       enabled: true
-      bbr: true  # ENABLED: BBR congestion control for improved throughput
+      bbr: true # ENABLED: BBR congestion control for improved throughput
 
     # PERFORMANCE - BIG TCP
     # https://docs.cilium.io/en/stable/operations/performance/tuning/
     # BIG TCP: Allows up to 192KB GSO/GRO packets (vs 64KB default)
     enableIPv4BIGTCP: true
     enableIPv6BIGTCP: true
-
 
     socketLB:
       enabled: true

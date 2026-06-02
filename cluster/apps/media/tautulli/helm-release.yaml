@@ -34,11 +34,7 @@ spec:
               tag: v2.17.1@sha256:112abf6fa1ce352acb7fd96f14eaef3d5d8cda2906e59448bf8fb13b74ad10c1
 
             command: [ '/usr/local/bin/python', 'Tautulli.py' ]
-            args: [
-              '--config', '/config/config.ini',
-              '--datadir', '/config',
-              '--port', '80'
-            ]
+            args: [ '--config', '/config/config.ini', '--datadir', '/config', '--port', '80' ]
 
             env:
               TZ: '${TIMEZONE}'
