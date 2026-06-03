@@ -46,6 +46,8 @@ spec:
             args:
               - --db-file
               - /var/lib/mailpit/mailpit.db
+              - --smtp-auth-accept-any
+              - --smtp-auth-allow-insecure
 
             env:
               TIMEZONE: '${TIMEZONE}'
