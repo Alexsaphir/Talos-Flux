@@ -41,7 +41,7 @@ tasks:
     desc: Send wol packets to start talos cluster.
     vars:
       mac_addresses:
-        sh: yq '.nodes[].networkInterfaces[0].deviceSelector.hardwareAddr' < '{{.TALOS_DIR}}/talconfig.yaml'
+        sh: yq '.nodes[].networkInterfaces[0].bond.deviceSelectors[0].permanentAddr' < '{{.TALOS_DIR}}/talconfig.yaml'
       interface:
         sh: "ip -o -4 addr show up | awk '$2 !~ /^(lo|docker|veth|br-|virbr|tailscale)/ {print $2; exit}'"
     cmds:
