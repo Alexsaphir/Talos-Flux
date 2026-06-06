@@ -53,19 +53,19 @@ spec:
               dashboards: null
               grafana.internal/instance: grafana
     defaultRules:
-      create: true
+      enabled: true
       rules:
         groups:
           etcd:
-            create: false
+            enabled: false
           kubeApiserverBurnrate:
-            create: false
+            enabled: false
           kubeApiserverHistogram:
-            create: false
+            enabled: false
           kubernetesSystemControllerManager:
-            create: false
+            enabled: false
           kubernetesSystemScheduler:
-            create: false
+            enabled: false
 
 
     grafana:
