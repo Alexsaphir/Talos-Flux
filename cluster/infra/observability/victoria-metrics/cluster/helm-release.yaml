@@ -54,18 +54,17 @@ spec:
               grafana.internal/instance: grafana
     defaultRules:
       enabled: true
-      rules:
-        groups:
-          etcd:
-            enabled: false
-          kubeApiserverBurnrate:
-            enabled: false
-          kubeApiserverHistogram:
-            enabled: false
-          kubernetesSystemControllerManager:
-            enabled: false
-          kubernetesSystemScheduler:
-            enabled: false
+      groups:
+        etcd:
+          enabled: false
+        kubeApiserverBurnrate:
+          enabled: false
+        kubeApiserverHistogram:
+          enabled: false
+        kubernetesSystemControllerManager:
+          enabled: false
+        kubernetesSystemScheduler:
+          enabled: false
 
 
     grafana:
