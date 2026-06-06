@@ -58,6 +58,8 @@ spec:
         groups:
           etcd:
             create: false
+          kubeApiserverBurnrate:
+            create: false
           kubernetesSystemControllerManager:
             create: false
           kubernetesSystemScheduler:
