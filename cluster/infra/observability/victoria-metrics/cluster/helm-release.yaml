@@ -54,9 +54,12 @@ spec:
               grafana.internal/instance: grafana
     defaultRules:
       enabled: true
+
+      rules:
+        etcdMemberCommunicationSlow:
+          create: false
+
       groups:
-        etcd:
-          enabled: false
         kubeApiserverBurnrate:
           enabled: false
         kubeApiserverHistogram:
@@ -64,6 +67,8 @@ spec:
         kubernetesSystemControllerManager:
           enabled: false
         kubernetesSystemScheduler:
+          enabled: false
+        kubelet:
           enabled: false
 
 
@@ -75,6 +80,9 @@ spec:
         - victoriametrics-metrics-datasource
         - victoriametrics-logs-datasource
 
+    external:
+      grafana:
+        host: grafana.${DOMAIN_NAME}
 
     vmsingle:
       useStrictSecurity: true
