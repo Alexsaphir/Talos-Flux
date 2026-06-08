@@ -1,0 +1,52 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app toolhive-operator-crds
+  namespace: &namespace ai
+spec:
+  postBuild:
+    substitute:
+      APP: *app
+
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: *namespace
+
+  prune: true
+  interval: 1h
+  path: cluster/apps/ai/toolhive/crds
+  sourceRef:
+    kind: GitRepository
+    name: talos-kubernetes
+    namespace: flux-system
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app toolhive-operator
+  namespace: &namespace ai
+spec:
+  postBuild:
+    substitute:
+      APP: *app
+
+  dependsOn:
+    - name: toolhive-operator-crds
+
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: *namespace
+
+  prune: true
+  interval: 1h
+  path: cluster/apps/ai/toolhive/app
+  sourceRef:
+    kind: GitRepository
+    name: talos-kubernetes
+    namespace: flux-system
