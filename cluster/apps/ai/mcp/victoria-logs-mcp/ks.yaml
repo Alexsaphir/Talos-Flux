@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: victoria-logs-mcp
+  namespace: ai
+spec:
+  dependsOn:
+    - name: toolhive-config
+      namespace: ai
+
+  prune: true
+  interval: 1h
+  path: cluster/apps/ai/mcp/victoria-logs-mcp
+  sourceRef:
+    kind: GitRepository
+    name: talos-kubernetes
+    namespace: flux-system
