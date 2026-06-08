@@ -1,0 +1,10 @@
+---
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPOIDCConfig
+metadata:
+  name: external-oidc
+spec:
+  type: inline
+  inline:
+    issuer: https://mcp.${DOMAIN_NAME}
+    jwksAllowPrivateIP: true
