@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app text-embeddings-inference
+  namespace: &namespace ai
+spec:
+  dependsOn:
+    - name: toolhive-config
+      namespace: ai
+
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: *namespace
+
+  prune: true
+  interval: 1h
+  path: cluster/apps/ai/text-embeddings-inference
+  sourceRef:
+    kind: GitRepository
+    name: talos-kubernetes
+    namespace: flux-system
