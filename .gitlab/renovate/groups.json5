@@ -66,9 +66,50 @@
       matchFileNames: ['**/aqua.yaml', '**/.aqua.yaml', '**/.devcontainer.json'],
     },
     {
+      description: 'YourSpotify Group',
+      groupName: 'YourSpotify',
       matchDatasources: ['docker'],
       matchPackageNames: ['ghcr.io/yooooomi/your_spotify_*'],
-      groupName: 'yooooomi/your_spotify',
+    },
+    {
+      description: 'Slinky Group',
+      groupName: 'Slinky',
+      matchDatasources: ['docker'],
+      matchPackageNames: ['/slinkyproject/'],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+      minimumGroupSize: 2,
+    },
+    {
+      description: 'Toolhive Group',
+      groupName: 'Toolhive',
+      matchDatasources: ['docker'],
+      matchPackageNames: ['/toolhive-operator/'],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+      minimumGroupSize: 2,
+    },
+    {
+      description: 'Toolhive Group',
+      groupName: 'Toolhive',
+      matchDatasources: ['docker'],
+      matchPackageNames: ['/toolhive-operator/'],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+      minimumGroupSize: 2,
+    },
+    {
+      description: 'timescaledb Group',
+      groupName: 'timescaledb',
+      matchDatasources: ['docker'],
+      matchPackageNames: ['/vember31\/timescaledb/'],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+      minimumGroupSize: 2,
     },
   ],
 }
