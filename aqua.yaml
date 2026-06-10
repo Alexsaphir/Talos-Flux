@@ -20,8 +20,8 @@ packages:
   - name: bitwarden/sdk-sm@bws-v1.0.0
 
   # Talos
-  - name: siderolabs/talos@v1.13.3
-  - name: budimanjojo/talhelper@v3.1.10
+  - name: siderolabs/talos@v1.13.4
+  - name: budimanjojo/talhelper@v3.1.11
 
   # Cluster
   - name: fluxcd/flux2@v2.8.8
@@ -34,9 +34,9 @@ packages:
 
   - name: helm/helm@v4.2.0
   - name: kubernetes-sigs/kustomize@kustomize/v5.8.1
-  - name: helmfile/helmfile@v1.5.2
+  - name: helmfile/helmfile@v1.5.3
 
   # Infrastructure
   - name: opentofu/opentofu@v1.12.1
   - name: gruntwork-io/terragrunt@v1.0.7
-  - name: hashicorp/terraform@v1.15.5
+  - name: hashicorp/terraform@v1.15.6
