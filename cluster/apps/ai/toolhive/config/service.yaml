@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-gateway-lb
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: mcp.svc.talos.${DOMAIN_NAME}
+spec:
+  type: LoadBalancer
+  ipFamilyPolicy: PreferDualStack
+  externalTrafficPolicy: Cluster
+
+  selector:
+    app.kubernetes.io/name: virtualmcpserver
+    app.kubernetes.io/instance: mcp-gateway
+
+  ports:
+    - name: http
+      port: 4483
+      targetPort: http
+      protocol: TCP

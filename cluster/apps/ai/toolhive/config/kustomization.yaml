@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - mcp-group.yaml
   - virtual-mcp-server.yaml
+  - service.yaml
 
   # - http-route.yaml
   - mcp-config-oidc.yaml
