@@ -10,3 +10,4 @@ resources:
   - toolhive/ks.yaml
   - mcp
   - text-embeddings-inference/ks.yaml
+  - litellm/ks.yaml

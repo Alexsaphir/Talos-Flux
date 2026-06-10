@@ -1,0 +1,29 @@
+---
+model_list: [ ]
+
+general_settings:
+  health_check_endpoint: /v1/health
+
+router_settings:
+  routing_strategy: usage-based-routing-v2
+  redis_host: os.environ/REDIS_HOST
+
+litellm_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
+  success_callback: [ 'prometheus' ]
+  prometheus_adapter: true
+  cache: true
+  cache_params:
+    type: redis
+    host: os.environ/REDIS_HOST
+    port: os.environ/REDIS_PORT
+    namespace: litellm
+    db: 6
+    ttl: 30
+
+  drop_params: true
+  set_verbose: false
+
+environment:
+  - REDIS_HOST
+  - REDIS_PORT
