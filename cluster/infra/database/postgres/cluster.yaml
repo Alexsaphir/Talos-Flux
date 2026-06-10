@@ -33,10 +33,10 @@ spec:
     extensions:
       - name: timescaledb
         image:
-          reference: ghcr.io/vember31/timescaledb:2.27.1
+          reference: ghcr.io/vember31/timescaledb:2.27.2
       - name: timescaledb-toolkit
         image:
-          reference: ghcr.io/vember31/timescaledb-toolkit:1.22.0
+          reference: ghcr.io/vember31/timescaledb-toolkit:1.23.0
 
       - name: vchord
         image:
