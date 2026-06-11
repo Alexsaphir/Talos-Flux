@@ -40,7 +40,7 @@ spec:
           app:
             image:
               repository: public.ecr.aws/docker/library/alpine
-              tag: 3.23.4
+              tag: 3.24.0
             command:
               - '/bin/sh'
               - '-c'
