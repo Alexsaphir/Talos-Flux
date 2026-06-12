@@ -28,15 +28,15 @@ packages:
   - name: cilium/cilium-cli@v0.19.4
 
   # Kubernetes
-  - name: kubernetes/kubectl@v1.36.1
+  - name: kubernetes/kubectl@v1.36.2
   - name: kubernetes-sigs/krew@v0.5.0
   - name: brumhard/krewfile@v0.7.0
 
-  - name: helm/helm@v4.2.0
+  - name: helm/helm@v4.2.1
   - name: kubernetes-sigs/kustomize@kustomize/v5.8.1
   - name: helmfile/helmfile@v1.5.3
 
   # Infrastructure
-  - name: opentofu/opentofu@v1.12.1
+  - name: opentofu/opentofu@v1.12.2
   - name: gruntwork-io/terragrunt@v1.0.8
   - name: hashicorp/terraform@v1.15.6
