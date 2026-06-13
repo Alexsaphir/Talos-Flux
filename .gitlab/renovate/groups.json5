@@ -111,5 +111,14 @@
       },
       minimumGroupSize: 2,
     },
+    {
+      description: 'victoriametrics Group',
+      groupName: 'victoriametrics',
+      matchDatasources: ['docker'],
+      matchPackageNames: ['/victoriametrics/'],
+      group: {
+        commitMessageTopic: '{{{groupName}}} group',
+      },
+    },
   ],
 }
