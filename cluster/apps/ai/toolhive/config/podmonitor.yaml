@@ -2,12 +2,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: mcp-gateway-internal
+  name: mcp-gateway
 spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: virtualmcpserver
-      app.kubernetes.io/instance: mcp-gateway-internal
+      app.kubernetes.io/instance: mcp-gateway
 
   namespaceSelector:
     matchNames:

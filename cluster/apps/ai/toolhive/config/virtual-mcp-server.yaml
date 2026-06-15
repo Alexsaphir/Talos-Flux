@@ -19,6 +19,11 @@ spec:
       conflictResolutionConfig:
         prefixFormat: '{workload}_'
 
+    operational:
+      failureHandling:
+        healthCheckInterval: 5m
+        statusReportingInterval: 5m
+
   incomingAuth:
     type: anonymous
 
