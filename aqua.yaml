@@ -4,7 +4,7 @@
 # https://aquaproj.github.io/
 registries:
   - type: standard
-    ref: v4.525.0 # renovate: depName=aquaproj/aqua-registry
+    ref: v4.526.0 # renovate: depName=aquaproj/aqua-registry
 packages:
   # Utils
   - name: direnv/direnv@v2.37.1
@@ -34,7 +34,7 @@ packages:
 
   - name: helm/helm@v4.2.1
   - name: kubernetes-sigs/kustomize@kustomize/v5.8.1
-  - name: helmfile/helmfile@v1.5.3
+  - name: helmfile/helmfile@v1.5.4
 
   # Infrastructure
   - name: opentofu/opentofu@v1.12.2
