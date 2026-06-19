@@ -32,11 +32,11 @@ packages:
   - name: kubernetes-sigs/krew@v0.5.0
   - name: brumhard/krewfile@v0.7.0
 
-  - name: helm/helm@v4.2.1
+  - name: helm/helm@v4.2.2
   - name: kubernetes-sigs/kustomize@kustomize/v5.8.1
   - name: helmfile/helmfile@v1.5.5
 
   # Infrastructure
-  - name: opentofu/opentofu@v1.12.2
+  - name: opentofu/opentofu@v1.12.3
   - name: gruntwork-io/terragrunt@v1.0.8
   - name: hashicorp/terraform@v1.15.6
