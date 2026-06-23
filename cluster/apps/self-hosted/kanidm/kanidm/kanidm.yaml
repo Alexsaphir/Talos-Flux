@@ -8,7 +8,7 @@ spec:
   ldapPortName: ldaps
 
   # renovate: datasource=docker depName=kanidm/server
-  image: kanidm/server:1.10.3
+  image: kanidm/server:1.10.4
 
   mailSender:
     relay: 'smtps://mailpit.kube-system.svc.cluster.local:1025'
