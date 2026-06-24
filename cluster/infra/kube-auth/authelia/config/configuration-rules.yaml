@@ -39,8 +39,11 @@ access_control:
     - domain:
         - 'minio.${DOMAIN_NAME}'
         - 's3.${DOMAIN_NAME}'
+
         - 'gitlab.${DOMAIN_NAME}'
+        - 'konflate.${DOMAIN_NAME}'
         - 'renovate.${DOMAIN_NAME}'
+
         - 'plan.${DOMAIN_NAME}'
         - 'planka.${DOMAIN_NAME}'
       policy: bypass
