@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: gitlab/gitlab-ee
-              tag: 19.1.0-ee.0
+              tag: 19.1.1-ee.0
 
             env:
               TZ: ${TIMEZONE}
