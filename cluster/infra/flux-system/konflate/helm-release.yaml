@@ -28,13 +28,10 @@ spec:
       statusChecks: true
       prComments: true
       publicUrl: https://{{ .Release.Name }}.${DOMAIN_NAME}
-      mcp: false
+      mcp: true
 
     secret:
       existingSecret: '{{ .Release.Name }}-secret'
-
-    env:
-      KONFLATE_CLUSTER_PATH: cluster
 
     httpRoute:
       enabled: true
@@ -55,3 +52,7 @@ spec:
         cpu: 50m
       limits:
         memory: 1Gi
+
+    persistence:
+      enabled: true
+      existingClaim: '{{ .Release.Name }}'

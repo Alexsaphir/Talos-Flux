@@ -5,6 +5,16 @@ metadata:
   name: &app konflate
   namespace: &namespace flux-system
 spec:
+  components:
+    - ../../../components/volsync
+
+  postBuild:
+    substitute:
+      APP: *app
+      PVC_NAME: *app
+      VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_CACHE_CAPACITY: 5Gi
+
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
