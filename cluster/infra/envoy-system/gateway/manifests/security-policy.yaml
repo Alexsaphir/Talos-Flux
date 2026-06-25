@@ -11,6 +11,7 @@ spec:
 
   extAuth:
     failOpen: false
+    includeRouteMetadata: true
     headersToExtAuth:
       - accept
       - cookie
