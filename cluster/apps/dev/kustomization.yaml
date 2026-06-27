@@ -10,6 +10,4 @@ resources:
   - gitlab-runner-in2p3
   - renovate-operator
 
-  - telepresence
-
   - calibre-scrapper
