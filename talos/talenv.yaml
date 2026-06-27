@@ -2,7 +2,7 @@
 # renovate: datasource=custom.talos-factory depName=siderolabs/talos
 talosVersion: v1.13.4
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-kubernetesVersion: v1.36.1
+kubernetesVersion: v1.36.2
 
 nodeSubnetV4: 192.168.42.0/24
 nodeSubnetV6: 2a01:e0a:2a:5552::/64
