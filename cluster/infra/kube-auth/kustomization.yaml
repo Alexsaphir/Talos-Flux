@@ -9,3 +9,4 @@ replacements:
 resources:
   - lldap/ks.yaml
   - authelia/ks.yaml
+  - authelia-oidc-operator/ks.yaml
