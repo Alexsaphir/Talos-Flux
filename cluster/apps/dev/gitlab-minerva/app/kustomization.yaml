@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - external-secret.yaml
   - secret.sops.yaml
+  - oidc-claim.yaml
   - helm-release.yaml
   - tcp-route.yaml
 

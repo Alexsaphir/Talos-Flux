@@ -4,4 +4,5 @@ kind: Kustomization
 resources:
   - external-secret.yaml
   - postgres.yaml
+  - oidc-claim.yaml
   - helm-release.yaml

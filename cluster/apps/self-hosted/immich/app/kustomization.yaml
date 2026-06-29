@@ -6,6 +6,7 @@ resources:
   - external-secret.yaml
   - postgres.yaml
   - helm-release.yaml
+  - oidc-claim.yaml
 
 configMapGenerator:
   - name: immich-config-tpl

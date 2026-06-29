@@ -47,7 +47,7 @@ spec:
               AUTHELIA_TELEMETRY_METRICS_ENABLED: 'true'
               AUTHELIA_THEME: grey
 
-              X_AUTHELIA_CONFIG: /config/configuration.yaml,/config/configuration-rules.yaml
+              X_AUTHELIA_CONFIG: /config/configuration.yaml,/config/configuration-rules.yaml,/config/authelia.oidc.yaml
               X_AUTHELIA_CONFIG_FILTERS: template
 
               AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDRESS: 'ldap://lldap.kube-auth.svc.cluster.local:389'
@@ -169,3 +169,13 @@ spec:
           - path: /config/configuration-rules.yaml
             subPath: configuration-rules.yaml
             readOnly: true
+
+      oidc-config:
+        type: secret
+        name: default-oidc
+        advancedMounts:
+          authelia:
+            app:
+              - path: /config/authelia.oidc.yaml
+                subPath: authelia.oidc.yaml
+                readOnly: true

@@ -1,0 +1,25 @@
+---
+apiVersion: authelia.milas.dev/v1alpha2
+kind: OIDCClient
+metadata:
+  name: gitlab-oidc
+  annotations:
+    authelia.milas.dev/oidc-provider: kube-auth/default
+spec:
+  description: GitLab
+  public: false
+  authorization_policy: two_factor
+  preconfigured_consent_duration: 1m
+
+  scopes: [ 'openid', 'profile', 'groups', 'email' ]
+  redirect_uris: [ 'https://gitlab.${DOMAIN_NAME}/users/auth/openid_connect/callback' ]
+
+  userinfo_signing_algorithm: none
+  token_endpoint:
+    auth_method: client_secret_basic
+
+  secret_ref:
+    name: gitlab-oauth-secret
+    fields:
+      client_id: GITLAB_OAUTH_ID
+      client_secret: GITLAB_OAUTH_SECRET
