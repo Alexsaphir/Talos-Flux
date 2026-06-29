@@ -21,7 +21,7 @@ spec:
     auth_method: client_secret_basic
 
   secret_ref:
-    name: planka-secret
+    name: planka-oidc-secret
     fields:
       client_id: OIDC_CLIENT_ID
       client_secret: OIDC_CLIENT_SECRET

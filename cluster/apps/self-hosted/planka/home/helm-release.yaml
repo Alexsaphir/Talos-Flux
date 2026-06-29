@@ -43,6 +43,8 @@ spec:
             envFrom:
               - secretRef:
                   name: planka-secret
+              - secretRef:
+                  name: planka-oidc-secret
 
             env:
               DATABASE_URL:
