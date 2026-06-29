@@ -4,9 +4,7 @@ kind: Kustomization
 resources:
   - postgres.yaml
   - external-secret.yaml
-
   - grafana.yaml
-
   - service-monitor.yaml
-
   - grafana-service-account.yaml
+  - oidc-claim.yaml
