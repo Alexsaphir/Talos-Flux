@@ -4,7 +4,7 @@
 # https://aquaproj.github.io/
 registries:
   - type: standard
-    ref: v4.529.1 # renovate: depName=aquaproj/aqua-registry
+    ref: v4.530.0 # renovate: depName=aquaproj/aqua-registry
 packages:
   # Utils
   - name: direnv/direnv@v2.37.1
@@ -16,7 +16,7 @@ packages:
 
   # Secrets
   - name: FiloSottile/age@v1.3.1
-  - name: mozilla/sops@v3.13.1
+  - name: mozilla/sops@v3.13.2
   - name: bitwarden/sdk-sm@bws-v1.0.0
 
   # Talos
@@ -24,7 +24,7 @@ packages:
   - name: budimanjojo/talhelper@v3.1.12
 
   # Cluster
-  - name: fluxcd/flux2@v2.8.8
+  - name: fluxcd/flux2@v2.9.0
   - name: cilium/cilium-cli@v0.19.5
 
   # Kubernetes
