@@ -29,6 +29,7 @@ spec:
       prComments: true
       publicUrl: https://{{ .Release.Name }}.${DOMAIN_NAME}
       mcp: true
+      verifyImages: true
 
     secret:
       existingSecret: '{{ .Release.Name }}-secret'
