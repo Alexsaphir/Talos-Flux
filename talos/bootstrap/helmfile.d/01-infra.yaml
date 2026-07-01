@@ -68,7 +68,7 @@ releases:
     namespace: envoy-system
     atomic: true
     chart: oci://mirror.gcr.io/envoyproxy/gateway-helm
-    version: v1.8.1
+    version: 1.8.2
     values: [ '../templates/values.yaml.gotmpl' ]
 
   - name: openebs
