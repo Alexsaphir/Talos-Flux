@@ -23,6 +23,10 @@ spec:
     name: *app
 
   values:
+    features:
+      kopiaUi:
+        enabled: true
+
     extraVolumes:
       - name: repo
         nfs:
