@@ -4,7 +4,9 @@ kind: Kustomization
 namespace: kopiur-system
 components:
   - ../../components/namespace
+  - ../../components/kopiur/secret
 replacements:
   - path: ../../components/replacements/ks.yaml
 resources:
   - kopiur/ks.yaml
+  - repository/ks.yaml

@@ -27,7 +27,7 @@ spec:
       - name: repo
         nfs:
           server: nas.hosts.alexsaphir.com
-          path: /mnt/user/VolsyncKopia
+          path: /mnt/user/Kopiur
     extraVolumeMounts:
       - name: repo
         mountPath: /repo

@@ -1,0 +1,17 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: repository
+  namespace: kopiur-system
+spec:
+  dependsOn:
+    - name: kopiur
+
+  prune: true
+  interval: 1h
+  path: cluster/infra/kopiur-system/repository
+  sourceRef:
+    kind: GitRepository
+    name: talos-kubernetes
+    namespace: flux-system
