@@ -25,6 +25,8 @@ spec:
   driftDetection:
     mode: warn
 
+  timeout: 10m
+
   values:
     annotations:
       all:
