@@ -15,6 +15,9 @@ spec:
           server: nas.hosts.alexsaphir.com
           path: /mnt/user/Kopiur
 
+  credentialProjection:
+    allowed: true
+
   encryption:
     passwordSecretRef:
       name: kopiur-nas-secret
@@ -42,3 +45,9 @@ spec:
 
   scheduleDefaults:
     timezone: '${TIMEZONE}'
+
+  server:
+    auth:
+      insecure:
+        acknowledgeInsecure: true
+    namespace: kopiur-system

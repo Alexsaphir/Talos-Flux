@@ -8,7 +8,7 @@ spec:
   components:
     - ../../../../components/zero-scaler
     - ../../../../components/volsync
-    - ../../../../components/kopiur/backup
+    - ../../../../components/kopiur
 
   dependsOn:
     - name: rook-ceph-cluster
