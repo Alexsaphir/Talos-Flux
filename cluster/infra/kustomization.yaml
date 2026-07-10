@@ -8,7 +8,7 @@ resources:
 
   - openebs-system
   - rook-ceph
-  - kopiur-system
+  # - kopiur-system
   - volsync-system
   - minio-system
 
