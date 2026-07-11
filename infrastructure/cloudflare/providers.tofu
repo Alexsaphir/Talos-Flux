@@ -3,7 +3,7 @@ terraform {
   required_providers {
     bitwarden-secrets = {
       source  = "bitwarden/bitwarden-secrets"
-      version = "1.0.0"
+      version = "1.0.1"
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
