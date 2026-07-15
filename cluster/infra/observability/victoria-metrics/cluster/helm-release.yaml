@@ -104,8 +104,6 @@ spec:
         extraArgs:
           enableTCP6: 'true'
 
-          maxLabelsPerTimeseries: '120'
-
         storage:
           accessModes:
             - ReadWriteOnce
@@ -113,13 +111,6 @@ spec:
             requests:
               storage: 50Gi
           storageClassName: ceph-block
-
-        resources:
-          requests:
-            cpu: 100m
-            memory: 1Gi
-          limits:
-            memory: 4Gi
 
     vmalert:
       spec:
@@ -140,30 +131,18 @@ spec:
 
     vmagent:
       spec:
-        replicaCount: 2
         useStrictSecurity: true
         # scrapeInterval: 30s
         extraArgs:
           enableTCP6: 'true'
-          maxLabelsPerTimeseries: "120"
 
           promscrape.dropOriginalLabels: 'true'
           promscrape.maxScrapeSize: 50MiB
           promscrape.streamParse: 'true'
 
-        affinity:
-          podAntiAffinity:
-            preferredDuringSchedulingIgnoredDuringExecution:
-              - weight: 100
-                podAffinityTerm:
-                  topologyKey: kubernetes.io/hostname
-                  labelSelector:
-                    matchLabels:
-                      app.kubernetes.io/name: vmagent
         resources:
           requests:
-            cpu: 50m
-            memory: 256Mi
+            cpu: 150m
           limits:
             memory: 1Gi
 
