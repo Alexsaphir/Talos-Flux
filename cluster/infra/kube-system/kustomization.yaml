@@ -20,7 +20,7 @@ resources:
 
   - descheduler/ks.yaml
   - ksgate/ks.yaml
-  - reflector/ks.yaml
+  #- reflector/ks.yaml
   - reloader/ks.yaml
   - fstrim/ks.yaml
 
