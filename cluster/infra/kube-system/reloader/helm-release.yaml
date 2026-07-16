@@ -29,7 +29,7 @@ spec:
       enableHA: true
       readOnlyRootFileSystem: true
       deployment:
-        replicas: 3
+        replicas: 2
 
       podMonitor:
         enabled: true

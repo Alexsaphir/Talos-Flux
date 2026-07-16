@@ -14,7 +14,7 @@ spec:
     name: postgresql
     major: 18
 
-  instances: 3
+  instances: 2
   enablePDB: true
 
   superuserSecret:
