@@ -93,6 +93,11 @@ spec:
               ipFamilyPolicy: PreferDualStack
               externalTrafficPolicy: Local
 
+  affinity:
+    enablePodAntiAffinity: true
+    topologyKey: kubernetes.io/hostname
+    podAntiAffinityType: required
+
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
