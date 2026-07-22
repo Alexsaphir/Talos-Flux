@@ -194,3 +194,12 @@ nightlyTasks:
   missingThumbnails: true
   startTime: '00:00'
   syncQuotaUsage: true
+
+integrityChecks:
+  checksumFiles:
+    enabled: true
+    timeLimit: 270000 # 4m30 in ms
+  missingFiles:
+    enabled: true
+  untrackedFiles:
+    enabled: true
