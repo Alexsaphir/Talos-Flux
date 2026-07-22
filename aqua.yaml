@@ -4,7 +4,7 @@
 # https://aquaproj.github.io/
 registries:
   - type: standard
-    ref: v4.540.0 # renovate: depName=aquaproj/aqua-registry
+    ref: v4.541.0 # renovate: depName=aquaproj/aqua-registry
 packages:
   # Utils
   - name: direnv/direnv@v2.37.1
@@ -21,7 +21,7 @@ packages:
 
   # Talos
   - name: siderolabs/talos@v1.13.7
-  - name: budimanjojo/talhelper@v3.1.13
+  - name: budimanjojo/talhelper@v3.1.14
 
   # Cluster
   - name: fluxcd/flux2@v2.9.2
