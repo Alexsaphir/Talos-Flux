@@ -24,7 +24,7 @@ packages:
   - name: budimanjojo/talhelper@v3.1.15
 
   # Cluster
-  - name: fluxcd/flux2@v2.9.2
+  - name: fluxcd/flux2@v2.9.3
   - name: cilium/cilium-cli@v0.19.6
 
   # Kubernetes
