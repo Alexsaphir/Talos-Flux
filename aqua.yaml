@@ -16,19 +16,19 @@ packages:
 
   # Secrets
   - name: FiloSottile/age@v1.3.1
-  - name: mozilla/sops@v3.13.2
+  - name: mozilla/sops@v3.13.3
   - name: bitwarden/sdk-sm@bws-v1.0.0
 
   # Talos
   - name: siderolabs/talos@v1.13.7
-  - name: budimanjojo/talhelper@v3.1.14
+  - name: budimanjojo/talhelper@v3.1.15
 
   # Cluster
   - name: fluxcd/flux2@v2.9.2
   - name: cilium/cilium-cli@v0.19.6
 
   # Kubernetes
-  - name: kubernetes/kubectl@v1.36.2
+  - name: kubernetes/kubectl@v1.36.3
   - name: kubernetes-sigs/krew@v0.5.0
   - name: brumhard/krewfile@v0.7.0
 
