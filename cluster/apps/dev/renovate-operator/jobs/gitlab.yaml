@@ -97,3 +97,6 @@ spec:
       secretRef:
         name: renovate-gitlab-webhook-secret
         key: webhook-token
+
+    sync:
+      enabled: true
