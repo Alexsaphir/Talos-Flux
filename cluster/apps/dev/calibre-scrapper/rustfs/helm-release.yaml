@@ -1,0 +1,120 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: rustfs
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 5.0.1
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app rustfs
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: *app
+
+  values:
+    controllers:
+      rustfs:
+        containers:
+          app:
+            image:
+              repository: rustfs/rustfs
+              tag: 1.0.0-beta.10@sha256:60f4f2f41ce95216f8cac676e69f9d90c0bfec458a3bc7fd7fb9b7c2452ac57a
+            args: [ '/data' ]
+
+            envFrom:
+              - secretRef:
+                  name: '{{ .Release.Name }}-secret'
+
+            env:
+              RUSTFS_ADDRESS: ':9000'
+              RUSTFS_CONSOLE_ADDRESS: ':9001'
+              RUSTFS_CONSOLE_ENABLE: 'true'
+
+              RUSTFS_BROWSER_REDIRECT_URL: 'https://rustfs.${DOMAIN_NAME}'
+              RUSTFS_SERVER_DOMAINS: 's3fs.${DOMAIN_NAME}'
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 9000
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 6
+              readiness: *probes
+              startup:
+                enabled: false
+
+            resources:
+              requests:
+                memory: 256Mi
+                cpu: 100m
+              limits:
+                memory: 2Gi
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: [ 'ALL' ] }
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
+    service:
+      app:
+        ports:
+          http:
+            port: &http 9001
+          s3:
+            port: *port
+
+    route:
+      app:
+        hostnames: [ 'rustfs.${DOMAIN_NAME}' ]
+        parentRefs:
+          - name: envoy
+            namespace: envoy-system
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *http
+      s3:
+        hostnames: [ 's3fs.${DOMAIN_NAME}' ]
+        parentRefs:
+          - name: envoy
+            namespace: envoy-system
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+
+    persistence:
+      data:
+        existingClaim: rustfs
+        globalMounts:
+          - path: /data
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp

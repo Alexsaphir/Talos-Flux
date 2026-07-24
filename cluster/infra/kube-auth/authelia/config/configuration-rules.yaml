@@ -39,6 +39,8 @@ access_control:
     - domain:
         - 'minio.${DOMAIN_NAME}'
         - 's3.${DOMAIN_NAME}'
+        - 's3fs.${DOMAIN_NAME}'
+        - 'rustfs.${DOMAIN_NAME}'
 
         - 'gitlab.${DOMAIN_NAME}'
         - 'konflate.${DOMAIN_NAME}'
