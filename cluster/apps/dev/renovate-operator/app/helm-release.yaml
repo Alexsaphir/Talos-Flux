@@ -36,9 +36,23 @@ spec:
         sessionSecretKey: session-secret
         redirectUrl: https://renovate.${DOMAIN_NAME}/auth/callback
 
-    valkey:
+    externalKeyValueStore:
+      existingSecret:
+        name: *secret
+        urlKey: dragonfly-url
+
+    s3:
+      bucket: renovate
+
+      region: us-east-1
+      endpoint: https://s3.alexsaphir.com
+      forcePathStyle: true
+      # -- Object key prefix used by the operator log store (LOG_STORE_MODE=s3)
+      logPrefix: 'logs'
+      # -- Object key prefix forwarded to Renovate jobs as RENOVATE_S3_URL
+      cachePrefix: 'cache-operator'
+
       existingSecret: *secret
-      existingSecretKey: 'dragonfly-url'
 
     rbac:
       ownNamespaceOnly: true
@@ -51,8 +65,9 @@ spec:
       deleteSuccessfulJobs: true
 
       logStorage:
-        mode: memory
+        mode: s3
       forwardCacheToJobs: true
+      forwardS3CacheToJobs: true
 
     metrics:
       enabled: true

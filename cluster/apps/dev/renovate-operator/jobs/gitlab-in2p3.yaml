@@ -17,23 +17,10 @@ spec:
         DOCKER_HUB_USER: '{{ .DOCKER_HUB_USER }}'
         DOCKER_HUB_PASSWORD: '{{ .DOCKER_HUB_PASSWORD }}'
 
-        # s3 storage
-        AWS_ENDPOINT_URL: 'https://s3.alexsaphir.com'
-        AWS_ACCESS_KEY_ID: '{{ .AWS_ACCESS_KEY_ID }}'
-        AWS_SECRET_ACCESS_KEY: '{{ .AWS_SECRET_ACCESS_KEY }}'
-        AWS_REGION: us-east-1
-        RENOVATE_S3_PATH_STYLE: 'true'
-
         # renovate bot
         RENOVATE_TOKEN: '{{ .RENOVATE_GITLAB_PAT }}'
         RENOVATE_GIT_AUTHOR: '{{ .RENOVATE_GIT_AUTHOR }}'
         RENOVATE_GIT_PRIVATE_KEY: '{{ .RENOVATE_GIT_PRIVATE_KEY }}'
-
-        RENOVATE_REPOSITORY_CACHE: 'enabled'
-        RENOVATE_REPOSITORY_CACHE_TYPE: 's3://renovate/cache-operator/'
-
-        #RENOVATE_REPORT_TYPE: 's3'
-        #RENOVATE_REPORT_PATH: 's3://renovate/report-operator/'
 
         RENOVATE_PAGINATE_ALL: 'true'
   dataFrom:
