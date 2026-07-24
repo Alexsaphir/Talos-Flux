@@ -43,7 +43,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dani-garcia/vaultwarden
-              tag: 1.36.0
+              tag: 1.37.0
 
             envFrom:
               - secretRef:
