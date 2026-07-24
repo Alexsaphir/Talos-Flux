@@ -11,6 +11,12 @@ spec:
   policy:
     rebootMode: powercycle
 
+  silences:
+    - matchers:
+        - name: alertname
+          value: ^(CephDaemonSlowOps|CephHealthWarning|CephMonDown|CephMonDownQuorumAtRisk|CephOSDDown|CephOSDDownHigh|CephOSDHostDown|CephSlowOps|KubeNodeEviction|KubeNodeNotReady|KubeNodeReadinessFlapping|KubeNodeUnreachable|TargetDown)$
+          matchType: "=~"
+
   healthChecks:
     - apiVersion: v1
       kind: Node
