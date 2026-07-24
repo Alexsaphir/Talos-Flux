@@ -37,14 +37,23 @@ spec:
             env:
               - { name: TZ, value: '${TIMEZONE}' }
 
-              - { name: MAX_METRICS, value: 0 }
+              # Upstream safeguard against metric explosion eating CPU/RAM.
+              # 0 disables it entirely — keep the default limit in place.
+              - { name: MAX_METRICS, value: 2000 }
               - { name: LOG_LEVEL, value: INFO }
-              - { name: LOG_MQTT_MESSAGE, value: 'True' }
+              - { name: LOG_MQTT_MESSAGE, value: 'False' }
               - {
                 name: MQTT_ADDRESS,
                 value: 'mosquitto.{{ .Release.Namespace }}.svc.cluster.local',
               }
               - { name: MQTT_TOPIC, value: 'zigbee2mqtt/#' }
+              # Drop the large/high-churn bridge blobs (fnmatch globs).
+              # bridge/info and bridge/health are kept — they carry the
+              # zigbee2mqtt process and per-device health metrics.
+              - {
+                name: MQTT_IGNORED_TOPICS,
+                value: 'zigbee2mqtt/bridge/devices,zigbee2mqtt/bridge/definitions,zigbee2mqtt/bridge/groups,zigbee2mqtt/bridge/logging,zigbee2mqtt/bridge/response/*',
+              }
               - { name: MQTT_V5_PROTOCOL, value: 'True' }
               - { name: PROMETHEUS_PORT, value: &port 3321 }
               - { name: PROMETHEUS_PREFIX, value: 'zigbee2mqtt_' }
