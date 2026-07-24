@@ -59,6 +59,8 @@ spec:
 
     webhook:
       enabled: true
+      baseUrl: 'https://renovate.${DOMAIN_NAME}'
+
 
     config:
       defaultJobBackoffLimit: 5
