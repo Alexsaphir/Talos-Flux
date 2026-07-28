@@ -59,7 +59,7 @@ metadata:
 spec:
   parallelism: 4
   schedule: '0 */2 * * *'
-  image: ghcr.io/renovatebot/renovate:43.285.6
+  image: ghcr.io/renovatebot/renovate:43.285.7
 
   provider:
     name: gitlab
