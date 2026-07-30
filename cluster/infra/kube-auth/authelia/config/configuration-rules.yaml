@@ -3,8 +3,10 @@
 access_control:
   default_policy: deny
   networks:
-    - name: internal
+    - name: local
       networks: [ '192.168.0.0/16' ]
+    - name: internal
+      networks: [ '10.42.0.0/16', 'fdd5:aa8:9535:42::/108' ]
 
   rules:
     - domain:
@@ -78,6 +80,14 @@ access_control:
       resources:
         - '^/api([/?].*)?$'
 
+
+    - domain:
+        - 'ocharted.${DOMAIN_NAME}'
+      policy: bypass
+      networks: [ 'internal', 'local' ]
+
+
+    # Catch all
     - domain:
         - '*.${DOMAIN_NAME}'
       policy: two_factor
