@@ -3,8 +3,6 @@
 access_control:
   default_policy: deny
   networks:
-    - name: local
-      networks: [ '192.168.0.0/16', '2a01:e0a:2a:5551::/64' ]
     - name: internal
       networks: [ '10.42.0.0/16', 'fdd5:aa8:9535:42::/108' ]
 
@@ -84,7 +82,7 @@ access_control:
     - domain:
         - 'ocharted.${DOMAIN_NAME}'
       policy: bypass
-      networks: [ 'internal', 'local' ]
+      networks: [ 'internal' ]
 
 
     # Catch all
