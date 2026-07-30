@@ -10,5 +10,12 @@ module.exports = {
       username: process.env.DOCKER_HUB_USER,
       password: process.env.DOCKER_HUB_PASSWORD,
     },
+    {
+      description: "Authenticate against the ocharted OCI registry",
+      matchHost: "ocharted.alexsaphir.com",
+      hostType: "docker",
+      username: "{{ secrets.OCHARTED_USERNAME }}",
+      password: "{{ secrets.OCHARTED_PASSWORD }}",
+    },
   ],
 };

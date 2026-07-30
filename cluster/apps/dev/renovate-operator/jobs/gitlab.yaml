@@ -23,6 +23,9 @@ spec:
         RENOVATE_GIT_PRIVATE_KEY: '{{ .RENOVATE_GIT_PRIVATE_KEY }}'
 
         RENOVATE_PAGINATE_ALL: 'true'
+
+        OCHARTED_USERNAME: '{{ .OCHARTED_USERNAME }}'
+        OCHARTED_PASSWORD: '{{ .OCHARTED_PASSWORD }}'
   dataFrom:
     - extract:
         key: docker-hub
@@ -30,6 +33,8 @@ spec:
         key: renovate-gitlab
     - extract:
         key: renovate-gitlab-bot
+    - extract:
+        key: ocharted
 
 ---
 apiVersion: external-secrets.io/v1

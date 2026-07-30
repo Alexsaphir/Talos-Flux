@@ -10,7 +10,7 @@ spec:
     operation: copy
   ref:
     tag: 3.13.1
-  url: oci://ghcr.io/home-operations/charts-mirror/metrics-server
+  url: oci://ocharted.alexsaphir.com/kubernetes-sigs.github.io/metrics-server/metrics-server
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
