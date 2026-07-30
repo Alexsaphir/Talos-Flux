@@ -9,6 +9,7 @@ replacements:
 resources:
   - cilium/ks.yaml
   - coredns/ks.yaml
+  - ocharted/ks.yaml
 
   - spegel/ks.yaml
   - metrics-server/ks.yaml

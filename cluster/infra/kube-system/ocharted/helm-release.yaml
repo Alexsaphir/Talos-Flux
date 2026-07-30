@@ -1,0 +1,59 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: ocharted
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.1.2
+  url: oci://ghcr.io/home-operations/charts/ocharted
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app ocharted
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: *app
+
+  values:
+    replicaCount: 2
+    podDisruptionBudget:
+      enabled: true
+
+    auth:
+      existingSecret: ocharted-secret
+      bypassNetworks:
+        - 10.42.0.0/16
+        - fdd5:aa8:9535:42::/108
+
+    deploymentAnnotations:
+      reloader.stakater.com/auto: 'true'
+
+    httpRoute:
+      enabled: true
+      annotations:
+        gatus.home-operations.com/endpoint: |-
+          path: /healthz
+          conditions: ["[STATUS] == 200"]
+      hostnames: [ '{{ .Release.Name }}.${DOMAIN_NAME}' ]
+      parentRefs:
+        - name: envoy
+          namespace: envoy-system
+
+
+    monitoring:
+      serviceMonitor:
+        enabled: true
+
+    resources:
+      requests:
+        cpu: 10m
+      limits:
+        memory: 512Mi
