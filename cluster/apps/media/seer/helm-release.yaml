@@ -86,8 +86,6 @@ spec:
             resources:
               requests:
                 cpu: 10m
-              limits:
-                memory: 2Gi
 
     defaultPodOptions:
       securityContext:
