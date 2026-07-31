@@ -33,6 +33,9 @@ spec:
         reloader.stakater.com/search: 'true'
 
     cephClusterSpec:
+      cephConfig:
+        mon:
+          mon_cluster_log_level: info
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
       crashCollector:
