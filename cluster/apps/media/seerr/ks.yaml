@@ -21,7 +21,7 @@ spec:
 
   prune: true
   interval: 1h
-  path: cluster/apps/media/seer
+  path: cluster/apps/media/seerr
   sourceRef:
     kind: GitRepository
     name: talos-kubernetes

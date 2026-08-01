@@ -118,7 +118,7 @@ services:
         url: 'https://plex.${DOMAIN_NAME}/web/index.html'
         target: '_top'
 
-      - name: 'Seer'
+      - name: 'Seerr'
         logo: 'https://raw.githubusercontent.com/NX211/homer-icons/master/svg/overseerr.svg'
         subtitle: ''
         url: 'https://seer.${DOMAIN_NAME}'

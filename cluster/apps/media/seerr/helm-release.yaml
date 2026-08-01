@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: seer
+  name: seerr
 spec:
   interval: 1h
   layerSelector:
@@ -15,16 +15,16 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: seer
+  name: seerr
 spec:
   interval: 15m
   chartRef:
     kind: OCIRepository
-    name: seer
+    name: seerr
 
   values:
     controllers:
-      seer:
+      seerr:
         annotations:
           reloader.stakater.com/auto: 'true'
         containers:
@@ -35,14 +35,14 @@ spec:
 
             env:
               TZ: '${TIMEZONE}'
-              LOG_LEVEL: 'info'
-              PORT: &port 80
+              LOG_LEVEL: 'debug'
+              PORT: &port 8000
 
               DB_TYPE: postgres
               DB_HOST:
                 valueFrom:
                   secretKeyRef:
-                    name: &db-secret 'database-{{ .Release.Name }}'
+                    name: &db-secret 'database-seer'
                     key: HOSTNAME
               DB_NAME:
                 valueFrom:
@@ -106,21 +106,21 @@ spec:
         annotations:
           gethomepage.dev/enabled: 'true'
           gethomepage.dev/icon: seerr.svg
-          gethomepage.dev/name: Seer
+          gethomepage.dev/name: Seerr
           gethomepage.dev/group: Media
           gethomepage.dev/weight: '-80'
           gatus.home-operations.com/endpoint: |-
             conditions: ['[STATUS] == 200']
             group: media
         hostnames:
-          - '{{ .Release.Name }}.${DOMAIN_NAME}'
+          - 'seer.${DOMAIN_NAME}'
         parentRefs:
           - name: envoy
             namespace: envoy-system
 
     persistence:
       config:
-        existingClaim: '{{ .Release.Name }}'
+        existingClaim: 'seer'
         globalMounts:
           - path: /app/config
       tmp:

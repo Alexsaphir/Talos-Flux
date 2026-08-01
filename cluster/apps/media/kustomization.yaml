@@ -12,7 +12,7 @@ resources:
   - plex-auto-languages/ks.yaml
   - plex-image-cleanup/ks.yaml
 
-  - seer/ks.yaml
+  - seerr/ks.yaml
   - tautulli/ks.yaml
 
   - arr
