@@ -8,7 +8,22 @@ spec:
     - dnsName: envoy.talos.${DOMAIN_NAME}
       recordType: AAAA
       targets:
-        - 2a01:e0a:2a:5557::43:100
+        - 2a01:e0a:11a7:a4e7::43:100
+    - dnsName: envoy.talos.${DOMAIN_NAME}
+      recordType: A
+      targets:
+        - 82.66.189.53
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: talos
+spec:
+  endpoints:
+    - dnsName: envoy.talos.${DOMAIN_NAME}
+      recordType: AAAA
+      targets:
+        - 2a01:e0a:11a7:a4e7::43:100
     - dnsName: envoy.talos.${DOMAIN_NAME}
       recordType: A
       targets:
