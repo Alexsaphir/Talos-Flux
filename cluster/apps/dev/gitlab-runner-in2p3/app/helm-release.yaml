@@ -83,6 +83,12 @@ spec:
       # language=toml
       config: |
         [[runners]]
+        executor = "kubernetes"
+        limit = 4
+        request_concurrency = 4
+        environment = [
+          "FF_USE_ADVANCED_POD_SPEC_CONFIGURATION=true",
+        ]
         [runners.cache]
         Type = "s3"
         Shared = true
@@ -92,6 +98,29 @@ spec:
         BucketName = "gitlab-runner"
         BucketLocation = "us-east-1"
         AuthenticationType = "access-key"
+        # FF_* flags keep Kubernetes executor behavior safer and more
+        # diagnosable: entrypoint parity, pod event logging, token-free Git
+        # URLs, stricter Bash exit handling, script log sections, failed-cache
+        # cleanup, and predictable TLS-chain behavior.
+        # DOCKER_CONFIG: defense-in-depth default for Kaniko/Buildah jobs.
+        # The build pod runs as uid 1000 (PSS=restricted), but the kaniko
+        # image's /kaniko directory is root-owned 0755 — so writing Docker
+        # auth to the default /kaniko/.docker/config.json fails with
+        # `Permission denied` in step_script. /tmp is mounted as a
+        # writable emptyDir on every build pod, and kaniko's executor
+        # honors $DOCKER_CONFIG ahead of its /kaniko/.docker default.
+        environment = [
+          "FF_USE_FASTZIP=true",
+          "DOCKER_CONFIG=/tmp/.docker",
+          "FF_KUBERNETES_HONOR_ENTRYPOINT=true",
+          "FF_PRINT_POD_EVENTS=true",
+          "FF_GIT_URLS_WITHOUT_TOKENS=true",
+          "FF_ENABLE_BASH_EXIT_CODE_CHECK=true",
+          "FF_USE_NEW_BASH_EVAL_STRATEGY=true",
+          "FF_SCRIPT_SECTIONS=true",
+          "FF_CLEAN_UP_FAILED_CACHE_EXTRACT=true",
+          "FF_RESOLVE_FULL_TLS_CHAIN=false",
+        ]
 
         [runners.kubernetes]
         namespace = "{{.Release.Namespace}}"
