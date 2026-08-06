@@ -6,6 +6,8 @@ nginx['listen_port'] = 80
 nginx['listen_https'] = false
 nginx['client_max_body_size'] = '2g'
 nginx['error_log_level'] = 'error'
+nginx['worker_processes'] = 6
+
 
 gitlab_rails['gitlab_shell_ssh_port'] = 2222
 
@@ -61,7 +63,7 @@ gitlab_rails['impersonation_enabled'] = true
 # Reduce ressource
 # https://docs.gitlab.com/omnibus/settings/rpi.html
 # https://docs.gitlab.com/omnibus/settings/memory_constrained_envs.html
-puma['worker_processes'] = 6
+# puma['worker_processes'] = 8
 sidekiq['concurrency'] = 20
 
 # Set to false to reduce ressource usage
