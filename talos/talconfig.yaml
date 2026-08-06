@@ -60,6 +60,7 @@ nodes:
             - siderolabs/nfsrahead
             - siderolabs/nvidia-container-toolkit-production
             - siderolabs/nvidia-open-gpu-kernel-modules-production
+            - siderolabs/kata-containers
 
         extraKernelArgs: &extraKernelArgs
           - intel_iommu=on
@@ -114,6 +115,7 @@ nodes:
             - siderolabs/gasket-driver
             - siderolabs/lldpd
             - siderolabs/nfsrahead
+            - siderolabs/kata-containers
 
         extraKernelArgs: *extraKernelArgs
 
@@ -148,6 +150,7 @@ nodes:
             - siderolabs/gasket-driver
             - siderolabs/lldpd
             - siderolabs/nfsrahead
+            - siderolabs/kata-containers
 
         extraKernelArgs: *extraKernelArgs
 

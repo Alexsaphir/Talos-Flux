@@ -75,7 +75,7 @@ spec:
     # https://docs.cilium.io/en/stable/operations/performance/tuning/#ebpf-host-routing
     bpfClockProbe: true
     bpf:
-      datapathMode: netkit
+      datapathMode: veth
       masquerade: true # Required for installNoConntrackIptablesRules
       preallocateMaps: true
 
