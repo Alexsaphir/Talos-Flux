@@ -91,15 +91,7 @@ spec:
         [runners.kubernetes]
         namespace = "{{.Release.Namespace}}"
         image = "ubuntu:22.04"
-        privileged = false
-        # Runs every job pod on this runner inside a Kata microVM
-        # (siderolabs/kata-containers extension + the "kata" RuntimeClass
-        # in cluster/infra/kube-system/kata-containers). There's no
-        # per-job override for this setting, so it applies cluster-wide to
-        # this runner - deliberate, since this is a 3-node all-controlPlane
-        # cluster with no dedicated CI worker pool: privileged pods (the
-        # dind-rootless service below) would otherwise share a kernel with
-        # etcd/control-plane. Trade-off is a microVM per job.
+        privileged = true
         runtime_class_name = "kata"
         # FF_* flags keep Kubernetes executor behavior safer and more
         # diagnosable: entrypoint parity, pod event logging, token-free Git
@@ -119,22 +111,3 @@ spec:
           "FF_CLEAN_UP_FAILED_CACHE_EXTRACT=true",
           "FF_RESOLVE_FULL_TLS_CHAIN=false",
         ]
-
-        # Job script runs here — no extra capabilities, never privileged,
-        # regardless of what a service container needs.
-        [runners.kubernetes.build_container_security_context]
-          privileged = true
-
-        # docker:*-dind-rootless still needs privileged to set up its own
-        # namespaces/cgroups (upstream: "just like the regular dind images,
-        # --privileged is required for Docker-in-Docker to function
-        # properly"). The security win over classic dind is narrower: the
-        # daemon inside runs as uid 1000 via user-namespace remapping rather
-        # than host root, so a compromised daemon doesn't get host-root
-        # capabilities the way classic privileged dind does. Scoped to
-        # service containers only — never the build container above. Any
-        # service container on this runner gets privileged — acceptable
-        # since this runner is only used for trusted projects, with Kata
-        # (runtime_class_name above) containing the blast radius regardless.
-        [runners.kubernetes.service_container_security_context]
-          privileged = true

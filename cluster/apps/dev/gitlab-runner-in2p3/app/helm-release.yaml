@@ -94,9 +94,6 @@ spec:
         Shared = true
         Path = "in2p3"
         [runners.cache.s3]
-        ServerAddress = "s3.alexsaphir.com"
-        BucketName = "gitlab-runner"
-        BucketLocation = "us-east-1"
         AuthenticationType = "access-key"
         # FF_* flags keep Kubernetes executor behavior safer and more
         # diagnosable: entrypoint parity, pod event logging, token-free Git
@@ -125,4 +122,5 @@ spec:
         [runners.kubernetes]
         namespace = "{{.Release.Namespace}}"
         image = "ubuntu:22.04"
-        privileged = false
+        privileged = true
+        runtime_class_name = "kata"

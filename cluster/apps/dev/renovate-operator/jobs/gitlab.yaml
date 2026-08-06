@@ -85,6 +85,7 @@ spec:
       mountPath: /config/config.js
       subPath: config.js
 
+  runtimeClassName: kata
   resources:
     requests:
       cpu: 100m
