@@ -63,8 +63,8 @@ gitlab_rails['impersonation_enabled'] = true
 # Reduce ressource
 # https://docs.gitlab.com/omnibus/settings/rpi.html
 # https://docs.gitlab.com/omnibus/settings/memory_constrained_envs.html
-# puma['worker_processes'] = 8
-sidekiq['concurrency'] = 20
+puma['worker_processes'] = 8
+sidekiq['concurrency'] = 40
 
 # Set to false to reduce ressource usage
 prometheus_monitoring['enable'] = false
