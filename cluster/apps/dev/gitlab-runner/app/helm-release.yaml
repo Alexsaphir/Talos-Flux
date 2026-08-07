@@ -83,25 +83,8 @@ spec:
       # language=toml
       config: |
         [[runners]]
-        [runners.cache]
-        Type = "s3"
-        [runners.cache.s3]
-        AuthenticationType = "access-key"
-
-        [runners.kubernetes]
-        namespace = "{{.Release.Namespace}}"
-        image = "ubuntu:22.04"
-        privileged = true
-        runtime_class_name = "kata"
-        # FF_* flags keep Kubernetes executor behavior safer and more
-        # diagnosable: entrypoint parity, pod event logging, token-free Git
-        # URLs, stricter Bash exit handling, script log sections, failed-cache
-        # cleanup, and predictable TLS-chain behavior.
         environment = [
-          # Plaintext is fine here: the dind service is only reachable over
-          # the pod's loopback/service network, never outside the pod.
-          "DOCKER_TLS_CERTDIR=",
-          "DOCKER_HOST=tcp://docker:2375",
+          "FF_USE_ADVANCED_POD_SPEC_CONFIGURATION=true",
           "FF_USE_FASTZIP=true",
           "FF_KUBERNETES_HONOR_ENTRYPOINT=true",
           "FF_PRINT_POD_EVENTS=true",
@@ -110,4 +93,18 @@ spec:
           "FF_SCRIPT_SECTIONS=true",
           "FF_CLEAN_UP_FAILED_CACHE_EXTRACT=true",
           "FF_RESOLVE_FULL_TLS_CHAIN=false",
+          "FF_USE_ADVANCED_POD_SPEC_CONFIGURATION=true"
         ]
+
+        [runners.cache]
+        Type = "s3"
+        [runners.cache.s3]
+        AuthenticationType = "access-key"
+
+        [runners.kubernetes]
+        namespace = "{{.Release.Namespace}}"
+        image = "ubuntu:22.04"
+
+        privileged = false
+        runtime_class_name = "kata"
+        automount_service_account_token = false
