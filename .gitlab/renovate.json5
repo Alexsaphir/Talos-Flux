@@ -1,7 +1,10 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
-  extends: [
-    'github>home-operations/renovate-presets#5.0.0',
+  extends: ["github>home-operations/renovate-presets#6.0.0",
+    "github>home-operations/renovate-presets//apps/cnpg.json5#6.0.0",
+    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5#6.0.0",
+    "github>home-operations/renovate-presets//apps/phanpy.json5#6.0.0",
+    "github>home-operations/renovate-presets//apps/talosFactory.json5#6.0.0",
     'github>aquaproj/aqua-renovate-config#2.13.0',
     'local>Homelab/Talos-Flux//.gitlab/renovate/groups.json5',
     'local>Homelab/Talos-Flux//.gitlab/renovate/labels.json5',
