@@ -36,21 +36,21 @@ spec:
     name: cilium-operator-dashboard
     key: cilium-operator-dashboard.json
 
----
-apiVersion: grafana.integreatly.org/v1beta1
-kind: GrafanaDashboard
-metadata:
-  name: hubble
-spec:
-  allowCrossNamespaceImport: true
-  instanceSelector:
-    matchLabels:
-      grafana.internal/instance: grafana
-
-  datasources:
-    - datasourceName: VictoriaMetrics
-      inputName: DS_PROMETHEUS
-
-  configMapRef:
-    name: hubble-dashboard
-    key: hubble-dashboard.json
+#---
+#apiVersion: grafana.integreatly.org/v1beta1
+#kind: GrafanaDashboard
+#metadata:
+#  name: hubble
+#spec:
+#  allowCrossNamespaceImport: true
+#  instanceSelector:
+#    matchLabels:
+#      grafana.internal/instance: grafana
+#
+#  datasources:
+#    - datasourceName: VictoriaMetrics
+#      inputName: DS_PROMETHEUS
+#
+#  configMapRef:
+#    name: hubble-dashboard
+#    key: hubble-dashboard.json
