@@ -28,11 +28,15 @@ spec:
 
       # https://github.com/dani-garcia/vaultwarden/blob/main/.env.template#L343-L356
       feature_flags:
-        - autofill-v2
+        # Key Management Team
         - ssh-key-vault-item
-        - ssh-agent
-        - fido2-vault-credentials
-        - inline-menu-positioning-improvements
+        - ssh-agent-v2
+        - pm-26340-linux-biometrics-v2
+        # Architecture
+        - desktop-ui-migration-milestone-1
+        - desktop-ui-migration-milestone-2
+        - desktop-ui-migration-milestone-3
+        - desktop-ui-migration-milestone-4
 
     controllers:
       vaultwarden:
