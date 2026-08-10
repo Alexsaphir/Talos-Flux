@@ -38,6 +38,8 @@ spec:
               LOG_LEVEL: 'debug'
               PORT: &port 8000
 
+              DB_LOG_QUERIES: 'true'
+
               DB_TYPE: postgres
               DB_HOST:
                 valueFrom:
