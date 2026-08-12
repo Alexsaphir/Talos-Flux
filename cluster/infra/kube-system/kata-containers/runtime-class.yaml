@@ -4,3 +4,7 @@ kind: RuntimeClass
 metadata:
   name: kata
 handler: kata
+overhead:
+  podFixed:
+    memory: '130Mi'
+    cpu: '10m'
