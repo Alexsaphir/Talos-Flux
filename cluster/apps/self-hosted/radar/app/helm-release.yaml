@@ -25,8 +25,28 @@ spec:
   values:
     fullnameOverride: *app
 
+    rbac:
+      traffic: true
+      metrics: true
+      podLogs: true
+      additionalCrdGroups:
+        - cilium.io
+        - dragonflydb.io
+        - policy
+        - policy.networking.k8s.io
+        - postgresql.cnpg.io
+        - volsync.backube
+
     mcp:
       enabled: false
 
     traffic:
       prometheusUrl: http://vmsingle-victoria-metrics.observability.svc.cluster.local:8428
+
+    httpRoute:
+      enabled: true
+      # noinspection KubernetesUnknownValues
+      hostnames: [ 'radar.${DOMAIN_NAME}' ]
+      parentRefs:
+        - name: envoy
+          namespace: envoy-system
