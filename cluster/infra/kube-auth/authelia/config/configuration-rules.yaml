@@ -6,6 +6,9 @@ access_control:
     - name: internal
       networks: [ '10.42.0.0/16', 'fdd5:aa8:9535:42::/108' ]
 
+    - name: local
+      networks: [ '192.168.0.0/24', '2a01:e0a:11a7:a4e1::/64' ]
+
   rules:
     - domain:
         - '${DOMAIN_NAME}'
@@ -82,8 +85,7 @@ access_control:
     - domain:
         - 'ocharted.${DOMAIN_NAME}'
       policy: bypass
-      networks: [ 'internal' ]
-
+      networks: [ 'internal', 'local' ]
 
     # Catch all
     - domain:
