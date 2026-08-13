@@ -29,12 +29,11 @@ spec:
       traffic: true
       metrics: true
       podLogs: true
+      portForward: true
       additionalCrdGroups:
-        - cilium.io
         - dragonflydb.io
         - policy
         - policy.networking.k8s.io
-        - postgresql.cnpg.io
         - volsync.backube
 
     mcp:
