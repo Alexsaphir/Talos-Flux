@@ -29,7 +29,7 @@ spec:
       traffic: true
       metrics: true
       podLogs: true
-      portForward: true
+      # portForward: true
       additionalCrdGroups:
         - dragonflydb.io
         - policy
