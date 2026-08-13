@@ -170,16 +170,13 @@ spec:
 
     operator:
       replicas: 2
-
       rollOutPods: true
 
       dashboards:
         enabled: true
 
       prometheus:
-        metricsService: true
         enabled: true
-        port: 9963
         serviceMonitor:
           enabled: true
 
