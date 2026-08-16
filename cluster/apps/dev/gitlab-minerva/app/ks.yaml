@@ -3,11 +3,11 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app gitlab-minerva
-  namespace: &namespace gitlab-minerva
+  namespace: gitlab-minerva
 spec:
   components:
     - ../../../../components/volsync
-    - ../../../../components/kopiur/backup
+    # - ../../../../components/kopiur/backup
 
   postBuild:
     substitute:
@@ -15,9 +15,10 @@ spec:
       PVC_NAME: *app
       VOLSYNC_CAPACITY: 100Gi
       VOLSYNC_CACHE_CAPACITY: 100Gi
-      KOPIUR_PUID: 0
-      KOPIUR_PGID: 0
-      KOPIUR_RUNASNONROOT: false
+      KOPIUR_PUID: '0'
+      KOPIUR_PGID: '0'
+      KOPIUR_RUNASNONROOT: 'false'
+      KOPIUR_PRIVILEGEDMODE: 'true'
 
   #  healthChecks:
   #    - apiVersion: helm.toolkit.fluxcd.io/v2

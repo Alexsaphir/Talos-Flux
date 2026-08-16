@@ -24,6 +24,7 @@ spec:
       VOLSYNC_STORAGECLASS: ceph-filesystem
       VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
       VOLSYNC_SNAP_ACCESSMODES: ReadOnlyMany
+      KOPIUR_SNAPSHOTCLASS: csi-ceph-filesystem
 
   prune: true
   interval: 1h

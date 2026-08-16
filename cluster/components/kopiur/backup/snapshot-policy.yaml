@@ -20,6 +20,7 @@ spec:
       runAsUser: ${KOPIUR_PUID:=1000}
       runAsGroup: ${KOPIUR_PGID:=1000}
       runAsNonRoot: ${KOPIUR_RUNASNONROOT:=true}
+    privilegedMode: ${KOPIUR_PRIVILEGEDMODE:=false}
 
   repository:
     kind: ClusterRepository
