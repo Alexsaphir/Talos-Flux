@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: tandoor-recipes
 components:
   - ../../../components/namespace
+  - ../../../components/kopiur/secret
 replacements:
   - path: ../../../components/replacements/ks.yaml
 resources:
