@@ -15,33 +15,11 @@ spec:
           server: nas.hosts.alexsaphir.com
           path: /mnt/user/Kopiur
 
-  credentialProjection:
-    allowed: true
-
   encryption:
     passwordSecretRef:
-      name: kopiur-nas-secret
+      name: kopiur-repository-secret
       namespace: kopiur-system
       key: KOPIA_PASSWORD
-
-  moverDefaults:
-    cache:
-      capacity: 1Mi
-      mode: Ephemeral
-      storageClassName: openebs-hostpath
-
-    podSecurityContext:
-      fsGroup: 1000
-      fsGroupChangePolicy: OnRootMismatch
-
-    scratch:
-      capacity: 1Mi
-      storageClassName: openebs-hostpath
-
-    securityContext:
-      runAsUser: 1000
-      runAsGroup: 1000
-    ttlSecondsAfterFinished: 300
 
   scheduleDefaults:
     timezone: '${TIMEZONE}'
