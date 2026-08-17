@@ -6,6 +6,12 @@ metadata:
   annotations:
     kopiur.home-operations.com/allow-identity-change: 'true'
 spec:
+  copyMethod: Snapshot
+  volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=csi-ceph-blockpool}
+  sources:
+    - pvc:
+        name: ${PVC_NAME}
+
   compression:
     compressor: zstd
 
@@ -14,13 +20,9 @@ spec:
       capacity: ${KOPIUR_CAPACITY:=5Gi}
       mode: Persistent
       storageClassName: openebs-hostpath
-    podSecurityContext:
-      fsGroup: ${KOPIUR_PGID:=1000}
     securityContext:
       runAsUser: ${KOPIUR_PUID:=1000}
       runAsGroup: ${KOPIUR_PGID:=1000}
-      runAsNonRoot: ${KOPIUR_RUNASNONROOT:=true}
-    privilegedMode: ${KOPIUR_PRIVILEGEDMODE:=false}
 
   repository:
     kind: ClusterRepository
@@ -32,9 +34,6 @@ spec:
     keepDaily: 7
     keepWeekly: 4
 
-  sources:
-    - pvc:
-        name: ${PVC_NAME}
 
 #  verification:
 #    deep:
@@ -43,5 +42,3 @@ spec:
 #    quick:
 #      schedule:
 #        cron: H 3 * * *
-
-  volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=csi-ceph-blockpool}
