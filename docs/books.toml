@@ -1,23 +1,23 @@
 [book]
-authors = ["Alexandre Mechineau"]
-language = "en"
+authors      = ['Alexandre Mechineau']
+language     = 'en'
 multilingual = false
-src = "src"
-title = "Home Operations"
-description = "Document my homelab"
+src          = 'src'
+title        = 'Home Operations'
+description  = 'Document my homelab'
 
 [output.html]
-default-theme = "rust"
-preferred-dark-theme = "rust"
-git-repository-url = "https://gitlab.alexsaphir.com/Homelab/Talos-Flux"
-git-repository-icon = "fa-gitlab"
-no-section-label = true
-git-branch = "main"
-open-on-text = "[Edit this page on GitLab]"
+default-theme        = 'rust'
+preferred-dark-theme = 'rust'
+git-repository-url   = 'https://gitlab.alexsaphir.com/Homelab/Talos-Flux'
+git-repository-icon  = 'fa-gitlab'
+no-section-label     = true
+git-branch           = 'main'
+open-on-text         = '[Edit this page on GitLab]'
 
 [output.html.fold]
 enable = true
-level = 1
+level  = 1
 
 [output.html.playground]
 copyable = false
@@ -29,12 +29,10 @@ limit-results = 15
 # [output.linkcheck]
 
 [preprocessor]
-
-
 [preprocessor.open-git-repo]
-source-control-host = "gitlab"
-command = "mdbook-open-git-repo"
-renderer = ["html"]
+source-control-host = 'gitlab'
+command             = 'mdbook-open-git-repo'
+renderer            = ['html']
 
 [preprocessor.emojicodes]
-after = ["links"]
+after = ['links']

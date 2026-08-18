@@ -16,7 +16,6 @@ Precommit status")
 
 </div>
 
-
 ---
 
 ## 📖 Overview

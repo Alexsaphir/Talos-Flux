@@ -65,3 +65,33 @@ repos:
     rev: v2.4.2
     hooks:
       - id: tofu_fmt
+
+  # See https://mdformat.readthedocs.io/en/stable/users/plugins.html
+  - repo: https://github.com/hukkin/mdformat
+    rev: 1.0.0
+    hooks:
+      - id: mdformat
+        additional_dependencies:
+          # https://github.com/KyleKing/mdformat-mkdocs
+          - mdformat-mkdocs[recommended-mdsf]>=5.1.0
+
+  - repo: https://github.com/tombi-toml/tombi-pre-commit
+    rev: v1.4.1
+    hooks:
+      - id: tombi-format
+        args: [ "--offline" ]
+      - id: tombi-lint
+        args: [ "--offline" ]
+
+  # pyproject.toml
+  - repo: https://github.com/tox-dev/pyproject-fmt
+    rev: v2.28.0
+    hooks:
+      - id: pyproject-fmt
+
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: v0.25
+    hooks:
+      - id: validate-pyproject
+        # Optional extra validations from SchemaStore:
+        additional_dependencies: [ "validate-pyproject-schema-store[all]" ]
