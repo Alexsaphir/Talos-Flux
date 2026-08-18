@@ -26,6 +26,22 @@ spec:
     fullnameOverride: *name
     replicaCount: 3
 
+    policy:
+      enabled: true
+
+      allowedHosts:
+        # keep the defaults you use
+        - api.github.com
+        - github.com
+        # self-hosted
+        - gitlab.alexsaphir.com
+        - renovate.${DOMAIN_NAME}
+        # in2p3
+        - gitlab.in2p3.fr
+      allowedImages:
+        - ghcr.io/renovatebot/renovate
+
+    # who you are
     auth:
       oidc:
         enabled: true
@@ -35,6 +51,19 @@ spec:
         secretKey: client-secret
         sessionSecretKey: session-secret
         redirectUrl: https://renovate.${DOMAIN_NAME}/auth/callback
+
+    # what you may do
+    authorization:
+      enabled: true
+      defaults:
+        readerGroups: [ ]
+        adminGroups: [ ]
+
+        readerUsers: [ ]
+        adminUsers: [ Alexsaphir ]
+
+        anonymousRead: true
+        anonymousReadLogs: false
 
     externalKeyValueStore:
       existingSecret:
