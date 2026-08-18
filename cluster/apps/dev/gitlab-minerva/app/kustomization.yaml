@@ -7,6 +7,7 @@ resources:
   - oidc-claim.yaml
   - helm-release.yaml
   - tcp-route.yaml
+  - backup
 
 configMapGenerator:
   - name: gitlab-config-tpl

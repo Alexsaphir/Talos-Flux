@@ -1,0 +1,10 @@
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotSchedule
+metadata:
+  name: ${PVC_NAME}
+spec:
+  policyRef:
+    name: ${PVC_NAME}
+  schedule:
+    cron: H */12 * * *

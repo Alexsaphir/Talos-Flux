@@ -1,0 +1,63 @@
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: ${PVC_NAME}
+  annotations:
+    kopiur.home-operations.com/allow-identity-change: 'true'
+spec:
+  compression:
+    compressor: zstd
+
+  mover:
+    cache:
+      capacity: ${KOPIUR_CAPACITY:=5Gi}
+      mode: Persistent
+      storageClassName: openebs-hostpath
+    securityContext:
+      runAsUser: 0
+      runAsGroup: 0
+      runAsNonRoot: false
+      capabilities:
+        add:
+          - DAC_READ_SEARCH # traverse/read 0700 dirs owned by gitlab uids
+          - DAC_OVERRIDE
+    podSecurityContext:
+      fsGroup: 0
+      fsGroupChangePolicy: OnRootMismatch
+
+      supplementalGroups:
+        - 998 # git
+        - 999 # gitlab-www
+        - 997 # gitlab-redis
+        - 996 # gitlab-psql
+        - 993 # registry
+        - 992 # gitlab-prometheus
+        - 991 # gitlab-consul
+        - 990 # gitlab-backup
+
+    privilegedMode: true
+
+  repository:
+    kind: ClusterRepository
+    name: nas
+
+  retention:
+    keepLatest: 3
+    keepHourly: 24
+    keepDaily: 7
+    keepWeekly: 4
+
+  sources:
+    - pvc:
+        name: ${PVC_NAME}
+
+#  verification:
+#    deep:
+#      schedule:
+#        cron: H 5 1 * *
+#    quick:
+#      schedule:
+#        cron: H 3 * * *
+
+  volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=csi-ceph-blockpool}
