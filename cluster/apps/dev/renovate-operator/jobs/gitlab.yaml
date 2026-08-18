@@ -44,6 +44,9 @@ spec:
   target:
     name: renovate-gitlab-webhook-secret
     template:
+      metadata:
+        labels:
+          renovate-operator.mogenius.com/allow-ref: 'true'
       data:
         webhook-token: '{{ .RENOVATE_WEBHOOK_GITLAB }}'
 
@@ -67,6 +70,9 @@ spec:
 
   secretRef: renovate-gitlab-secret
   extraEnv:
+    - name: RENOVATE_LOG_LEVEL
+      value: debug
+
     - name: RENOVATE_CONFIG_FILE
       value: /config/config.js
 
