@@ -19,6 +19,9 @@ spec:
       PVC_NAME: *app
       VOLSYNC_CAPACITY: 5Gi
 
+      KOPIUR_PUID: '999'
+      KOPIUR_PGID: '999'
+
   prune: true
   interval: 1h
   path: cluster/apps/self-hosted/your-spotify/app
