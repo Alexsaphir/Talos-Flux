@@ -36,7 +36,7 @@ spec:
             env:
               TZ: ${TIMEZONE}
 
-              NZBGET__PORT: &port 80
+              NZBGET__PORT: &port 8080
 
             probes:
               liveness: &probes

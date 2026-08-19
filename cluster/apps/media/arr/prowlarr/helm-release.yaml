@@ -39,7 +39,7 @@ spec:
               PROWLARR__AUTH__METHOD: External
               PROWLARR__AUTH__REQUIRED: Enabled
               PROWLARR__APP__INSTANCENAME: Prowlarr
-              PROWLARR__SERVER__PORT: &port 80
+              PROWLARR__SERVER__PORT: &port 9696
               PROWLARR__LOG__ANALYTICS_ENABLED: 'false'
               PROWLARR__LOG__LEVEL: info
               PROWLARR__APP__THEME: light

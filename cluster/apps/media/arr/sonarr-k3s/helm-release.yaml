@@ -41,7 +41,7 @@ spec:
 
               SONARR__APP__INSTANCENAME: '{{ .Release.Name }}'
               SONARR__APP__THEME: light
-              SONARR__SERVER__PORT: &port 80
+              SONARR__SERVER__PORT: &port 8989
               SONARR__LOG__LEVEL: info
               SONARR__LOG__ANALYTICSENABLED: 'false'
               SONARR__LOG__DBENABLED: 'False'
