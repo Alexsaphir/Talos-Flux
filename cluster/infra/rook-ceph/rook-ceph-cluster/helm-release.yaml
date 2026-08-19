@@ -9,7 +9,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: v1.19.6
+    tag: v1.19.9
   url: oci://ghcr.io/rook/rook-ceph-cluster
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -33,6 +33,21 @@ spec:
         reloader.stakater.com/search: 'true'
 
     cephClusterSpec:
+      security:
+        cephx:
+          daemon:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 3
+#      healthCheck:
+#        muteHealthWarning:
+#          # Unresolvable until every node runs Linux 7.0+ and CSI keys move to aes256k.
+#          AUTH_INSECURE_CLIENT_KEY_TYPE:
+#            policy: mute
+#          AUTH_INSECURE_KEYS_ALLOWED:
+#            policy: mute
+#          AUTH_INSECURE_KEYS_CREATABLE:
+#            policy: mute
+
       cephConfig:
         mon:
           mon_cluster_log_level: info
