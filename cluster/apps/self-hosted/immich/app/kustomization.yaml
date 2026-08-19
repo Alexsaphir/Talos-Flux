@@ -7,6 +7,7 @@ resources:
   - postgres.yaml
   - helm-release.yaml
   - oidc-claim.yaml
+  - backup
 
 configMapGenerator:
   - name: immich-config-tpl

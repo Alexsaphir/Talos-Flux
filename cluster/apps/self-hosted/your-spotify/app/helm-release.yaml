@@ -153,3 +153,9 @@ spec:
           mongodb:
             app:
               - path: /data/db
+
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            subPath: tmp

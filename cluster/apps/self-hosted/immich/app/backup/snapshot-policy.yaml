@@ -1,0 +1,50 @@
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: ${PVC_NAME}
+spec:
+  compression:
+    compressor: zstd
+
+  staging:
+    storageClassName: csi-ceph-filesystem-backingsnapshot
+    accessModes: [ ReadOnlyMany ]
+
+  mover:
+    cache:
+      capacity: ${KOPIUR_CAPACITY:=5Gi}
+      mode: Persistent
+      storageClassName: openebs-hostpath
+
+    podSecurityContext:
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+
+  repository:
+    kind: ClusterRepository
+    name: nas
+
+  retention:
+    keepLatest: 3
+    keepHourly: 24
+    keepDaily: 7
+    keepWeekly: 4
+
+  sources:
+    - pvc:
+        name: ${PVC_NAME}
+
+  #  verification:
+  #    deep:
+  #      schedule:
+  #        cron: H 5 1 * *
+  #    quick:
+  #      schedule:
+  #        cron: H 3 * * *
+
+  volumeSnapshotClassName: csi-ceph-filesystem

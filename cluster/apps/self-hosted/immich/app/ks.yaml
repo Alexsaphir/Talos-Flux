@@ -7,13 +7,11 @@ metadata:
 spec:
   components:
     - ../../../../components/volsync
-    # - ../../../../components/kopiur/backup
+    - ../../../../components/kopiur/backup/schedule
 
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-
-    # - name: postgres-immich
 
   postBuild:
     substitute:
@@ -24,7 +22,6 @@ spec:
       VOLSYNC_STORAGECLASS: ceph-filesystem
       VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
       VOLSYNC_SNAP_ACCESSMODES: ReadOnlyMany
-      KOPIUR_SNAPSHOTCLASS: csi-ceph-filesystem
 
   prune: true
   interval: 1h
