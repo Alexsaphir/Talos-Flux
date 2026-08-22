@@ -11,9 +11,6 @@ spec:
     - ../../../../components/kopiur/backup
 
   dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-
     - name: prowlarr
 
   postBuild:

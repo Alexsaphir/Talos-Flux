@@ -9,10 +9,6 @@ spec:
     - ../../../../components/volsync
     - ../../../../components/kopiur/backup
 
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
-
   postBuild:
     substitute:
       PVC_NAME: *app
