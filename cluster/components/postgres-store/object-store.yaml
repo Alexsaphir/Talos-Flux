@@ -7,7 +7,7 @@ spec:
   retentionPolicy: '30d'
 
   configuration:
-    destinationPath: s3://backup-cloudnative/talos
+    destinationPath: s3://backup-cloudnative/${BARMAN_OBJECT_STORE}
     endpointURL: http://nas.minio-system.svc.cluster.local:9000
 
     wal:
