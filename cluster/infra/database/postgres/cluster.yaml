@@ -74,7 +74,7 @@ spec:
       hugepages-2Mi: '512Mi'
 
   storage:
-    size: 10Gi
+    size: 40Gi
     storageClass: openebs-hostpath
 
   managed:
