@@ -8,10 +8,6 @@ spec:
   components:
     - ../../../components/postgres-store
 
-  postBuild:
-    substitute:
-      BARMAN_OBJECT_STORE: talos
-
   dependsOn:
     - name: cloudnative-pg
       namespace: cloudnative-pg

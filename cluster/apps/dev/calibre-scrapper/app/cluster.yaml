@@ -10,7 +10,7 @@ spec:
     name: postgresql
     major: 18
 
-  instances: 1
+  instances: 2
   enablePDB: false
 
   bootstrap:
@@ -18,13 +18,21 @@ spec:
       database: *name
       owner: *name
 
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: minio-store
+
   resources:
     requests:
       memory: '2Gi'
+    limits:
+      hugepages-2Mi: '512Mi'
 
 
   storage:
-    size: 10Gi
+    size: 50Gi
     storageClass: openebs-hostpath
 
   managed:

@@ -5,6 +5,9 @@ metadata:
   name: calibre-scrapper
   namespace: calibre-scrapper
 spec:
+  components:
+    - ../../../../components/postgres-store
+
   prune: true
   interval: 1h
   path: cluster/apps/dev/calibre-scrapper/app
