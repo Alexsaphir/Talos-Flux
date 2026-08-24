@@ -71,6 +71,21 @@ releases:
     version: 1.9.0
     values: [ '../templates/values.yaml.gotmpl' ]
 
+  - name: snapshot-controller
+    namespace: kube-system
+    atomic: true
+    chart: oci://ghcr.io/home-operations/charts/snapshot-controller
+    version: 0.1.0
+    values: [ '../templates/values.yaml.gotmpl' ]
+
+  - name: kopiur
+    namespace: kopiur-system
+    atomic: true
+    chart: oci://ghcr.io/home-operations/charts/kopiur
+    version: 0.10.3
+    values: [ '../templates/values.yaml.gotmpl' ]
+
+
   - name: openebs
     namespace: openebs-system
     atomic: true
