@@ -15,7 +15,7 @@ terraform {
     }
     radarr = {
       source  = "devopsarr/radarr"
-      version = "2.4.0"
+      version = "2.5.0"
     }
   }
 
