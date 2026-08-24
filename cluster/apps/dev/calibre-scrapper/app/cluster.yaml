@@ -3,6 +3,8 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: &name calibre-scrapper
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: 'enabled'
 spec:
   imageCatalogRef:
     apiGroup: postgresql.cnpg.io
@@ -18,11 +20,22 @@ spec:
       database: *name
       owner: *name
 
+#    recovery:
+#      source: source
+
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
         barmanObjectName: minio-store
+
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: minio-store
+          serverName: *name
 
   resources:
     requests:
