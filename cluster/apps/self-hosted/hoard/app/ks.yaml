@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app hoard
+  namespace: hoard
+spec:
+  components:
+    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
+
+  postBuild:
+    substitute:
+      APP: *app
+      PVC_NAME: *app
+      VOLSYNC_CAPACITY: 20Gi
+
+  prune: true
+  interval: 1h
+  path: cluster/apps/self-hosted/hoard/app
+  sourceRef:
+    kind: GitRepository
+    name: talos-kubernetes
+    namespace: flux-system

@@ -1,0 +1,105 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: hoard
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 5.1.0
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: hoard
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: hoard
+
+  values:
+    controllers:
+      hoard:
+        annotations:
+          reloader.stakater.com/auto: 'true'
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/rleeon/hoard
+              tag: 1.1.5@sha256:21328d71b7ef44aa2ab17d582c1394a4be25a6e776bc11b3a1881ef17ee83355
+
+            envFrom:
+              - secretRef:
+                  name: '{{ .Release.Name }}-secret'
+
+            env:
+              TZ: '${TIMEZONE}'
+
+              HOARD__SERVER__HOST: 0.0.0.0
+              HOARD__SERVER__PORT: &port 8082
+              HOARD__LOGGING__LEVEL: info
+              HOARD__LOGGING__FORMAT: json
+
+              HOARD__SERVER__RATE_LIMIT__PER_SECOND: '50'
+              HOARD__SERVER__RATE_LIMIT__BURST: '600'
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: [ 'ALL' ] }
+
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /v1/health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile: { type: RuntimeDefault }
+
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+
+    route:
+      app:
+        hostnames:
+          - '{{ .Release.Name }}.${DOMAIN_NAME}'
+        parentRefs:
+          - name: envoy
+            namespace: envoy-system
+
+    persistence:
+      data:
+        existingClaim: '{{ .Release.Name }}'
+        globalMounts:
+          - path: /var/lib/hoard
+
+      config:
+        type: emptyDir
+        globalMounts:
+          - path: /etc/hoard
+
+      tmp:
+        type: emptyDir

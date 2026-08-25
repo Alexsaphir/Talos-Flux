@@ -87,6 +87,11 @@ access_control:
       policy: bypass
       networks: [ 'internal', 'local' ]
 
+    - domain:
+        - 'hoard.${DOMAIN_NAME}'
+      policy: bypass
+      networks: [ 'local' ]
+
     # Catch all
     - domain:
         - '*.${DOMAIN_NAME}'
