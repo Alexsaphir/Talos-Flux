@@ -16,12 +16,14 @@ spec:
   enablePDB: false
 
   bootstrap:
-    initdb:
+    recovery:
       database: *name
       owner: *name
+      source: source
 
-#    recovery:
-#      source: source
+  postgresql:
+    parameters:
+      max_slot_wal_keep_size: 10GB
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
