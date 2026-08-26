@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/connorgallopo/tracearr
-              tag: 2.1.0@sha256:0825937c93cf0eeabd4ef120dd5cd8d127ed4f7eed0049f94a45735f33265787
+              tag: v2.2.0-beta.3@sha256:d70a5743494c478e0ec0a3adc766bd31a3eb1d5808fe7b5be3bc3cb192345136
 
             env:
               TZ: '${TIMEZONE}'
