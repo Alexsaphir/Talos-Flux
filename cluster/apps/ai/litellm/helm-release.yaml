@@ -45,7 +45,7 @@ spec:
               LITELLM_LOG: INFO
               LITELLM_MODE: PRODUCTION
 
-              REDIS_URL: dragonfly.database.svc.cluster.local:6379/11
+              REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379/11
 
             probes:
               liveness:
