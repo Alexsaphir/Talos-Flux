@@ -12,8 +12,8 @@ dragonfly.database.svc.cluster.local:6379
 | 3        | immich            |
 | 4        | codecov           |
 | 5        | renovate-operator |
-| 6        | tracearr          |
-| 7        |                   |
+| 6        |                   |
+| 7        | tracearr          |
 | 8        |                   |
 | 9        |                   |
 | 10       | mcp-gateway       |

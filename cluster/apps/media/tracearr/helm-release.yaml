@@ -1,0 +1,116 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: tracearr
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 5.1.0
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app tracearr
+spec:
+  interval: 15m
+  chartRef:
+    kind: OCIRepository
+    name: *app
+
+  values:
+    controllers:
+      tracearr:
+        annotations:
+          reloader.stakater.com/auto: 'true'
+        containers:
+          app:
+            image:
+              repository: ghcr.io/connorgallopo/tracearr
+              tag: 2.1.0@sha256:0825937c93cf0eeabd4ef120dd5cd8d127ed4f7eed0049f94a45735f33265787
+
+            env:
+              TZ: '${TIMEZONE}'
+
+              NODE_ENV: production
+              LOG_LEVEL: info
+
+              CORS_ORIGIN: https://tracearr.${DOMAIN_NAME}
+              PORT: &port 3000
+              TRUST_PROXY: true
+
+              REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379/7
+              REDIS_PREFIX: 'tracearr:'
+
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: database-tracearr
+                    key: POSTGRES_URL
+
+            envFrom:
+              - secretRef:
+                  name: '{{ .Release.Name }}-secret'
+
+            probes:
+              liveness: &probes
+                enabled: false
+                custom: true
+                spec:
+                  httpGet:
+                    path: /status
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: [ 'ALL' ] }
+
+            resources:
+              requests:
+                cpu: 72m
+                memory: 300Mi
+              limits:
+                memory: 2Gi
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+
+    route:
+      app:
+        hostnames:
+          - '{{ .Release.Name }}.${DOMAIN_NAME}'
+        parentRefs:
+          - name: envoy
+            namespace: envoy-system
+
+    persistence:
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          tracearr:
+            app:
+              - path: /app/data/image-cache
+                subPath: cache
+              - path: /tmp
+                subPath: tmp

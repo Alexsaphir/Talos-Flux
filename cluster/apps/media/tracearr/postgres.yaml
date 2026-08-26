@@ -2,16 +2,19 @@
 apiVersion: db.movetokube.com/v1alpha1
 kind: Postgres
 metadata:
-  name: &app calibre
+  name: &app tracearr
 spec:
   database: *app # db name in postgres cluster
   dropOnDelete: false
-
+  extensions:
+    - timescaledb
+    - timescaledb_toolkit
 ---
 apiVersion: db.movetokube.com/v1alpha1
 kind: PostgresUser
 metadata:
-  name: &app calibre
+  name: &app tracearr
+
 spec:
   role: *app
   database: *app # references the CR
