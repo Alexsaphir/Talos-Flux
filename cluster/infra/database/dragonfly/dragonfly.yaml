@@ -17,9 +17,13 @@ spec:
           divisor: 1Mi
 
   args:
+    - '--bind=::'
+    - '--admin_bind=::'
+
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
     - --cluster_mode=emulated
+
     - --lock_on_hashtags
     - --default_lua_flags=allow-undeclared-keys # immich support
     - --dbfilename=dragonflySnapshot

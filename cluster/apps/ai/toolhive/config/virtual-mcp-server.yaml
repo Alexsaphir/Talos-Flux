@@ -33,6 +33,7 @@ spec:
   sessionStorage:
     provider: redis
     address: dragonfly.database.svc.cluster.local:6379
+    db: 10
     keyPrefix: 'mcp-gateway-internal:'
 
   podTemplateSpec:
