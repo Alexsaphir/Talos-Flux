@@ -25,9 +25,10 @@ spec:
     parameters:
       max_connections: '200'
       max_slot_wal_keep_size: 5GB
-      shared_buffers: '128MB'
 
-      max_locks_per_transaction: '128' # recommended for TimescaleDB
+      max_locks_per_transaction: '128'
+      timescaledb.max_background_workers: '32'
+      timescaledb.max_tuples_decompressed_per_dml_transaction: '0'
       timescaledb.telemetry_level: 'off'
 
     extensions:
@@ -48,6 +49,7 @@ spec:
 
     shared_preload_libraries:
       - 'vchord.so'
+      - timescaledb
 
   bootstrap:
     recovery:
