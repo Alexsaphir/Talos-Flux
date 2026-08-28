@@ -68,7 +68,7 @@ releases:
     namespace: envoy-system
     atomic: true
     chart: oci://mirror.gcr.io/envoyproxy/gateway-helm
-    version: 1.9.0
+    version: v1.9.1
     values: [ '../templates/values.yaml.gotmpl' ]
 
   - name: snapshot-controller
