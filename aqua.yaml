@@ -4,7 +4,7 @@
 # https://aquaproj.github.io/
 registries:
   - type: standard
-    ref: v4.557.0 # renovate: depName=aquaproj/aqua-registry
+    ref: v4.558.0 # renovate: depName=aquaproj/aqua-registry
 packages:
   # Utils
   - name: direnv/direnv@v2.37.1
@@ -15,7 +15,7 @@ packages:
   - name: mikefarah/yq@v4.53.6
 
   # Secrets
-  - name: FiloSottile/age@v1.3.1
+  - name: FiloSottile/age@v1.3.2
   - name: mozilla/sops@v3.13.3
   - name: bitwarden/sdk-sm@bws-v1.0.0
 
