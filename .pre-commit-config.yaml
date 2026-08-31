@@ -37,7 +37,7 @@ repos:
       - id: forbid-bidi-controls
 
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 44.52.0
+    rev: 44.52.1
     hooks:
       - id: renovate-config-validator
 
@@ -85,7 +85,7 @@ repos:
 
   # pyproject.toml
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.28.2
+    rev: v2.29.0
     hooks:
       - id: pyproject-fmt
 
