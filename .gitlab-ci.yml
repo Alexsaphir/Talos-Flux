@@ -14,9 +14,6 @@ default:
   interruptible: true
 
 include:
-  - template: Security/Dependency-Scanning.gitlab-ci.yml
-  - template: Jobs/SAST-IaC.gitlab-ci.yml
-  - template: Security/Secret-Detection.gitlab-ci.yml
-
-stages:
-  - test
+  - component: gitlab.com/components/secret-detection/secret-detection@2.4.0
+  - component: gitlab.com/components/sast/iac-sast@3.4.0
+  - component: gitlab.com/components/dependency-scanning/main@2.1.1
