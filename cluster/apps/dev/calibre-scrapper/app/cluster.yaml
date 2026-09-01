@@ -60,7 +60,7 @@ spec:
     services:
       disabledDefaultServices: [ 'ro', 'r' ]
       additional:
-        - selectorType: rw
+        - selectorType: ro
           serviceTemplate:
             metadata:
               name: calibre-scrapper-lb
