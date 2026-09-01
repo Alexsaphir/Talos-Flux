@@ -72,6 +72,8 @@ spec:
                     name: *db-secret
                     key: PASSWORD
 
+              PROWLARR__SERVER__ALLOWEDHOSTS: '*'
+
             envFrom:
               - secretRef:
                   name: '{{ .Release.Name }}-secret'

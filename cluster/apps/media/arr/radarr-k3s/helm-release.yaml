@@ -47,6 +47,8 @@ spec:
               RADARR__LOG__DBENABLED: 'False'
               RADARR__UPDATE__BRANCH: develop
 
+              RADARR__SERVER__ALLOWEDHOSTS: '*'
+
             envFrom:
               - secretRef:
                   name: '{{ .Release.Name }}-secret'
