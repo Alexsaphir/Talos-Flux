@@ -82,7 +82,7 @@ releases:
     namespace: kopiur-system
     atomic: true
     chart: oci://ghcr.io/home-operations/charts/kopiur
-    version: 0.10.6
+    version: 0.10.7
     values: [ '../templates/values.yaml.gotmpl' ]
 
 
