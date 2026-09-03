@@ -1,8 +1,8 @@
 ---
 machine:
   sysctls:
-    fs.inotify.max_user_watches: 1048576  # Watchdog
     fs.inotify.max_user_instances: 8192   # Watchdog
+    fs.inotify.max_user_watches: 1048576  # Watchdog
 
     net.core.default_qdisc: fq             # 2.5Gb/s
     net.core.rmem_max: 134217728            # 2.5Gb/s | Cloudflared / QUIC

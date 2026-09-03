@@ -1,0 +1,72 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/postfinance/topf/main/docs/topf.schema.json
+
+clusterName: talos-cluster
+clusterEndpoint: https://talos.cluster.alexsaphir.com:6443
+
+# renovate: datasource=custom.talos-factory depName=siderolabs/talos
+talosVersion: v1.13.9
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+kubernetesVersion: v1.36.4
+
+patchesDir: topf-patches
+secretsPath: topf-secret.sops.yaml
+
+# Rendered per node from `.Node.Data.systemExtensions`.
+schematicId: '@schematic.yaml.tpl'
+
+data:
+  nodeSubnetV4: 192.168.42.0/24
+  nodeSubnetV6: 2a01:e0a:11a7:a4e2::/64
+
+  ipv6Prefix: 2a01:e0a:11a7:a4e2
+
+  talosControlplaneVip: 192.168.42.100
+  ciliumControlplaneVip: 192.168.43.100
+
+nodes:
+  - host: ms-01
+    ip: 192.168.42.10
+    role: control-plane
+    data:
+      installDiskSerial: S7GCNL0XA11778T
+      bondMembers:
+        - 58:47:ca:7a:c6:c9
+        - 58:47:ca:7a:c6:c8
+      systemExtensions:
+        - siderolabs/intel-ucode
+        - siderolabs/i915
+        - siderolabs/mei
+        - siderolabs/gasket-driver
+        - siderolabs/lldpd
+        - siderolabs/nfsrahead
+        - siderolabs/nvidia-container-toolkit-production
+        - siderolabs/nvidia-open-gpu-kernel-modules-production
+        - siderolabs/kata-containers
+
+  - host: ms-02
+    ip: 192.168.42.11
+    role: control-plane
+    data:
+      installDiskSerial: S7GCNL0XA16201K
+      bondMembers:
+        - 58:47:ca:76:79:a6
+        - 58:47:ca:76:79:a5
+      systemExtensions: &systemExtensions
+        - siderolabs/intel-ucode
+        - siderolabs/i915
+        - siderolabs/mei
+        - siderolabs/gasket-driver
+        - siderolabs/lldpd
+        - siderolabs/nfsrahead
+        - siderolabs/kata-containers
+
+  - host: ms-03
+    ip: 192.168.42.12
+    role: control-plane
+    data:
+      installDiskSerial: S7GCNL0XA16195E
+      bondMembers:
+        - 58:47:ca:76:6f:42
+        - 58:47:ca:76:6f:41
+      systemExtensions: *systemExtensions

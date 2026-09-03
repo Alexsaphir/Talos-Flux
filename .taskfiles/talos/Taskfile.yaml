@@ -2,141 +2,109 @@
 version: '3'
 
 tasks:
-  talhelper:generate-config:
-    desc: Generate the clusterconfig from `talhelper.yaml` for Talos.
-    dir: '{{.TALOS_DIR}}'
-    run: once
+  nodes:
+    desc: List all nodes and their current state.
+    cmd: topf nodes
     preconditions:
-      - test -f {{.TALOS_DIR}}/talconfig.yaml
-      - test -f {{.TALOS_DIR}}/talsecret.sops.yaml
-      - which talhelper sops
-    cmd: talhelper genconfig
+      - which topf sops
+      - test -f {{.TALOS_DIR}}/topf.yaml
 
-  talhelper:kubeconfig:
+  render:
+    desc: Render the machine configs to `talos/output` without applying them.
+    dir: '{{.TALOS_DIR}}'
+    cmd: topf render --online
+    preconditions:
+      - which topf sops
+      - test -f {{.TALOS_DIR}}/topf.yaml
+
+  diff:
+    desc: Diff the rendered machine configs  ragainst the running cluster. [NODE=optional]
+    cmd: topf apply --dry-run {{if .NODE}}--nodes-filter '^{{.NODE}}$'{{end}}
+    preconditions:
+      - which topf sops
+      - test -f {{.TALOS_DIR}}/topf.yaml
+
+  apply:
+    desc: Apply the machine config to the cluster. [NODE=optional]
+    cmd: topf apply {{if .NODE}}--nodes-filter '^{{.NODE}}$'{{end}}
+    preconditions:
+      - which topf sops
+      - test -f {{.TALOS_DIR}}/topf.yaml
+
+  talosconfig:
+    desc: Regenerate the talosconfig.
+    cmd: topf talosconfig > '{{.TALOSCONFIG}}'
+    preconditions:
+      - which topf sops
+      - test -f {{.TALOS_DIR}}/topf-secret.sops.yaml
+
+  kubeconfig:
     desc: Regenerate the kubeconfig.
-    dir: '{{.TALOS_DIR}}'
-    cmds:
-      - until talhelper gencommand kubeconfig --extra-flags="{{.ROOT_DIR}} --force" | bash; do sleep 5; done
+    cmd: until topf kubeconfig > '{{.ROOT_DIR}}/kubeconfig'; do sleep 5; done
     preconditions:
-      - test -f {{.TALOS_DIR}}/talconfig.yaml
-      - which talhelper
+      - which topf sops
+      - test -f {{.TALOS_DIR}}/topf-secret.sops.yaml
 
-  apply-clusterconfig:
-    desc: Apply clusterconfig for a Talos cluster
-    dir: '{{.TALOS_DIR}}'
-    vars:
-      CLUSTERCONFIG_FILES:
-        sh: >-
-          ls {{.TALHELPER_CLUSTER_DIR}}/{{.TALOS_CLUSTER_NAME}}-*.yaml
-    deps:
-      - task: talhelper:generate-config
+  upgrade:
+    desc: Upgrade Talos to the version in `topf.yaml`. [NODE=optional]
+    summary: |
+      Talos upgrades are normally driven in-cluster by tuppr
+      (cluster/infra/system-upgrade/upgrades/talos-upgrade.yaml).
+      Use this task only when the operator is unavailable.
+    cmd: topf upgrade --reboot-mode powercycle {{if .NODE}}--nodes-filter '^{{.NODE}}$'{{end}}
     preconditions:
-      - which ls talhelper talosctl yq
-      - test -f "${TALOSCONFIG}"
-    cmds:
-      - for:
-          var: CLUSTERCONFIG_FILES
-        task: _apply-machineconfig
-        vars:
-          FILENAME: '{{.ITEM}}'
-          NODE:
-          HOSTNAME:
-            sh: >-
-              yq '.hostname | select(. != null)' < '{{.ITEM}}'
-          DRY_RUN: '{{ .DRY_RUN }}'
-          INSECURE: '{{ .INSECURE }}'
-
-  apply-node:
-    desc: Apply Talos config to a node [NODE=required]
-    dir: '{{.TALOS_DIR}}'
-    deps:
-      - task: talhelper:generate-config
-    preconditions:
-      - which talhelper talosctl yq
-      - test -f "${TALOSCONFIG}"
-      - talosctl --nodes {{.NODE}} get machineconfig
-    requires:
-      vars: [ NODE ]
-    vars:
-      FILE:
-        sh: >-
-          ls {{.TALHELPER_CLUSTER_DIR}}/{{.TALOS_CLUSTER_NAME}}-{{.NODE}}.yaml
-    cmds:
-      - task: _apply-machineconfig
-        vars:
-          FILENAME: '{{.FILE}}'
-          HOSTNAME: '{{.NODE}}'
-      - talosctl --nodes {{.NODE}} health
-
-  upgrade-node:
-    desc: Upgrade Talos on a single node [NODE=required]
-    dir: '{{.TALOS_DIR}}'
-    preconditions:
-      - which talhelper talosctl yq
-      - test -f "${TALOSCONFIG}"
-      - talosctl --nodes {{.NODE}} get machineconfig
-    deps:
-      - task: talhelper:generate-config
-      - task: apply-clusterconfig
-    requires:
-      vars: [ NODE ]
-    vars:
-      FILE:
-        sh: >-
-          ls {{.TALHELPER_CLUSTER_DIR}}/{{.TALOS_CLUSTER_NAME}}-{{.NODE}}.yaml
-      TALOS_IMAGE:
-        sh: >-
-          yq '.machine.install.image | select(. != null)' < "{{.FILE}}"
-    cmds:
-      - talhelper gencommand upgrade --node {{.NODE}} --extra-flags "--image='{{.TALOS_IMAGE}}' --timeout=10m" | bash
-      - talosctl --nodes {{.NODE}} health
+      - which topf sops
+      - test -f {{.TALOS_DIR}}/topf.yaml
 
   upgrade-k8s:
-    desc: Upgrade Kubernetes
-    dir: '{{.TALOS_DIR}}'
-    cmd: talhelper gencommand upgrade-k8s --extra-flags "--to '{{.KUBERNETES_VERSION}}'" | bash
+    desc: Upgrade Kubernetes to the version in `topf.yaml`.
+    summary: |
+      Kubernetes upgrades are normally driven in-cluster by tuppr
+      (cluster/infra/system-upgrade/upgrades/kubernetes-upgrade.yaml).
+      Use this task only when the operator is unavailable.
     vars:
       KUBERNETES_VERSION:
         sh: >-
-          yq '.kubernetesVersion | select(. != null)' {{.TALOS_DIR}}/talenv.yaml
+          yq '.kubernetesVersion | select(. != null)' < '{{.TALOS_DIR}}/topf.yaml'
+      CONTROLLER:
+        sh: talosctl config info --output json | jq --raw-output '.endpoints[0]'
+    cmd: talosctl --nodes {{.CONTROLLER}} upgrade-k8s --to '{{.KUBERNETES_VERSION}}'
     preconditions:
+      - which talosctl yq jq
+      - test -f "${TALOSCONFIG}"
       - talosctl config info
-      - test -f {{.TALOSCONFIG}}
-      - which talhelper talosctl yq
 
   reset:
-    desc: Resets nodes back to maintenance mode
-    dir: '{{.TALOS_DIR}}'
+    desc: Resets nodes back to maintenance mode. [NODE=optional]
     prompt: This will destroy your cluster and reset the nodes back to maintenance mode... continue?
+    cmd: topf reset --full --graceful=false --wait-for-maintenance {{if .NODE}}--nodes-filter '^{{.NODE}}$'{{end}}
     preconditions:
-      - which talhelper
-    cmds:
-      - talhelper gencommand reset
-        --extra-flags="
-        --reboot
-        --system-labels-to-wipe STATE
-        --system-labels-to-wipe EPHEMERAL
-        --system-labels-to-wipe u-openebs
-        --graceful=false --wait=false" | bash
+      - which topf sops
+      - test -f {{.TALOS_DIR}}/topf.yaml
 
-
-  _apply-machineconfig:
-    internal: true
-    dir: '{{.TALOS_DIR}}'
-    desc: Apply a single Talos machineConfig to a Talos node
-    preconditions:
-      - which talosctl
-      - test -f "{{.FILENAME}}"
+  get-disks:
+    desc: Get disks of a node. [IP=required]
+    cmd: talosctl get disks -n {{.IP}} -o yaml | yq eval '. | select(.spec.transport == "nvme") | .spec'
     requires:
-      vars:
-        - HOSTNAME
-        - FILENAME
-    vars:
-      MODE: '{{.MODE | default "auto"}}'
-    cmds:
-      - talosctl apply-config
-        --nodes "{{.HOSTNAME}}"
-        --file "{{.FILENAME}}"
-        --mode="{{.MODE}}"
-        {{ if eq "true" .INSECURE }}--insecure{{ end }}
-        {{ if eq "true" .DRY_RUN }}--dry-run{{ end }}
+      vars: [ IP ]
+    preconditions:
+      - talosctl config info
+      - which talosctl
+
+  get-links:
+    desc: Get network interfaces of a node. [IP=required]
+    cmd: talosctl get linkstatus -n {{.IP}} -o yaml | yq eval '. | select(.spec.type == "ether")'
+    requires:
+      vars: [ IP ]
+    preconditions:
+      - talosctl config info
+      - which talosctl
+
+  get-links-up:
+    desc: Get network interfaces of a node that are active. [IP=required]
+    cmd: talosctl get linkstatus -n {{.IP}} -o yaml | yq eval '. | select(.spec.type == "ether") | select(.spec.linkState == "true")'
+    requires:
+      vars: [ IP ]
+    preconditions:
+      - talosctl config info
+      - which talosctl

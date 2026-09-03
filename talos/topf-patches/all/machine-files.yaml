@@ -1,23 +1,9 @@
 ---
 machine:
-  kubelet:
-    extraConfig:
-      maxPods: 150
-      serializeImagePulls: false
-      maxParallelImagePulls: 4
-
-      imageMaximumGCAge: 168h
-      imageGCHighThresholdPercent: 50
-      imageGCLowThresholdPercent: 20
-
-    nodeIP:
-      validSubnets:
-        - ${nodeSubnetV4}
-        - ${nodeSubnetV6}
-
   files:
-    # Spegel
-    - op: create
+
+    - # Spegel
+      op: create
       path: /etc/cri/conf.d/20-customization.part
       permissions: 0o644
       content: |-
@@ -26,7 +12,8 @@ machine:
         [plugins."io.containerd.cri.v1.runtime"]
           device_ownership_from_security_context = true
 
-    - op: overwrite
+    - # NFS Mount
+      op: overwrite
       path: /etc/nfsmount.conf
       permissions: 0o644
       content: |

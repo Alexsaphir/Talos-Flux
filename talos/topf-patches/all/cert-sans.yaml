@@ -1,0 +1,9 @@
+---
+machine:
+  certSANs: &sans
+    - talos.cluster.alexsaphir.com
+    - 127.0.0.1 # KubePrism
+
+cluster:
+  apiServer:
+    certSANs: *sans

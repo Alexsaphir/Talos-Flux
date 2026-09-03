@@ -4,7 +4,7 @@ cluster:
 
   apiServer:
     admissionControl:
-      $$patch: delete
+      $patch: delete
 
     extraArgs:
       # https://kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/
@@ -35,8 +35,8 @@ cluster:
       auto-compaction-mode: periodic
       auto-compaction-retention: '1h'
     advertisedSubnets:
-      - ${nodeSubnetV4}
-      - ${nodeSubnetV6}
+      - {{ .Data.nodeSubnetV4 }}
+      - {{ .Data.nodeSubnetV6 }}
 
   proxy:
     disabled: true

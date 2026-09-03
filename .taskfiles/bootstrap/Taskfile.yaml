@@ -9,26 +9,20 @@ tasks:
   talos:
     desc: Bootstrap the Talos cluster.
     dir: '{{.TALOS_DIR}}'
-    vars:
-      TALOS_CONTROLLER:
-        sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
     preconditions:
-      - which talhelper sops jq
+      - which topf sops
       - test -f {{.SOPS_CONFIG_FILE}}
       - test -f {{.SOPS_AGE_KEY_FILE}}
-      - test -f {{.TALOS_DIR}}/talconfig.yaml
-      - talosctl config info
+      - test -f {{.TALOS_DIR}}/topf.yaml
     cmds:
       - # Ensure talos secrets are present.
-        task: talhelper:secret
-      - # Generate up-to-date config.
-        task: :talos:talhelper:generate-config
-      - cmd: until talosctl get systeminformations.hardware.talos.dev -i -n {{.TALOS_CONTROLLER}} -o yaml; do sleep 5; done
-      - # Apply config
-        talhelper gencommand apply --extra-flags="--insecure" | bash
-      # Bootstrap
-      - cmd: until talhelper gencommand bootstrap | bash; do sleep 5; done
-      - task: :talos:talhelper:kubeconfig
+        task: topf:secret
+      - # Write a talosconfig so talosctl can reach the cluster.
+        task: :talos:talosconfig
+      - # Generate, apply and bootstrap. Nodes may still be booting into
+        # maintenance mode, so keep retrying until they answer.
+        cmd: until topf --confirm=false apply --auto-bootstrap; do sleep 10; done
+      - task: :talos:kubeconfig
 
   kubectl:target-node:
     internal: true
@@ -47,12 +41,12 @@ tasks:
     preconditions:
       - which kubectl talosctl jq
       - test -f $KUBECONFIG
-      - test -f '{{.TALOS_DIR}}/talconfig.yaml'
+      - test -f '{{.TALOS_DIR}}/topf.yaml'
     vars:
       CLUSTER_NAME:
         sh: talosctl config info --output json | jq --raw-output '.context'
       ENDPOINT:
-        sh: yq '.endpoint' < '{{.TALOS_DIR}}/talconfig.yaml'
+        sh: yq '.clusterEndpoint' < '{{.TALOS_DIR}}/topf.yaml'
     cmd: kubectl config set-cluster {{ .CLUSTER_NAME }} --server "{{ .ENDPOINT }}"
 
   helm:critical:
@@ -133,13 +127,14 @@ tasks:
         cmd: helmfile --file {{ .helm_file }} apply --hide-notes --skip-diff-on-install --suppress-diff --suppress-secrets
 
 
-  talhelper:secret:
+  topf:secret:
     desc: Generate the secret.
     dir: '{{.TALOS_DIR}}'
     internal: true
     run: once
-    cmd: '[ -f talsecret.sops.yaml ] || talhelper gensecret | sops --filename-override talos/talsecret.sops.yaml --encrypt /dev/stdin > talsecret.sops.yaml'
+    # `topf secrets` generates and SOPS-encrypts topf-secret.sops.yaml when it is missing.
+    cmd: '[ -f topf-secret.sops.yaml ] || topf --confirm=false secrets > /dev/null'
     preconditions:
       - test -f {{.SOPS_CONFIG_FILE}}
       - test -f {{.SOPS_AGE_KEY_FILE}}
-      - which talhelper sops
+      - which topf sops

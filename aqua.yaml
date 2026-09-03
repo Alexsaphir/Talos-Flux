@@ -21,14 +21,14 @@ packages:
 
   # Talos
   - name: siderolabs/talos@v1.14.0
-  - name: budimanjojo/talhelper@v3.1.17
+  - name: postfinance/topf@v0.6.0
 
   # Cluster
   - name: fluxcd/flux2@v2.9.5
   - name: cilium/cilium-cli@v0.20.0
 
   # Kubernetes
-  - name: kubernetes/kubectl@v1.37.0
+  - name: kubernetes/kubectl@v1.36.4
   - name: kubernetes-sigs/krew@v0.5.0
   - name: brumhard/krewfile@v0.7.0
 

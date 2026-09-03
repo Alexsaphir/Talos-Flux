@@ -12,19 +12,17 @@ vars:
   SOPS_CONFIG_FILE: '{{.ROOT_DIR}}/.sops.yaml'
   TALOS_DIR: '{{.ROOT_DIR}}/talos'
 
-  TALHELPER_CLUSTER_DIR: '{{.TALOS_DIR}}/clusterconfig'
-  TALOSCONFIG: '{{.TALHELPER_CLUSTER_DIR}}/talosconfig'
-  TALOS_CLUSTER_NAME:
-    sh: yq '.clusterName' < '{{.TALOS_DIR}}/talconfig.yaml'
+  TALOSCONFIG: '{{.TALOS_DIR}}/talosconfig'
+  TOPFCONFIG: '{{.TALOS_DIR}}/topf.yaml'
 
 env:
   KUBECONFIG: '{{.ROOT_DIR}}/kubeconfig'
   SOPS_AGE_KEY_FILE: '~/.config/sops/age/K3s-Flux.agekey'
   TALOSCONFIG: '{{.TALOSCONFIG}}'
+  TOPFCONFIG: '{{.TOPFCONFIG}}'
 
 includes:
   talos: .taskfiles/talos
-  talos:helper: .taskfiles/talos-helper
   bootstrap: .taskfiles/bootstrap
   flux-local: .taskfiles/flux-local
   backup: .taskfiles/backup
@@ -41,7 +39,7 @@ tasks:
     desc: Send wol packets to start talos cluster.
     vars:
       mac_addresses:
-        sh: yq '.nodes[].networkInterfaces[0].bond.deviceSelectors[0].permanentAddr' < '{{.TALOS_DIR}}/talconfig.yaml'
+        sh: yq '.nodes[].data.bondMembers[0]' < '{{.TALOS_DIR}}/topf.yaml'
       interface:
         sh: "ip -o -4 addr show up | awk '$2 !~ /^(lo|docker|veth|br-|virbr|tailscale)/ {print $2; exit}'"
     cmds:

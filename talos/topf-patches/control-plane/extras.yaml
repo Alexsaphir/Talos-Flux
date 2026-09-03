@@ -7,3 +7,16 @@ configFiles:
       configure lldpd portidsubtype ifname
       configure system description "Talos Node"
     mountPath: /usr/local/etc/lldpd/lldpd.conf
+
+---
+apiVersion: v1alpha1
+kind: WatchdogTimerConfig
+device: /dev/watchdog0
+timeout: 5m
+
+---
+apiVersion: v1alpha1
+kind: OOMConfig
+triggerExpression: 'false'
+cgroupRankingExpression: '0.0'
+sampleInterval: '5s'
