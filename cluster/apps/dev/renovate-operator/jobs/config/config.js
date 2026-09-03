@@ -11,4 +11,7 @@ module.exports = {
       password: process.env.DOCKER_HUB_PASSWORD,
     },
   ],
+  registryAliases: {
+    '$CI_SERVER_FQDN': process.env.$CI_SERVER_FQDN,
+  }
 };
