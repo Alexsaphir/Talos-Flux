@@ -1,0 +1,45 @@
+---
+apiVersion: v1alpha1
+kind: SysctlConfig
+params:
+  fs.inotify.max_user_instances: '8192'   # Watchdog
+  fs.inotify.max_user_watches: '1048576'  # Watchdog
+
+  net.core.default_qdisc: 'fq'             # 2.5Gb/s
+  net.core.rmem_max: '134217728'            # 2.5Gb/s | Cloudflared / QUIC
+  net.core.wmem_max: '134217728'            # 2.5Gb/s | Cloudflared / QUIC
+
+  net.ipv4.neigh.default.gc_thresh1: '4096'  # Prevent ARP cache overflows
+  net.ipv4.neigh.default.gc_thresh2: '8192'  # Prevent ARP cache overflows
+  net.ipv4.neigh.default.gc_thresh3: '16384' # Prevent ARP cache overflows
+
+  net.ipv4.tcp_congestion_control: 'bbr'   # 2.5Gb/s
+  net.ipv4.tcp_fastopen: '3'               # Send and accept data in the opening SYN packet
+  net.ipv4.tcp_mtu_probing: '1'            # 2.5Gb/s | Jumbo frames
+  net.ipv4.tcp_notsent_lowat: '131072'     # 2.5Gb/s
+
+  net.ipv4.tcp_rmem: '4096 131072 67108864' # 2.5Gb/s
+  net.ipv4.tcp_wmem: '4096 131072 67108864' # 2.5Gb/s
+  net.ipv4.tcp_window_scaling: '1'         # 2.5Gb/s
+  net.ipv4.tcp_slow_start_after_idle: '0'  # Preserve congestion window after idle
+
+  net.ipv6.conf.all.accept_ra: '2'
+  net.ipv6.conf.all.forwarding: '1'
+
+  # Painful: https://github.com/siderolabs/talos/issues/5632
+  net.ipv6.conf.bond0.accept_ra: '2'
+  net.ipv6.conf.bond0.forwarding: '1'
+
+  sunrpc.tcp_slot_table_entries: '128'     # 10Gb/s | NFS
+  sunrpc.tcp_max_slot_table_entries: '128' # 10Gb/s | NFS
+
+  net.ipv4.ping_group_range: '0 2147483647' # Allow ping without NET_RAW capability
+
+  user.max_user_namespaces: '11255'         # User namespaces
+
+  vm.nr_hugepages: '1024'
+
+  vm.dirty_background_bytes: '268435456'   # 256MiB | Byte-based writeback start; protect etcd fdatasync on shared NVMe
+  vm.dirty_bytes: '536870912'              # 512MiB | Cap dirty buildup (ratio 5%/20% on 134GB RAM allowed multi-GB flush storms)
+  vm.dirty_expire_centisecs: '3000'        # Expire dirty data after 30s
+  vm.dirty_writeback_centisecs: '500'      # Flush dirty pages every 5s

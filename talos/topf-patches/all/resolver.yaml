@@ -1,0 +1,12 @@
+---
+apiVersion: v1alpha1
+kind: ResolverConfig
+nameservers:
+  - address: 2a01:e0a:11a7:a4e2:1e0b:8bff:fe16:9435
+  - address: 192.168.0.1
+searchDomains:
+  disableDefault: true
+hostDNS:
+  enabled: true
+  resolveMemberNames: true
+  forwardKubeDNSToHost: true # Requires Cilium socketLB features

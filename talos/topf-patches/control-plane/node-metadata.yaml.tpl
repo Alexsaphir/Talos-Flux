@@ -1,12 +1,8 @@
 ---
-machine:
-  nodeLabels:
-    topology.kubernetes.io/zone: controlPlane
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+labels:
+  topology.kubernetes.io/zone: controlPlane
 
-    # talhelper dropped this label whenever allowSchedulingOnControlPlanes was
-    # set; topf keeps the Talos default, so remove it explicitly.
-    node.kubernetes.io/exclude-from-external-load-balancers:
-      $patch: delete
-
-  nodeAnnotations:
-    installerImage: factory.talos.dev/metal-installer/{{ .SchematicID }}:{{ .TalosVersion }}
+annotations:
+  installerImage: factory.talos.dev/metal-installer/{{ .SchematicID }}:{{ .TalosVersion }}
