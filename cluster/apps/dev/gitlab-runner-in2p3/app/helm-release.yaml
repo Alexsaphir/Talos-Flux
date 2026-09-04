@@ -110,6 +110,10 @@ spec:
         namespace = "{{.Release.Namespace}}"
         image = "ubuntu:22.04"
 
+        memory_limit = "8Gi"
+        memory_request = "512Mi"
+        helper_memory_limit = "512Mi"
+
         privileged = false
         runtime_class_name = "kata"
         automount_service_account_token = false
