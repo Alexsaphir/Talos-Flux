@@ -16,6 +16,7 @@ cluster:
 
 # Replaces cluster.allowSchedulingO nControlPlanes:true
 ---
+# Allow scheduling on control-plane nodes
 apiVersion: v1alpha1
 kind: KubeNodeConfig
 taints:
@@ -24,17 +25,13 @@ taints:
 
 ---
 apiVersion: v1alpha1
-kind: KubeAdmissionControlConfig
-name: PodSecurity
-$patch: delete
-
----
-apiVersion: v1alpha1
 kind: KubeAPIServerConfig
+certExtraSANs:
+  - talos.cluster.alexsaphir.com
+  - 127.0.0.1 # KubePrism
 extraArgs:
   # https://kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/
   enable-aggregator-routing: true
-  feature-gates: HPAScaleToZero=true
 resources:
   requests:
     memory: 3Gi
@@ -45,12 +42,17 @@ apiVersion: v1alpha1
 kind: KubeControllerManagerConfig
 extraArgs:
   bind-address: 0.0.0.0
-  feature-gates: HPAScaleToZero=true
 
 ---
 apiVersion: v1alpha1
 kind: KubeCoreDNSConfig
 enabled: false
+
+---
+# Disable built-in CNI and kube-proxy to use Cilium
+apiVersion: v1alpha1
+kind: KubeFlannelCNIConfig
+$patch: delete
 
 ---
 apiVersion: v1alpha1

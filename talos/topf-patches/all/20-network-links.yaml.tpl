@@ -1,9 +1,3 @@
----
-apiVersion: v1alpha1
-kind: UnattendedInstallConfig
-provisioning:
-  diskSelector:
-    match: disk.serial == "{{ .Node.Data.installDiskSerial }}"
 {{ range $index, $mac := .Node.Data.bondMembers }}
 ---
 apiVersion: v1alpha1
@@ -12,6 +6,7 @@ name: bond0-m{{ $index }}
 selector:
   match: glob("{{ $mac }}", mac(link.permanent_addr))
 {{ end }}
+
 ---
 apiVersion: v1alpha1
 kind: BondConfig
