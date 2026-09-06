@@ -40,7 +40,7 @@ tasks:
 
   kubeconfig:
     desc: Regenerate the kubeconfig.
-    cmd: until topf kubeconfig > '{{.ROOT_DIR}}/kubeconfig'; do sleep 5; done
+    cmd: until topf kubeconfig --validity 8760h0m0s > '{{.ROOT_DIR}}/kubeconfig'; do sleep 5; done
     preconditions:
       - which topf sops
       - test -f {{.TALOS_DIR}}/topf-secret.sops.yaml
