@@ -82,9 +82,6 @@ spec:
           name: &renovate-config gitlab-renovate-config
           key: onboardingConfig
 
-    - name: CI_SERVER_FQDN
-      value: gitlab.alexsaphir.com
-
   extraVolumes:
     - name: *renovate-config
       configMap:

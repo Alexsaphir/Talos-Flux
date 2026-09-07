@@ -6,6 +6,7 @@
     "github>home-operations/renovate-presets//apps/phanpy.json5#8.1.0",
     "github>home-operations/renovate-presets//apps/talosFactory.json5#8.1.0",
     'github>aquaproj/aqua-renovate-config#2.13.0',
+    'local>Homelab/Talos-Flux//.gitlab/renovate/customManagers.json5',
     'local>Homelab/Talos-Flux//.gitlab/renovate/groups.json5',
     'local>Homelab/Talos-Flux//.gitlab/renovate/labels.json5',
     'local>Homelab/Talos-Flux//.gitlab/renovate/packageRules.json5',
