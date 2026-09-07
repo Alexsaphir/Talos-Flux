@@ -1,0 +1,92 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: &app renovate-operator
+spec:
+  groups:
+    - name: *app
+      rules:
+        - alert: RenovateRunFailed
+          expr: renovate_operator_run_failed == 1
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Renovate run failed for {{ $labels.project }}'
+            description: 'The last Renovate run for project {{ $labels.project }} in job {{ $labels.renovate_job }} failed.'
+
+        - alert: RenovateDependencyIssues
+          expr: renovate_operator_dependency_issues == 1
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Renovate detected dependency issues for {{ $labels.project }}'
+            description: 'The last Renovate run for project {{ $labels.project }} in job {{ $labels.renovate_job }} had warnings or errors. Check the Dependency Dashboard or Renovate logs for details.'
+
+        # SRE: runs taking dangerously close to the 30m default job timeout.
+        - alert: RenovateJobDurationHigh
+          expr: histogram_quantile(0.95, sum(rate(renovate_operator_job_duration_seconds_bucket[1h])) by (le, renovate_job)) > 1500
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Renovate job p95 duration is high for {{ $labels.renovate_job }}'
+            description: 'p95 job duration is approaching the 1800s (JOB_TIMEOUT_SECONDS) default.'
+
+        # SRE: automerge has flatlined while the open-PR backlog keeps growing.
+        - alert: RenovateAutomergeStalled
+          expr: sum(rate(renovate_operator_pull_requests_merged_total[6h])) == 0 and sum(renovate_operator_open_pull_requests) > 0
+          for: 6h
+          labels:
+            severity: warning
+          annotations:
+            summary: 'No Renovate PRs merged in 6h while open PRs exist'
+            description: 'Automerge may be broken or gated; the dependency-update backlog is not draining.'
+
+        # SRE: a schedule that should have fired is overdue (leader stall / requeue failure).
+        - alert: RenovateScheduleMissed
+          expr: time() - renovate_operator_schedule_next_run_timestamp_seconds > 3600
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Renovate schedule overdue for {{ $labels.renovate_job }}'
+            description: 'The next planned run is more than an hour in the past.'
+
+        # SecOps: sustained webhook HMAC signature failures - forged or misconfigured webhooks.
+        - alert: RenovateWebhookSignatureFailures
+          expr: sum(rate(renovate_operator_webhook_signature_verification_failures_total[10m])) by (provider) > 0
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Renovate webhook signature failures from {{ $labels.provider }}'
+            description: 'HMAC signature verification is failing; investigate forged or misconfigured webhooks.'
+
+        # SecOps: the policy engine is not enforcing. Worth alerting on for a shared cluster,
+        # since it is off by default - see docs/security.md.
+        - alert: RenovateOperatorPolicyNotEnforcing
+          expr: max(renovate_operator_policy_enabled) == 0
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: 'Renovate operator is not enforcing its policy'
+            description: >-
+              Anyone who can write a RenovateJob can have the operator read secrets in that
+              namespace and redirect its credentials. Set policy.enabled=true.
+
+        # SecOps: jobs are being refused. Usually a value missing from policy.allowedHosts,
+        # an unlabelled secret, or an unlisted image - the Accepted condition names which.
+        - alert: RenovateOperatorPolicyDenials
+          expr: sum(rate(renovate_operator_policy_denials_total[15m])) by (check) > 0
+          for: 15m
+          labels:
+            severity: info
+          annotations:
+            summary: 'Renovate operator is refusing jobs ({{ $labels.check }})'
+            description: >-
+              Run `kubectl get renovatejobs -A -o wide` and check the Accepted condition
+              for the value that needs allowlisting.
