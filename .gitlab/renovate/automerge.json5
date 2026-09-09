@@ -19,5 +19,15 @@
       automergeType: 'pr',
       ignoreTests: true,
     },
+    {
+      description: 'Auto-merge Renovate self-hosted image',
+      matchDatasources: ['docker'],
+      matchPackageNames: ['ghcr.io/renovatebot/renovate'],
+      matchUpdateTypes: ['minor', 'patch'],
+      automerge: true,
+      autoApprove: true,
+      automergeType: 'pr',
+      ignoreTests: true,
+    },
   ],
 }
