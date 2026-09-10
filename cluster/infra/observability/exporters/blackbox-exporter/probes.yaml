@@ -10,7 +10,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - nas.hosts.alexsaphir.com
+        - 192.168.0.130
 
 ---
 apiVersion: monitoring.coreos.com/v1
@@ -25,4 +25,4 @@ spec:
   targets:
     staticConfig:
       static:
-        - nas.hosts.alexsaphir.com:2049
+        - 192.168.0.130:2049
