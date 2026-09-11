@@ -66,6 +66,7 @@ spec:
               name: calibre-scrapper-lb
               annotations:
                 external-dns.alpha.kubernetes.io/hostname: calibre-scrapper.svc.talos.${DOMAIN_NAME}
+                external-dns.kubernetes.io/hostname: calibre-scrapper.svc.talos.${DOMAIN_NAME}
 
             spec:
               type: LoadBalancer

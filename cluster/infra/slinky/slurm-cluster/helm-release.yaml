@@ -51,3 +51,4 @@ spec:
           metadata:
             annotations:
               external-dns.alpha.kubernetes.io/hostname: slurm.svc.talos.${DOMAIN_NAME}
+              external-dns.kubernetes.io/hostname: slurm.svc.talos.${DOMAIN_NAME}

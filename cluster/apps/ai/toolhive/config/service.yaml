@@ -5,6 +5,7 @@ metadata:
   name: mcp-gateway-lb
   annotations:
     external-dns.alpha.kubernetes.io/hostname: mcp.svc.talos.${DOMAIN_NAME}
+    external-dns.kubernetes.io/hostname: mcp.svc.talos.${DOMAIN_NAME}
 spec:
   type: LoadBalancer
   ipFamilyPolicy: PreferDualStack
