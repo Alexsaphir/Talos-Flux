@@ -88,7 +88,6 @@ spec:
             metadata:
               name: postgres-lb
               annotations:
-                external-dns.alpha.kubernetes.io/hostname: postgres.svc.talos.${DOMAIN_NAME}
                 external-dns.kubernetes.io/hostname: postgres.svc.talos.${DOMAIN_NAME}
 
             spec:
