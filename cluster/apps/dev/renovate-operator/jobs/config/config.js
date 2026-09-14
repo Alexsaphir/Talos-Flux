@@ -10,13 +10,5 @@ module.exports = {
       username: process.env.DOCKER_HUB_USER,
       password: process.env.DOCKER_HUB_PASSWORD,
     },
-    {
-      matchHost: 'https://gitlab.alexsaphir.com',
-      allowInternal: true
-    },
-    {
-      matchHost: 'https://ocharted.alexsaphir.com',
-      allowInternal: true
-    },
   ],
 };

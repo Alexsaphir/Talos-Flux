@@ -82,6 +82,19 @@ spec:
           name: &renovate-config gitlab-renovate-config
           key: onboardingConfig
 
+    - name: RENOVATE_HOST_RULES
+      value: >-
+        [
+          {
+            'allowInternal': true,
+            'matchHost': 'gitlab.alexsaphir.com'
+          },
+          {
+            'allowInternal': true,
+            'matchHost': 'ocharted.alexsaphir.com'
+          }
+        ]
+
   extraVolumes:
     - name: *renovate-config
       configMap:
