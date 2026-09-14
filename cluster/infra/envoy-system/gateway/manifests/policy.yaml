@@ -26,6 +26,7 @@ spec:
 
   timeout:
     http:
+      connectionIdleTimeout: 30s
       requestTimeout: 0s
 
 ---
@@ -44,6 +45,9 @@ spec:
         - 10.42.0.0/16
         - fdd5:aa8:9535:42::/108
 
+  connection:
+    bufferLimit: 4Mi
+
   path:
     disableMergeSlashes: true
     escapedSlashesAction: KeepUnchanged
@@ -60,3 +64,7 @@ spec:
   http3: { }
 
   tcpKeepalive: { }
+
+  timeout:
+    http:
+      idleTimeout: 60s
