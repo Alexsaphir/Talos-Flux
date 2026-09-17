@@ -17,7 +17,7 @@ kind: Gateway
 metadata:
   name: envoy
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname envoy.talos.${DOMAIN_NAME}
+    external-dns.kubernetes.io/target: &hostname envoy.talos.${DOMAIN_NAME}
 
     gatus.home-operations.com/endpoint: |-
       client:
