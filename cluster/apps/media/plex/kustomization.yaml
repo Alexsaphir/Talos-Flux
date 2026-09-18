@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - resource-claim-template.yaml
   - helm-release.yaml
+  - backend-traffic-policy.yaml
