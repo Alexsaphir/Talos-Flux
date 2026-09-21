@@ -33,6 +33,7 @@ spec:
     service:
       registry:
         hostPort: 29999
+        topologyAwareHintsEnabled: false
 
     serviceMonitor:
       enabled: true
