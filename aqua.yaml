@@ -26,10 +26,10 @@ packages:
 
   # Cluster
   - name: fluxcd/flux2@v2.9.5
-  - name: cilium/cilium-cli@v0.20.0
+  - name: cilium/cilium-cli@v0.20.1
 
   # Kubernetes
-  - name: kubernetes/kubectl@v1.37.0
+  - name: kubernetes/kubectl@v1.37.1
   - name: kubernetes-sigs/krew@v0.5.0
   - name: brumhard/krewfile@v0.7.0
 
@@ -40,4 +40,4 @@ packages:
   # Infrastructure
   - name: opentofu/opentofu@v1.12.6
   - name: gruntwork-io/terragrunt@v1.1.6
-  - name: hashicorp/terraform@v1.16.3
+  - name: hashicorp/terraform@v1.16.4
