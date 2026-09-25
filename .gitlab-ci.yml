@@ -15,5 +15,5 @@ default:
 
 include:
   - component: $CI_SERVER_FQDN/components/secret-detection/secret-detection@2.4.0
-  - component: $CI_SERVER_FQDN/components/sast/iac-sast@3.4.0
+  - component: $CI_SERVER_FQDN/components/sast/iac-sast@3.5.0
   - component: $CI_SERVER_FQDN/components/dependency-scanning/main@2.1.1
