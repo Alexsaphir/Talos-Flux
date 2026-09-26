@@ -1,0 +1,96 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app valheim
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: *app
+
+  values:
+    controllers:
+      valheim:
+        annotations:
+          reloader.stakater.com/auto: 'true'
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mbround18/valheim
+              tag: 3.8.8@sha256:374b5e34ba17d6e98cdbf674b5da764b116a2e64bcadb3bd629d8c4e4c921c7e
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            env:
+              NAME: 'Lab'
+              WORLD: 'Lab'
+              TZ: '${TIMEZONE}'
+              Type: BepInEx # Installs BepInEx mod loader for down the road
+              PORT: &port 2456
+              MODIFIERS: deathpenalty=casual,portals=casual
+              # AUTO_UPDATE: 1
+              # AUTO_UPDATE_SCHEDULE: 0 4 * * *
+              # AUTO_UPDATE_PAUSE_WITH_PLAYERS: 1
+              PUBLIC: 0
+            envFrom:
+              - secretRef:
+                  name: '{{ .Release.Name }}-secret'
+            resources:
+              requests:
+                cpu: 10m
+                memory: 1Gi
+              limits:
+                memory: 10Gi
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      app:
+        type: LoadBalancer
+        ipFamilyPolicy: PreferDualStack
+        externalTrafficPolicy: Local
+
+        annotations:
+          external-dns.kubernetes.io/hostname: valheim.${DOMAIN_NAME}
+          external-dns.kubernetes.io/target: envoy.talos.${DOMAIN_NAME}
+
+        ports:
+          http:
+            port: 80
+          gameplay:
+            enabled: true
+            port: *port
+            protocol: UDP
+          auth:
+            enabled: true
+            port: 2457
+            protocol: UDP
+          voip:
+            enabled: true
+            port: 2458
+            protocol: UDP
+
+    persistence:
+      data:
+        existingClaim: '{{ .Release.Name }}'
+        globalMounts:
+          - path: /home/steam/.config/unity3d/IronGate/Valheim/
+          - path: /home/steam/valheim/
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /home/steam/backups/
+          - path: /home/steam/.steam/
+          - path: /home/steam/.local/
