@@ -91,6 +91,7 @@ spec:
       annotations:
         gatus.home-operations.com/endpoint: |-
           conditions: ['[STATUS] == 200']
+          path: /healthz
           group: observability
       hostnames: [ '{{ .Release.Name }}.${DOMAIN_NAME}' ]
       parentRefs:

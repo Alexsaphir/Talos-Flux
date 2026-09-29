@@ -115,6 +115,7 @@ spec:
           gethomepage.dev/weight: '-80'
           gatus.home-operations.com/endpoint: |-
             conditions: ['[STATUS] == 200']
+            path: /api/v1/status
             group: media
         hostnames:
           - 'seer.${DOMAIN_NAME}'
