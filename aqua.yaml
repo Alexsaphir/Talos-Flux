@@ -13,7 +13,7 @@ packages:
   # JSON/YAML utils
   - name: homeport/dyff@v1.12.0
   - name: jqlang/jq@jq-1.8.2
-  - name: mikefarah/yq@v4.53.6
+  - name: mikefarah/yq@v4.54.1
 
   # Secrets
   - name: FiloSottile/age@v1.3.2
@@ -22,7 +22,7 @@ packages:
 
   # Talos
   - name: siderolabs/talos@v1.14.1
-  - name: postfinance/topf@v0.6.0
+  - name: postfinance/topf@v0.6.1
 
   # Cluster
   - name: fluxcd/flux2@v2.9.5
