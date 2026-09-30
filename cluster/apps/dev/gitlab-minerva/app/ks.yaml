@@ -6,15 +6,13 @@ metadata:
   namespace: gitlab-minerva
 spec:
   components:
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/backup/schedule
+    - ../../../../components/kopiur/backup/base
 
   postBuild:
     substitute:
       APP: *app
       PVC_NAME: *app
-      VOLSYNC_CAPACITY: 100Gi
-      VOLSYNC_CACHE_CAPACITY: 100Gi
+      KOPIUR_CAPACITY: 100Gi
 
   #  healthChecks:
   #    - apiVersion: helm.toolkit.fluxcd.io/v2

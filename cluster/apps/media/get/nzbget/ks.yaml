@@ -7,14 +7,13 @@ metadata:
 spec:
   components:
     - ../../../../components/zero-scaler
-    - ../../../../components/volsync
     - ../../../../components/kopiur/backup
 
   postBuild:
     substitute:
       APP: *app
       PVC_NAME: *app
-      VOLSYNC_CAPACITY: 1Gi
+      KOPIUR_CAPACITY: 1Gi
 
   prune: true
   interval: 1h

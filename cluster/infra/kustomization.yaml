@@ -9,7 +9,6 @@ resources:
   - openebs-system
   - rook-ceph
   - kopiur-system
-  - volsync-system
   - minio-system
 
   - cert-manager

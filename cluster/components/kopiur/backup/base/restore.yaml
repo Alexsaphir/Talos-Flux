@@ -1,0 +1,16 @@
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: Restore
+metadata:
+  name: ${PVC_NAME}
+spec:
+  policy:
+    onMissingSnapshot: Continue
+
+  source:
+    fromPolicy:
+      name: ${PVC_NAME}
+      offset: 0
+
+  target:
+    populator: {}

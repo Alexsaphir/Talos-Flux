@@ -6,7 +6,6 @@ metadata:
   namespace: media
 spec:
   components:
-    - ../../../components/volsync
     - ../../../components/zero-scaler
     - ../../../components/kopiur/backup
 
@@ -14,8 +13,7 @@ spec:
     substitute:
       APP: *app
       PVC_NAME: *app
-      VOLSYNC_CAPACITY: &capacity 100Gi
-      VOLSYNC_CACHE_CAPACITY: *capacity
+      KOPIUR_CAPACITY: 100Gi
 
   prune: true
   interval: 1h

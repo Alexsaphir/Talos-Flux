@@ -2,29 +2,6 @@
 version: '3'
 
 tasks:
-  volsync:snapshot:
-    desc: Snapshot an app [NS=default] [APP=required]
-    cmds:
-      - kubectl --namespace {{.NS}} patch replicationsources {{.APP}} --type merge -p '{"spec":{"trigger":{"manual":"{{now | unixEpoch}}"}}}'
-      - until kubectl --namespace {{.NS}} get job/{{.JOB}} &>/dev/null; do sleep 5; done
-      - kubectl --namespace {{.NS}} wait job/{{.JOB}} --for=condition=complete --timeout=120m
-    vars:
-      NS: '{{.NS | default "default"}}'
-      JOB: volsync-src-{{.APP}}
-    requires:
-      vars: [ APP ]
-    preconditions:
-      - kubectl --namespace {{.NS}} get replicationsources {{.APP}}
-      - which kubectl
-
-  volsync:snapshots:
-    cmd: |
-      kubectl get replicationsources --no-headers -A | while read -r ns name _; do \
-          kubectl -n "$ns" patch replicationsources "$name" --type merge -p '{"spec":{"trigger":{"manual":"$(date +%s)"}}}'; \
-      done
-    preconditions:
-      - which kubectl
-
   cnpg:backup:
     cmd: |
       kubectl get clusters.postgresql.cnpg.io --no-headers -A | while read -r ns name _; do \

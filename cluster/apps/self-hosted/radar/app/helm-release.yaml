@@ -34,7 +34,6 @@ spec:
         - dragonflydb.io
         - policy
         - policy.networking.k8s.io
-        - volsync.backube
 
     mcp:
       enabled: false

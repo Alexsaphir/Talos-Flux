@@ -9,8 +9,6 @@ spec:
     - name: rook-ceph
     - name: external-secrets
       namespace: external-secrets
-    - name: volsync
-      namespace: volsync-system
 
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2

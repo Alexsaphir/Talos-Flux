@@ -6,18 +6,20 @@ metadata:
   namespace: immich
 spec:
   components:
-    - ../../../../components/volsync
-    - ../../../../components/kopiur/backup/schedule
+    - ../../../../components/kopiur/backup
 
   postBuild:
     substitute:
       APP: *app
+
       PVC_NAME: *app
-      VOLSYNC_CAPACITY: 300Gi
-      VOLSYNC_ACCESSMODES: ReadWriteMany
-      VOLSYNC_STORAGECLASS: ceph-filesystem
-      VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
-      VOLSYNC_SNAP_ACCESSMODES: ReadOnlyMany
+      KOPIUR_CAPACITY: 300Gi
+      KOPIUR_STORAGECLASS: ceph-filesystem
+      KOPIUR_ACCESSMODES: ReadWriteMany
+
+      KOPIUR_SNAPSHOTCLASS: csi-ceph-filesystem
+      KOPIUR_STAGING_STORAGECLASS: csi-ceph-filesystem-backingsnapshot
+      KOPIUR_STAGING_ACCESSMODES: ReadOnlyMany
 
   prune: true
   interval: 1h

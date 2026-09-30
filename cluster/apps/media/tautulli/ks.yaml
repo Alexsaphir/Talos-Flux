@@ -6,7 +6,6 @@ metadata:
   namespace: media
 spec:
   components:
-    - ../../../components/volsync
     - ../../../components/kopiur/backup
 
   dependsOn:
@@ -16,7 +15,7 @@ spec:
     substitute:
       APP: *app
       PVC_NAME: *app
-      VOLSYNC_CAPACITY: 20Gi
+      KOPIUR_CAPACITY: 20Gi
 
   prune: true
   interval: 1h
