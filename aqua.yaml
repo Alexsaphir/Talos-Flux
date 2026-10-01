@@ -4,7 +4,7 @@
 # https://aquaproj.github.io/
 registries:
   - type: standard
-    ref: v4.569.0 # renovate: depName=aquaproj/aqua-registry
+    ref: v4.570.0 # renovate: depName=aquaproj/aqua-registry
 packages:
   # Utils
   - name: direnv/direnv@v2.37.1
@@ -25,7 +25,7 @@ packages:
   - name: postfinance/topf@v0.6.1
 
   # Cluster
-  - name: fluxcd/flux2@v2.9.5
+  - name: fluxcd/flux2@v2.9.6
   - name: cilium/cilium-cli@v0.20.1
 
   # Kubernetes
