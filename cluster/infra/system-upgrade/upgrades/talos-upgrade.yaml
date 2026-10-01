@@ -18,21 +18,25 @@ spec:
           matchType: "=~"
 
   healthChecks:
-    - apiVersion: v1
+    - description: All nodes must be Ready
+      apiVersion: v1
       kind: Node
       expr: status.conditions.filter(c, c.type == 'Ready').all(c, c.status == 'True')
 
-    - apiVersion: ceph.rook.io/v1
+    - description: Ceph cluster must be healthy
+      apiVersion: ceph.rook.io/v1
       kind: CephCluster
       expr: |-
         status.ceph.health in ['HEALTH_OK']
 
-    - apiVersion: postgresql.cnpg.io/v1
+    - description: CNPG cluster must be healthy with all instances ready
+      apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
       expr: |-
-        status.phase in ['Cluster in healthy state']
+        status.phase in ['Cluster in healthy state'] && status.readyInstances == object.spec.instances
 
-    - apiVersion: dragonflydb.io/v1alpha1
+    - description: Dragonfly must be ready
+      apiVersion: dragonflydb.io/v1alpha1
       kind: Dragonfly
       expr: |-
-        status.phase in ['Ready']
+        status.phase in ['Ready'] && (!has(status.isRollingUpdate) || !status.isRollingUpdate)
