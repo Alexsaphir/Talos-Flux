@@ -14,8 +14,13 @@ spec:
     name: postgresql
     major: 18
 
-  instances: 2
+  instances: 3
   enablePDB: true
+
+  primaryUpdateMethod: switchover
+  primaryUpdateStrategy: unsupervised
+  smartShutdownTimeout: 30
+  stopDelay: 180
 
   superuserSecret:
     name: postgres-superuser
@@ -50,6 +55,11 @@ spec:
     shared_preload_libraries:
       - 'vchord.so'
       - timescaledb
+
+    synchronous:
+      method: any
+      number: 1
+      dataDurability: required
 
   bootstrap:
     recovery:

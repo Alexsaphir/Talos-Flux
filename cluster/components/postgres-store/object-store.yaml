@@ -11,8 +11,11 @@ spec:
     endpointURL: http://nas.minio-system.svc.cluster.local:9000
 
     wal:
+      compression: zstd
+      maxParallel: 8
+
+    data:
       compression: bzip2
-      maxParallel: 4
 
     s3Credentials:
       accessKeyId:
