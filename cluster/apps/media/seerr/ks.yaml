@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app seer
+  name: &app seerr
   namespace: media
 spec:
   components:
@@ -11,7 +11,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      PVC_NAME: *app
+      PVC_NAME: seer
       KOPIUR_CAPACITY: 5Gi
 
   prune: true
