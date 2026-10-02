@@ -29,6 +29,18 @@ spec:
       expr: |-
         status.ceph.health in ['HEALTH_OK']
 
+    - description: Snaphsot must be completed
+      apiVersion: kopiur.home-operations.com/v1alpha1
+      kind: Snapshot
+      expr: |-
+        status.phase != 'Running'
+
+    - description: Ensures no pvc are being restored
+      apiVersion: kopiur.home-operations.com/v1alpha1
+      kind: Restore
+      expr: |-
+        !(status.phase in ['Resolving', 'Restoring'])
+
     - description: CNPG cluster must be healthy with all instances ready
       apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
