@@ -6,7 +6,59 @@ metadata:
 spec:
   groups:
     - name: cnp-default.rules
+      interval: 30s
       rules:
+        - alert: CNPGClusterDown
+          expr: |
+            cnpg_pg_replication_in_recovery >= 1 and cnpg_pg_replication_slots_active == 0
+          for: 5m
+          annotations:
+            summary: CNPG cluster {{ $labels.namespace }}/{{ $labels.cluster }} has no active instances (replication expected)
+            description: PostgreSQL cluster {{ $labels.namespace }}/{{ $labels.cluster }} has been down for 5 minutes (replication expected)
+          labels:
+            severity: critical
+
+        - alert: CNPGReplicationBroken
+          expr: |
+            cnpg_pg_replication_in_recovery == 0 and cnpg_pg_replication_slots_active == 0
+          for: 5m
+          annotations:
+            summary: CNPG replication broken on {{ $labels.namespace }}/{{ $labels.cluster }}
+            description: Cluster {{ $labels.namespace }}/{{ $labels.cluster }} has no active replication
+          labels:
+            severity: critical
+
+        - alert: CNPGHighConnectionUsage
+          expr: |
+            (cnpg_pg_stat_database_numbackends / cnpg_pg_settings_max_connections) * 100 > 80
+          for: 5m
+          annotations:
+            summary: High connection usage on {{ $labels.namespace }}/{{ $labels.cluster }}
+            description: Connection usage is {{ $value }}% on database {{ $labels.datname }}
+          labels:
+            severity: warning
+
+        - alert: CNPGConnectionLimit
+          expr: |
+            (cnpg_pg_stat_database_numbackends / cnpg_pg_settings_max_connections) * 100 > 95
+          for: 2m
+          annotations:
+            summary: Connection limit approaching on {{ $labels.namespace }}/{{ $labels.cluster }}
+            description: Connection usage is {{ $value }}% on database {{ $labels.datname }}
+          labels:
+            severity: critical
+
+        - alert: CNPGHighDiskUsage
+          expr: |
+            (cnpg_pg_database_size_bytes / cnpg_pg_tablespace_size_bytes) * 100 > 80
+          for: 5m
+          annotations:
+            summary: High disk usage on {{ $labels.namespace }}/{{ $labels.cluster }}
+            description: Disk usage is {{ $value }}% on {{ $labels.namespace }}/{{ $labels.cluster }}
+          labels:
+            severity: warning
+
+
         - alert: LongRunningTransaction
           annotations:
             description: Pod {{ $labels.pod }} is taking more than 5 minutes (300 seconds) for a query.
@@ -47,6 +99,16 @@ spec:
           labels:
             severity: warning
 
+        - alert: DatabaseDeadlockConflicts
+          annotations:
+            description: There are over 10 deadlock conflicts in {{ $labels.pod }}
+            summary: Checks the number of database conflicts
+          expr: |-
+            cnpg_pg_stat_database_deadlocks > 10
+          for: 1m
+          labels:
+            severity: warning
+
         - alert: LastFailedArchiveTime
           annotations:
             description: Archiving failed for {{ $labels.pod }}
@@ -57,12 +119,44 @@ spec:
           labels:
             severity: warning
 
-        - alert: DatabaseDeadlockConflicts
+        - alert: CNPGWALArchiveFailing
+          expr: |
+            cnpg_pg_stat_archiver_last_failed_time
+              > cnpg_pg_stat_archiver_last_archived_time
+          for: 15m
           annotations:
-            description: There are over 10 deadlock conflicts in {{ $labels.pod }}
-            summary: Checks the number of database conflicts
-          expr: |-
-            cnpg_pg_stat_database_deadlocks > 10
-          for: 1m
+            summary: WAL archiving is stuck on {{ $labels.job }}
+            description: The most recent archive attempt on {{ $labels.pod }} failed and no WAL has archived since.
           labels:
             severity: warning
+
+        - alert: CNPGBackupFailed
+          expr: |
+            max by (namespace, job) ({__name__=~"(cnpg_collector|barman_cloud_cloudnative_pg_io)_last_failed_backup_timestamp"})
+              > max by (namespace, job) ({__name__=~"(cnpg_collector|barman_cloud_cloudnative_pg_io)_last_available_backup_timestamp"})
+          for: 5m
+          annotations:
+            summary: CNPG backup failed on {{ $labels.job }}
+            description: The last backup attempt failed and is newer than the last successful backup.
+          labels:
+            severity: critical
+
+        - alert: CNPGBackupStale
+          expr: |
+            (time() - max by (namespace, job) ({__name__=~"(cnpg_collector|barman_cloud_cloudnative_pg_io)_last_available_backup_timestamp"} > 0)) > 86400
+          for: 1h
+          annotations:
+            summary: CNPG backup is stale on {{ $labels.job }}
+            description: Last successful backup was {{ $value | humanizeDuration }} ago
+          labels:
+            severity: warning
+
+        - alert: CNPGBackupNotConfigured
+          expr: |
+            max by (namespace, job) ({__name__=~"(cnpg_collector|barman_cloud_cloudnative_pg_io)_last_available_backup_timestamp"}) == 0
+          for: 1h
+          annotations:
+            summary: CNPG cluster {{ $labels.job }} has never been backed up
+            description: No successful backup has ever been recorded. Check that an ObjectStore plus spec.plugins[barman-cloud] (or, pre-migration, spec.backup.barmanObjectStore) and a ScheduledBackup all exist.
+          labels:
+            severity: critical
