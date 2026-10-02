@@ -45,3 +45,9 @@ spec:
     keepHourly: 24
     keepDaily: 7
     keepWeekly: 4
+
+  verification:
+    quick:
+      schedule:
+        cron: '0 4 * * *'
+        jitter: 30m
