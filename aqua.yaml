@@ -8,7 +8,7 @@ registries:
 packages:
   # Utils
   - name: direnv/direnv@v2.37.1
-  - name: go-task/task@v3.53.1
+  - name: go-task/task@v3.54.0
 
   # JSON/YAML utils
   - name: homeport/dyff@v1.12.0
@@ -38,6 +38,6 @@ packages:
   - name: helmfile/helmfile@v1.8.1
 
   # Infrastructure
-  - name: opentofu/opentofu@v1.13.0
+  - name: opentofu/opentofu@v1.13.1
   - name: gruntwork-io/terragrunt@v1.1.6
-  - name: hashicorp/terraform@v1.16.4
+  - name: hashicorp/terraform@v1.16.5
