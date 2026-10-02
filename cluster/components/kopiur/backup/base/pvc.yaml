@@ -8,15 +8,10 @@ spec:
   accessModes:
     - ${KOPIUR_ACCESSMODES:=ReadWriteOnce}
 
-  #  dataSourceRef:
-  #    apiGroup: kopiur.home-operations.com
-  #    kind: Restore
-  #    name: ${PVC_NAME}
-
   dataSourceRef:
-    apiGroup: volsync.backube
-    kind: ReplicationDestination
-    name: ${PVC_NAME}-dst
+    apiGroup: kopiur.home-operations.com
+    kind: Restore
+    name: ${PVC_NAME}
 
   resources:
     requests:
