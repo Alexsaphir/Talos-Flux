@@ -23,10 +23,6 @@ spec:
     name: node-feature-discovery
 
   values:
-    enableNodeFeatureApi: true
-    nodeFeatureRule:
-      createCRD: true
-
     master:
       replicaCount: 1
 

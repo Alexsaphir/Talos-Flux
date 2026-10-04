@@ -40,19 +40,22 @@ spec:
         requests:
           cpu: 10m
           memory: 64Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities: { drop: [ 'ALL' ] }
+        readOnlyRootFilesystem: true
 
     podSecurityContext:
       runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
       seccompProfile: { type: RuntimeDefault }
 
-    securityContext:
-      capabilities: { drop: [ 'ALL' ] }
-      readOnlyRootFilesystem: true
-      runAsNonRoot: true
-      runAsUser: 1000
+    rbacProxy:
+      enabled: false
 
     serviceMonitor:
-      enabled: false # Broken metrics
+      enabled: true
 
     grafanaDashboard:
       enabled: true

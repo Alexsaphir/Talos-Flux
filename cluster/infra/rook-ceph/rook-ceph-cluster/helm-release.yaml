@@ -28,11 +28,11 @@ spec:
   timeout: 10m
 
   values:
-    annotations:
-      all:
-        reloader.stakater.com/search: 'true'
-
     cephClusterSpec:
+      annotations:
+        all:
+          reloader.stakater.com/search: 'true'
+
       security:
         cephx:
           daemon:

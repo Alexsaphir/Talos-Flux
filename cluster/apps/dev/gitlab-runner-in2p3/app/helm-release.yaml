@@ -54,10 +54,9 @@ spec:
         enabled: true
     service:
       enabled: true
-    env:
-      TZ: '${TIMEZONE}'
 
     extraEnv:
+      TZ: '${TIMEZONE}'
       CACHE_S3_SERVER_ADDRESS: s3.${DOMAIN_NAME}
       CACHE_S3_BUCKET_NAME: gitlab-runner
       CACHE_S3_BUCKET_LOCATION: us-east-1
