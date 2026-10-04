@@ -35,10 +35,16 @@ spec:
     securityContext:
       runAsUser: ${KOPIUR_PUID:=1000}
       runAsGroup: ${KOPIUR_PGID:=1000}
+      runAsNonRoot: ${KOPIUR_RUN_AS_NON_ROOT:=true}
+      capabilities:
+        add: ${KOPIUR_CAPABILITIES_ADD:=[]}
 
     podSecurityContext:
       fsGroup: ${KOPIUR_PGID:=1000}
       fsGroupChangePolicy: OnRootMismatch
+      supplementalGroups: ${KOPIUR_SUPPLEMENTAL_GROUPS:=[]}
+
+    privilegedMode: ${KOPIUR_PRIVILEGED_MODE:=false}
 
   retention:
     keepLatest: 3

@@ -6,13 +6,22 @@ metadata:
   namespace: gitlab-minerva
 spec:
   components:
-    - ../../../../components/kopiur/backup/base
+    - ../../../../components/kopiur/backup
 
   postBuild:
     substitute:
       APP: *app
+
       PVC_NAME: *app
       KOPIUR_CAPACITY: 100Gi
+
+      KOPIUR_PUID: '0'
+      KOPIUR_PGID: '0'
+      KOPIUR_RUN_AS_NON_ROOT: 'false'
+      KOPIUR_CAPABILITIES_ADD: '[ DAC_READ_SEARCH, DAC_OVERRIDE ]' # traverse/read 0700 dirs owned by gitlab uids
+      # git, gitlab-www, gitlab-redis, gitlab-psql, registry, gitlab-prometheus, gitlab-consul, gitlab-backup
+      KOPIUR_SUPPLEMENTAL_GROUPS: '[ 998, 999, 997, 996, 993, 992, 991, 990 ]'
+      KOPIUR_PRIVILEGED_MODE: 'true'
 
   #  healthChecks:
   #    - apiVersion: helm.toolkit.fluxcd.io/v2
