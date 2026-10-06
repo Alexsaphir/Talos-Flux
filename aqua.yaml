@@ -7,7 +7,7 @@ registries:
     ref: v4.572.0 # renovate: depName=aquaproj/aqua-registry
 packages:
   # Utils
-  - name: direnv/direnv@v2.37.1
+  - name: direnv/direnv@v2.38.1
   - name: go-task/task@v3.54.0
 
   # JSON/YAML utils
