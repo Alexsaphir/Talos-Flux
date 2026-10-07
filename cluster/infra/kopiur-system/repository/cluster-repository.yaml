@@ -8,12 +8,16 @@ spec:
     all: true
 
   backend:
-    filesystem:
-      path: /repo
-      volume:
-        nfs:
-          server: nas.hosts.alexsaphir.com
-          path: /mnt/user/Kopiur
+    s3:
+      auth:
+        secretRef:
+          name: kopiur-repository-secret
+          namespace: kopiur-system
+      bucket: kopiur
+      endpoint: nas.hosts.alexsaphir.com:9000
+      region: us-east-1
+      tls:
+        disableTls: true
 
   encryption:
     passwordSecretRef:
