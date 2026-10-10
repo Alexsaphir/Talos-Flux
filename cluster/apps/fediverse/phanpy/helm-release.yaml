@@ -29,7 +29,7 @@ spec:
           main:
             image:
               repository: ghcr.io/jjgadgets/phanpy
-              tag: 2026.10.06.bb8c326@sha256:936e029c98efb4fe7c5c9a04436d2aa8dcb0e430fc4baf7b15edd758a157bf01
+              tag: 2026.10.09.febb38d@sha256:25c0a0298884e5c8484180ccf17dd2177b7f13cf9936818ae2a1d134e6ce00c4
 
             env:
               PHANPY_WEBSITE: &hostname '{{ .Release.Name }}.${DOMAIN_NAME}'
