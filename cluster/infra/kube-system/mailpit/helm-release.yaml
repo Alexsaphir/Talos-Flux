@@ -41,7 +41,7 @@ spec:
           app:
             image:
               repository: axllent/mailpit
-              tag: v1.31.4
+              tag: v1.31.5
 
             args:
               - --db-file
