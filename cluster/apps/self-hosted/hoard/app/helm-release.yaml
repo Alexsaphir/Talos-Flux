@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/rleeon/hoard
-              tag: 1.2.1@sha256:2424857ebf8240429cb2481d752a777ae14b0e51f6bb00d6b2a0e3f238d66662
+              tag: 1.2.2@sha256:a8bd2819943d088d59e960ebae635264cd1d44922ba7eaf459f53be2a351feca
 
             envFrom:
               - secretRef:
