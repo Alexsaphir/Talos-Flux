@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: docker.io/pgsty/silo
-              tag: RELEASE.2026-09-16T00-00-00Z
+              tag: RELEASE.2026-10-15T00-00-00Z
 
             args: [ 'server', '/data', '--console-address', ':9001' ]
 
