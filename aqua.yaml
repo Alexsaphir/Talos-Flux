@@ -33,7 +33,7 @@ packages:
   - name: kubernetes-sigs/krew@v0.5.0
   - name: brumhard/krewfile@v0.7.0
 
-  - name: helm/helm@v4.3.0
+  - name: helm/helm@v4.3.1
   - name: kubernetes-sigs/kustomize@kustomize/v5.8.3
   - name: helmfile/helmfile@v1.8.1
 
