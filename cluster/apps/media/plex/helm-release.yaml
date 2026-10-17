@@ -112,6 +112,7 @@ spec:
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_PLEX_API_KEY}}" }}'
           gethomepage.dev/widget.fields: '["streams"]'
           gatus.home-operations.com/endpoint: |-
+            path: /identity
             conditions: ['[STATUS] == 200']
             group: media
         hostnames: [ 'plex.${DOMAIN_NAME}' ]
