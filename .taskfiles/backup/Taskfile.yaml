@@ -2,6 +2,15 @@
 version: '3'
 
 tasks:
+  kopiur:snapshots:
+    cmd: |
+      kubectl get snapshotpolicies.kopiur.home-operations.com --no-headers -A | while read -r ns name _; do \
+          kubectl kopiur snapshot now -n "$ns" --policy "$name"; \
+      done
+    preconditions:
+      - which kubectl
+
+
   cnpg:backup:
     cmd: |
       kubectl get clusters.postgresql.cnpg.io --no-headers -A | while read -r ns name _; do \
