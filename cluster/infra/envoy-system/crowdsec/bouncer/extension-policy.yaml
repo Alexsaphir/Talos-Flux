@@ -1,0 +1,30 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyExtensionPolicy
+metadata:
+  name: crowdsec-bouncer
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy
+
+  wasm:
+    - name: crowdsec-bouncer
+      failOpen: true
+      code:
+        type: Image
+        image:
+          url: ghcr.io/aarnaud/crowdsec-wasm-bouncer:0.8.4
+      env:
+        hostKeys:
+          - CROWDSEC_LAPI_KEY
+      config:
+        crowdsec:
+          lapi:
+            enabled: true
+            cluster: crowdsec_lapi
+            sync_freq: 10
+          trusted_ips:
+            - 10.42.0.0/16
+            - fdd5:aa8:9535:42::/108

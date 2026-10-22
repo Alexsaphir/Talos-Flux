@@ -26,6 +26,13 @@ spec:
         container:
           image: mirror.gcr.io/envoyproxy/envoy:v1.40.0
 
+          env:
+            - name: CROWDSEC_LAPI_KEY # read by the crowdsec wasm bouncer (hostKeys)
+              valueFrom:
+                secretKeyRef:
+                  name: crowdsec-secret
+                  key: BOUNCER_KEY_ENVOY
+
           resources:
             requests:
               cpu: 100m
@@ -34,6 +41,32 @@ spec:
 
       envoyService:
         externalTrafficPolicy: Cluster
+
+  # The wasm bouncer must run before authelia (ext_authz)
+  filterOrder:
+    - name: envoy.filters.http.wasm
+      before: envoy.filters.http.ext_authz
+
+  # Cluster used by the crowdsec wasm bouncer to reach the LAPI
+  bootstrap:
+    type: JSONPatch
+    jsonPatches:
+      - op: add
+        path: /static_resources/clusters/-
+        value:
+          name: crowdsec_lapi
+          type: STRICT_DNS
+          connect_timeout: 5s
+          dns_lookup_family: ALL
+          load_assignment:
+            cluster_name: crowdsec_lapi
+            endpoints:
+              - lb_endpoints:
+                  - endpoint:
+                      address:
+                        socket_address:
+                          address: crowdsec-service.envoy-system.svc.cluster.local
+                          port_value: 8080
 
   shutdown:
     drainTimeout: 180s

@@ -20,6 +20,18 @@ metadata:
   name: crowdsec-bouncer
   namespace: envoy-system
 spec:
+  dependsOn:
+    - name: gateway
+  healthChecks:
+    - apiVersion: gateway.envoyproxy.io/v1alpha1
+      kind: EnvoyExtensionPolicy
+      name: crowdsec-bouncer
+      namespace: envoy-system
+  healthCheckExprs:
+    - apiVersion: gateway.envoyproxy.io/v1alpha1
+      kind: EnvoyExtensionPolicy
+      current: status.ancestors.size() > 0 && status.ancestors.all(a, a.conditions.filter(c, c.type == 'Accepted').all(c, c.status == 'True'))
+      failed: status.ancestors.size() > 0 && status.ancestors.exists(a, a.conditions.filter(c, c.type == 'Accepted').exists(c, c.status == 'False'))
   prune: true
   interval: 1h
   path: cluster/infra/envoy-system/crowdsec/bouncer
