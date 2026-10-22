@@ -9,7 +9,7 @@ spec:
       rules:
         - alert: CrowdSecLAPIDown
           expr: |-
-            absent(up{namespace="security", job="crowdsec-service"} == 1)
+            absent(up{namespace="envoy-system", job="crowdsec-service"} == 1)
           for: 5m
           annotations:
             summary: >-
@@ -19,7 +19,7 @@ spec:
 
         - alert: CrowdSecAgentDown
           expr: |-
-            up{namespace="security", job="crowdsec-agent-service"} == 0
+            up{namespace="envoy-system", job="crowdsec-agent-service"} == 0
           for: 15m
           annotations:
             summary: >-

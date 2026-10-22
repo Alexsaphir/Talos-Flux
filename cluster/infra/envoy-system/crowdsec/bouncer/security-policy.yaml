@@ -9,6 +9,7 @@ spec:
       kind: Gateway
       name: envoy
 
+  mergeType: StrategicMerge # Used with authelia
   extAuth:
     failOpen: true
     grpc:

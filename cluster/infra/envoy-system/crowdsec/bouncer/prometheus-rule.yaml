@@ -9,7 +9,7 @@ spec:
       rules:
         - alert: CrowdSecBouncerDown
           expr: |-
-            absent(up{namespace="security", job="crowdsec-bouncer"} == 1)
+            absent(up{namespace="envoy-system", job="crowdsec-bouncer"} == 1)
           for: 5m
           annotations:
             summary: >-
