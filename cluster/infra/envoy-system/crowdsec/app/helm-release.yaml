@@ -49,7 +49,22 @@ spec:
             type: envoy
       env:
         - name: COLLECTIONS
-          value: crowdsecurity/plex yanis-kouidri/envoy
+          value: >-
+            yanis-kouidri/envoy
+            crowdsecurity/base-http-scenarios
+            crowdsecurity/http-cve
+            crowdsecurity/plex
       metrics:
         serviceMonitor:
           enabled: true
+
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: ServiceMonitor
+              name: crowdsec-service
+            patch: |-
+              - op: add
+                path: /spec/endpoints/0/honorLabels
+                value: true

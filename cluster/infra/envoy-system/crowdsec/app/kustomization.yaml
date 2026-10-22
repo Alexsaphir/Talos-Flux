@@ -5,4 +5,6 @@ resources:
   - oci-repository.yaml
   - external-secret.yaml
   - helm-release.yaml
+  - prometheus-rule.yaml
   - rbac.yaml
+  - grafana-dashboard.yaml

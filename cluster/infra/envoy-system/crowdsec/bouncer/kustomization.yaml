@@ -5,3 +5,5 @@ resources:
   - oci-repository.yaml
   - helm-release.yaml
   - security-policy.yaml
+  - prometheus-rule.yaml
+  - grafana-dashboard.yaml

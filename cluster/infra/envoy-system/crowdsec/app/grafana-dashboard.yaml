@@ -1,0 +1,33 @@
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: crowdsec-overview
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+
+  datasources:
+    - datasourceName: VictoriaMetrics
+      inputName: DS_PROMETHEUS
+
+  url: https://raw.githubusercontent.com/crowdsecurity/grafana-dashboards/master/dashboards_v5/Crowdsec%20Overview.json
+
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: crowdsec-lapi
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+
+  datasources:
+    - datasourceName: VictoriaMetrics
+      inputName: DS_PROMETHEUS
+
+  url: https://raw.githubusercontent.com/crowdsecurity/grafana-dashboards/master/dashboards_v5/LAPI%20Metrics.json
