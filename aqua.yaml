@@ -22,7 +22,7 @@ packages:
 
   # Talos
   - name: siderolabs/talos@v1.14.4
-  - name: postfinance/topf@v0.6.1
+  - name: postfinance/topf@v0.6.2
 
   # Cluster
   - name: fluxcd/flux2@v2.9.6
