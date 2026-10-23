@@ -7,4 +7,3 @@ resources:
   - helm-release.yaml
   - prometheus-rule.yaml
   - rbac.yaml
-  - grafana-dashboard.yaml

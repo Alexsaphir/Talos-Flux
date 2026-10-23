@@ -30,7 +30,7 @@ spec:
             - name: CROWDSEC_LAPI_KEY # read by the crowdsec wasm bouncer (hostKeys)
               valueFrom:
                 secretKeyRef:
-                  name: crowdsec-secret
+                  name: envoy-crowdsec-secret
                   key: BOUNCER_KEY_ENVOY
 
           resources:

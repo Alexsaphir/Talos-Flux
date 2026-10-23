@@ -9,4 +9,3 @@ replacements:
 resources:
   - envoy-gateway/ks.yaml
   - gateway/ks.yaml
-  - crowdsec/ks.yaml

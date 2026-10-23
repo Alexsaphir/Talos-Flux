@@ -5,6 +5,7 @@ resources:
   - flux-system
   - kube-system
   - envoy-system
+  - crowdsec-system
 
   - openebs-system
   - rook-ceph

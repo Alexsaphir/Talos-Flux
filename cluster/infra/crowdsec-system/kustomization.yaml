@@ -1,0 +1,12 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: crowdsec-system
+components:
+  - ../../components/namespace
+replacements:
+  - path: ../../components/replacements/ks.yaml
+resources:
+  - crowdsec/ks.yaml
+  - bouncer/ks.yaml
+  - blocklist-mirror/ks.yaml

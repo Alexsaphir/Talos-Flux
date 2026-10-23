@@ -2,39 +2,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: crowdsec
-  namespace: envoy-system
-spec:
-  prune: true
-  interval: 1h
-  path: cluster/infra/envoy-system/crowdsec/app
-  sourceRef:
-    kind: GitRepository
-    name: talos-kubernetes
-    namespace: flux-system
-
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: crowdsec-bouncer
-  namespace: envoy-system
+  name: &app crowdsec-bouncer
+  namespace: &namespace crowdsec-system
 spec:
   dependsOn:
     - name: gateway
+      namespace: envoy-system
+
   healthChecks:
     - apiVersion: gateway.envoyproxy.io/v1alpha1
       kind: EnvoyExtensionPolicy
-      name: crowdsec-bouncer
-      namespace: envoy-system
+      name: *app
+      namespace: *namespace
+
   healthCheckExprs:
     - apiVersion: gateway.envoyproxy.io/v1alpha1
       kind: EnvoyExtensionPolicy
       current: status.ancestors.size() > 0 && status.ancestors.all(a, a.conditions.filter(c, c.type == 'Accepted').all(c, c.status == 'True'))
       failed: status.ancestors.size() > 0 && status.ancestors.exists(a, a.conditions.filter(c, c.type == 'Accepted').exists(c, c.status == 'False'))
+
   prune: true
   interval: 1h
-  path: cluster/infra/envoy-system/crowdsec/bouncer
+  path: cluster/infra/crowdsec-system/bouncer
   sourceRef:
     kind: GitRepository
     name: talos-kubernetes
