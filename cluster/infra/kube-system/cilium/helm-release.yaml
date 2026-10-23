@@ -39,7 +39,7 @@ spec:
     k8sServiceHost: 127.0.0.1
     k8sServicePort: 7445
     cgroup:
-      automount:
+      autoMount:
         enabled: false # TALOS REQUIRED - Talos provides mounts
       hostRoot: /sys/fs/cgroup
     securityContext:
