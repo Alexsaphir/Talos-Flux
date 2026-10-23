@@ -24,7 +24,7 @@ spec:
         replicas: 3
 
         container:
-          image: mirror.gcr.io/envoyproxy/envoy:v1.40.0
+          image: mirror.gcr.io/envoyproxy/envoy:v1.40.1
 
           env:
             - name: CROWDSEC_LAPI_KEY # read by the crowdsec wasm bouncer (hostKeys)
