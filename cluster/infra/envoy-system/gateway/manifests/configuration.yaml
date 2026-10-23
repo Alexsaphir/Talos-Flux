@@ -46,27 +46,28 @@ spec:
   filterOrder:
     - name: envoy.filters.http.wasm
       before: envoy.filters.http.ext_authz
+    - name: envoy.filters.http.wasm
+      before: envoy.filters.http.basic_auth
 
   # Cluster used by the crowdsec wasm bouncer to reach the LAPI
   bootstrap:
-    type: JSONPatch
-    jsonPatches:
-      - op: add
-        path: /static_resources/clusters/-
-        value:
-          name: crowdsec_lapi
-          type: STRICT_DNS
-          connect_timeout: 5s
-          dns_lookup_family: ALL
-          load_assignment:
-            cluster_name: crowdsec_lapi
-            endpoints:
-              - lb_endpoints:
-                  - endpoint:
-                      address:
-                        socket_address:
-                          address: crowdsec-service.crowdsec-system.svc.cluster.local
-                          port_value: 8080
+    type: Merge
+    # language=yaml
+    value: |
+      static_resources:
+        clusters:
+          - name: crowdsec_lapi
+            type: STRICT_DNS
+            connect_timeout: 30s
+            load_assignment:
+              cluster_name: crowdsec_lapi
+              endpoints:
+                - lb_endpoints:
+                    - endpoint:
+                        address:
+                          socket_address:
+                            address: crowdsec-service.crowdsec-system.svc.cluster.local.
+                            port_value: 8080
 
   shutdown:
     drainTimeout: 180s

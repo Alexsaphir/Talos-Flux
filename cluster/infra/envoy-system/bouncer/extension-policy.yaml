@@ -25,6 +25,8 @@ spec:
             enabled: true
             cluster: crowdsec_lapi
             sync_freq: 10
+          appsec:
+            enabled: false
           trusted_ips:
             - 10.42.0.0/16
             - fdd5:aa8:9535:42::/108
