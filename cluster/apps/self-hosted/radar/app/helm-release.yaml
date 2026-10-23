@@ -25,6 +25,9 @@ spec:
   values:
     fullnameOverride: *app
 
+    crdGroups:
+      all: true
+
     rbac:
       traffic: true
       metrics: true
