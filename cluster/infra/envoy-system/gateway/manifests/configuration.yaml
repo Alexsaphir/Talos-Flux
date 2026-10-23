@@ -65,7 +65,7 @@ spec:
                   - endpoint:
                       address:
                         socket_address:
-                          address: crowdsec-service.envoy-system.svc.cluster.local
+                          address: crowdsec-service.crowdsec-system.svc.cluster.local
                           port_value: 8080
 
   shutdown:

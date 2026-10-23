@@ -8,5 +8,4 @@ replacements:
   - path: ../../components/replacements/ks.yaml
 resources:
   - crowdsec/ks.yaml
-  - bouncer/ks.yaml
   - blocklist-mirror/ks.yaml

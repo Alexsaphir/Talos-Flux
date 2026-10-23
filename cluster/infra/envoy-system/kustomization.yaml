@@ -9,3 +9,4 @@ replacements:
 resources:
   - envoy-gateway/ks.yaml
   - gateway/ks.yaml
+  - bouncer/ks.yaml
