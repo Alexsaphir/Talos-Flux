@@ -23,15 +23,19 @@ spec:
     name: tandoor-recipes
 
   valuesFrom:
-    - targetPath: tandoor.oauth.secret
+    - targetPath: tandoor.oauth.client_id
       kind: Secret
       name: tandoor-recipes-oauth-secret
-      valuesKey: secret
+      valuesKey: client_id
+
+    - targetPath: tandoor.oauth.client_secret
+      kind: Secret
+      name: tandoor-recipes-oauth-secret
+      valuesKey: client_secret
 
   values:
     tandoor:
-      oauth:
-        client_id: tandoor-recipes
+      oauth: { }
 
     controllers:
       tandoor-recipes:
@@ -92,7 +96,10 @@ spec:
 
               DEBUG: 0
               GUNICORN_MEDIA: 0
-              ENABLE_SIGNUP: 0
+
+              ENABLE_SIGNUP: 1
+              HIDE_LOGIN_FORM: 1
+
               ENABLE_METRICS: 0
               ENABLE_PDF_EXPORT: 1
 
@@ -113,17 +120,6 @@ spec:
               EMAIL_HOST: mailpit.kube-system.svc.cluster.local
               # email sender address (default 'webmaster@localhost')
               DEFAULT_FROM_EMAIL: tandoor-recipes@domain.com
-
-              # LDAP auth
-              LDAP_AUTH: 0
-              AUTH_LDAP_SERVER_URI: ldap://lldap.kube-auth.svc.cluster.local:389
-              AUTH_LDAP_BIND_DN: uid=search,ou=people,dc=home,dc=arpa
-              AUTH_LDAP_USER_SEARCH_BASE_DN: ou=people,dc=home,dc=arpa
-
-              AUTH_LDAP_ALWAYS_UPDATE_USER: 1
-              AUTH_LDAP_CACHE_TIMEOUT: 3600
-              AUTH_LDAP_USER_ATTR_MAP: "{'first_name': 'givenName', 'last_name': 'sn', 'email': 'mail' }"
-              AUTH_LDAP_USER_SEARCH_FILTER_STR: '(&(&(objectclass=person)(memberOf=cn=recipes,ou=groups,dc=home,dc=arpa))(uid=%(user)s))'
 
               REMOTE_USER_AUTH: 0
               SOCIAL_PROVIDERS: allauth.socialaccount.providers.openid_connect
@@ -168,7 +164,7 @@ spec:
                     "provider_id": "authelia",
                     "name": "Authelia SSO",
                     "client_id": "{{ .Values.tandoor.oauth.client_id }}",
-                    "secret": "{{ .Values.tandoor.oauth.secret }}",
+                    "secret": "{{ .Values.tandoor.oauth.client_secret }}",
                     "settings": {
                       "server_url": "https://auth.${DOMAIN_NAME}/.well-known/openid-configuration"
                     }
