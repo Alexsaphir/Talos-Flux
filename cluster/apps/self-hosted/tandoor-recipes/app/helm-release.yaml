@@ -22,21 +22,7 @@ spec:
     kind: OCIRepository
     name: tandoor-recipes
 
-  valuesFrom:
-    - targetPath: tandoor.oauth.client_id
-      kind: Secret
-      name: tandoor-recipes-oauth-secret
-      valuesKey: client_id
-
-    - targetPath: tandoor.oauth.client_secret
-      kind: Secret
-      name: tandoor-recipes-oauth-secret
-      valuesKey: client_secret
-
   values:
-    tandoor:
-      oauth: { }
-
     controllers:
       tandoor-recipes:
         annotations:
@@ -51,9 +37,6 @@ spec:
             envFrom:
               - secretRef:
                   name: '{{ .Release.Name }}-secret'
-
-              - configMapRef:
-                  name: '{{ .Release.Name }}'
 
             env:
               TZ: '${TIMEZONE}'
@@ -97,9 +80,6 @@ spec:
               DEBUG: 0
               GUNICORN_MEDIA: 0
 
-              ENABLE_SIGNUP: 1
-              HIDE_LOGIN_FORM: 1
-
               ENABLE_METRICS: 0
               ENABLE_PDF_EXPORT: 1
 
@@ -121,8 +101,15 @@ spec:
               # email sender address (default 'webmaster@localhost')
               DEFAULT_FROM_EMAIL: tandoor-recipes@domain.com
 
+
+              ENABLE_SIGNUP: 1
+              HIDE_LOGIN_FORM: 1
               REMOTE_USER_AUTH: 0
+
+              # SOCIALACCOUNT_ONLY: 1
               SOCIAL_PROVIDERS: allauth.socialaccount.providers.openid_connect
+              SOCIALACCOUNT_EMAIL_AUTHENTICATION: 1
+              SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT: 1
 
     defaultPodOptions:
       securityContext:
@@ -151,27 +138,6 @@ spec:
         parentRefs:
           - name: envoy
             namespace: envoy-system
-
-    configMaps:
-      oauth-config:
-        data:
-          # language=json
-          SOCIALACCOUNT_PROVIDERS: |
-            {
-              "openid_connect": {
-                "APPS": [
-                  {
-                    "provider_id": "authelia",
-                    "name": "Authelia SSO",
-                    "client_id": "{{ .Values.tandoor.oauth.client_id }}",
-                    "secret": "{{ .Values.tandoor.oauth.client_secret }}",
-                    "settings": {
-                      "server_url": "https://auth.${DOMAIN_NAME}/.well-known/openid-configuration"
-                    }
-                  }
-                ]
-              }
-            }
 
     persistence:
       static:
