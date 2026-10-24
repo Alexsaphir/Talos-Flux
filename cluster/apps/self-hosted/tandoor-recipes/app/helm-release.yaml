@@ -106,9 +106,9 @@ spec:
               HIDE_LOGIN_FORM: 1
               REMOTE_USER_AUTH: 0
 
-              # SOCIALACCOUNT_ONLY: 1
+              SOCIALACCOUNT_ONLY: 1
               SOCIAL_PROVIDERS: allauth.socialaccount.providers.openid_connect
-              SOCIALACCOUNT_EMAIL_AUTHENTICATION: 1
+              #SOCIALACCOUNT_EMAIL_AUTHENTICATION: 1
               SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT: 1
 
     defaultPodOptions:
