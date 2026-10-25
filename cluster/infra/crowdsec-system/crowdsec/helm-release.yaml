@@ -43,7 +43,7 @@ spec:
       serviceAccountName: crowdsec-agent
       additionalAcquisition:
         - source: kubernetes
-          namespace: crowdsec-system
+          namespace: envoy-system
           selector: gateway.envoyproxy.io/owning-gateway-name=envoy
           labels:
             type: envoy
