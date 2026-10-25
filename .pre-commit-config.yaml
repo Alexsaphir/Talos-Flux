@@ -76,7 +76,7 @@ repos:
           - mdformat-mkdocs[recommended-mdsf]>=5.1.0
 
   - repo: https://github.com/tombi-toml/tombi-pre-commit
-    rev: v1.9.4
+    rev: v1.9.5
     hooks:
       - id: tombi-format
         args: [ "--offline" ]
