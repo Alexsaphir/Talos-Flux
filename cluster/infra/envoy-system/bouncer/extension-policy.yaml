@@ -11,7 +11,7 @@ spec:
 
   wasm:
     - name: crowdsec-bouncer
-      failOpen: true
+      failOpen: false
       code:
         type: Image
         image:
