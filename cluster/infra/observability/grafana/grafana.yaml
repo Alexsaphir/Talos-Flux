@@ -6,6 +6,9 @@ metadata:
   labels:
     grafana.internal/instance: grafana
 spec:
+  # renovate-image: datasource=docker depName=docker.io/grafana/grafana
+  version: mirror.gcr.io/grafana/grafana:13.2.4@sha256:dbbc38ea21103cefb50396340cd88afec779c7e070b0a7bf5a75b4ce46651d3f
+
   disableDefaultAdminSecret: true
   config:
     auth:
@@ -61,6 +64,7 @@ spec:
       news_feed_enabled: 'false'
     plugins:
       plugin_admin_enabled: 'false'
+      preinstall_auto_update: 'false'
       disable_plugins: 'grafana-lokiexplore-app,grafana-pyroscope-app,grafana-exploretraces-app,loki'
     security:
       angular_support_enabled: 'true'
