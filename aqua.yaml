@@ -4,7 +4,7 @@
 # https://aquaproj.github.io/
 registries:
   - type: standard
-    ref: v4.578.0 # renovate: depName=aquaproj/aqua-registry
+    ref: v4.579.0 # renovate: depName=aquaproj/aqua-registry
 packages:
   # Utils
   - name: direnv/direnv@v2.38.2
@@ -29,7 +29,7 @@ packages:
   - name: cilium/cilium-cli@v0.20.1
 
   # Kubernetes
-  - name: kubernetes/kubectl@v1.37.1
+  - name: kubernetes/kubectl@v1.37.2
   - name: kubernetes-sigs/krew@v0.5.0
   - name: brumhard/krewfile@v0.7.0
 
