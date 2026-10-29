@@ -54,6 +54,7 @@ spec:
             crowdsecurity/base-http-scenarios
             crowdsecurity/http-cve
             crowdsecurity/plex
+            LePresidente/overseerr
       metrics:
         serviceMonitor:
           enabled: true
