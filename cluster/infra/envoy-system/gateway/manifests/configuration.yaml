@@ -44,6 +44,8 @@ spec:
 
   # The wasm bouncer must run before authelia (ext_authz)
   filterOrder:
+    - name: envoy.filters.http.lua
+      before: envoy.filters.http.wasm
     - name: envoy.filters.http.wasm
       before: envoy.filters.http.ext_authz
     - name: envoy.filters.http.wasm
