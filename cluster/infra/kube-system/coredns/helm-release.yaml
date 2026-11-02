@@ -46,7 +46,7 @@ spec:
         - 10.43.0.10
         - fdd5:aa8:9535:43::a
 
-      ipFamilies: [ 'IPV4', 'IPV6' ]
+      ipFamilies: [ 'IPv4', 'IPv6' ]
       ipFamilyPolicy: PreferDualStack
 
 
