@@ -38,6 +38,6 @@ packages:
   - name: helmfile/helmfile@v1.8.2
 
   # Infrastructure
-  - name: opentofu/opentofu@v1.13.2
+  - name: opentofu/opentofu@v1.13.8
   - name: gruntwork-io/terragrunt@v1.2.1
   - name: hashicorp/terraform@v1.17.1
