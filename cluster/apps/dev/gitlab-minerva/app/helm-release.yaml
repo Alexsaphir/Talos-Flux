@@ -25,6 +25,8 @@ spec:
   values:
     controllers:
       gitlab:
+        strategy: Recreate
+
         annotations:
           reloader.stakater.com/auto: 'true'
         containers:
@@ -37,8 +39,14 @@ spec:
               TZ: ${TIMEZONE}
 
               GITLAB_LOG_LEVEL: 2
-              GITLAB_RAILS_RACK_TIMEOUT: 6000
               GITLAB_OMNIBUS_CONFIG: "from_file('/omnibus_config.rb')"
+
+            resources:
+              requests:
+                cpu: 4
+                memory: 10Gi
+              limits:
+                memory: 16Gi
 
             securityContext:
               allowPrivilegeEscalation: false

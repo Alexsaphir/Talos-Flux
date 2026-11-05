@@ -6,7 +6,7 @@ nginx['listen_port'] = 80
 nginx['listen_https'] = false
 nginx['client_max_body_size'] = '2g'
 nginx['error_log_level'] = 'error'
-nginx['worker_processes'] = 6
+nginx['worker_processes'] = 2
 
 
 gitlab_rails['gitlab_shell_ssh_port'] = 2222
@@ -64,7 +64,7 @@ gitlab_rails['impersonation_enabled'] = true
 # https://docs.gitlab.com/omnibus/settings/rpi.html
 # https://docs.gitlab.com/omnibus/settings/memory_constrained_envs.html
 puma['worker_processes'] = 8
-sidekiq['concurrency'] = 40
+sidekiq['concurrency'] = 20
 
 # Set to false to reduce ressource usage
 prometheus_monitoring['enable'] = false
@@ -79,7 +79,6 @@ redis_exporter['enable'] = false
 
 gitlab_rails['env'] = {
   "GITLAB_LOG_LEVEL" => "WARN",
-  'GITLAB_RAILS_RACK_TIMEOUT' => 6000
 }
 
 
@@ -213,8 +212,8 @@ gitlab_pages['enable_disk'] = false
 
 
 ## GitLab Logging
-logging['svlogd_size'] = 2 * 1024 * 1024 # rotate after 2 MB of log data
-logging['svlogd_num'] = 5 # keep 30 rotated log files
+logging['svlogd_size'] = 50 * 1024 * 1024 # rotate after 50 MB of log data
+logging['svlogd_num'] = 5 # keep 5 rotated log files
 logging['svlogd_timeout'] = 1 * 60 * 60 # rotate after 1 hours
 logging['svlogd_filter'] = "gzip" # compress logs with gzip
 
