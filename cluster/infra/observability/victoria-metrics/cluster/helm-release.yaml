@@ -142,7 +142,7 @@ spec:
 
         resources:
           requests:
-            cpu: 150m
+            cpu: 400m
           limits:
             memory: 1Gi
 
@@ -301,6 +301,10 @@ spec:
                 - action: drop
                   sourceLabels: [ __name__ ]
                   regex: apiserver_(longrunning_requests|registered_watchers|init_events_total)
+                # Drop remaining high-cardinality apiserver histogram buckets (keep _sum/_count).
+                - action: drop
+                  sourceLabels: [ __name__ ]
+                  regex: apiserver_(watch_events_dispatch_duration_seconds|watch_list_duration_seconds|storage_list_duration_seconds|request_body_size_bytes|watch_cache_read_wait_seconds|watch_cache_initialization_duration_seconds)_bucket
 
     kubelet:
       vmScrape:
