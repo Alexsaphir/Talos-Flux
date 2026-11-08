@@ -1,0 +1,40 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app spire
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: *app
+
+  dependsOn:
+    - name: spire-crds
+
+  # spire-controller-manager injects the caBundle into its own webhook at runtime
+  driftDetection:
+    mode: enabled
+    ignore:
+      - paths:
+          - /webhooks/0/clientConfig/caBundle
+          - /webhooks/1/clientConfig/caBundle
+        target:
+          kind: ValidatingWebhookConfiguration
+          name: spiffe-spire-controller-manager-webhook
+
+  values:
+    global:
+      spire:
+        trustDomain: &sub spiffe.${DOMAIN_NAME}
+        clusterName: talos-cluster
+        caSubject:
+          country: FR
+          organization: alexsaphir
+          commonName: *sub
+
+        persistence:
+          storageClass: ceph-block
+
+    spiffe-oidc-discovery-provider:
+      enabled: false
