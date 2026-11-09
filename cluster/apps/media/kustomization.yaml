@@ -17,5 +17,7 @@ resources:
   - tautulli/ks.yaml
   - tracearr/ks.yaml
 
+  - audiobookshelf/ks.yaml
+
   - arr
   - get
