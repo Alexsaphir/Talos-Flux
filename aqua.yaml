@@ -13,7 +13,7 @@ packages:
   # JSON/YAML utils
   - name: homeport/dyff@v1.12.0
   - name: jqlang/jq@jq-1.8.2
-  - name: mikefarah/yq@v4.54.2
+  - name: mikefarah/yq@v4.54.3
 
   # Secrets
   - name: FiloSottile/age@v1.3.2
