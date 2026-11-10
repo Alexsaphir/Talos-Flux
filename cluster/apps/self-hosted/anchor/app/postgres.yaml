@@ -1,0 +1,18 @@
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: &app anchor
+spec:
+  database: *app # db name in postgres cluster
+  dropOnDelete: false
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: &app anchor
+spec:
+  role: *app
+  database: *app # references the CR
+  secretName: database
+  privileges: OWNER
