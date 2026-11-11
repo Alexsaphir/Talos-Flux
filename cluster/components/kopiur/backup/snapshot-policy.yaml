@@ -27,8 +27,6 @@ spec:
       capacity: ${KOPIUR_CACHE_CAPACITY:=5Gi}
       mode: Persistent
       storageClassName: ${KOPIUR_CACHE_STORAGECLASS:=openebs-hostpath}
-      contentCacheSizeMb: ${KOPIUR_CACHE_CONTENT_MB:=1024}
-      metadataCacheSizeMb: ${KOPIUR_CACHE_METADATA_MB:=512}
 
     securityContext:
       runAsUser: ${KOPIUR_PUID:=1000}
