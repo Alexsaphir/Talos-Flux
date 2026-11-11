@@ -119,6 +119,11 @@ spec:
 
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: 'true'
+          gethomepage.dev/icon: anchor-notes.png
+          gethomepage.dev/name: Anchor
+          gethomepage.dev/group: Self-Hosted
         hostnames:
           - '{{ .Release.Name }}.${DOMAIN_NAME}'
         parentRefs:
