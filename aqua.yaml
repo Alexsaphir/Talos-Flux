@@ -21,7 +21,7 @@ packages:
   - name: bitwarden/sdk-sm@bws-v1.0.0
 
   # Talos
-  - name: siderolabs/talos@v1.14.5
+  - name: siderolabs/talos@v1.14.6
   - name: postfinance/topf@v0.6.2
 
   # Cluster
@@ -39,6 +39,6 @@ packages:
 
   # Infrastructure
   - name: opentofu/opentofu@v1.13.9
-  - name: gruntwork-io/terragrunt@v1.2.1
+  - name: gruntwork-io/terragrunt@v1.2.2
   - name: hashicorp/terraform@v1.17.2
   - name: home-operations/flate@v0.7.3
