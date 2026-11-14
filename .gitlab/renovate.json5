@@ -1,10 +1,11 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
-  extends: ["github>home-operations/renovate-presets#11.0.0",
-    "github>home-operations/renovate-presets//apps/cnpg.json5#11.0.0",
-    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5#11.0.0",
-    "github>home-operations/renovate-presets//apps/phanpy.json5#11.0.0",
-    "github>home-operations/renovate-presets//apps/talosFactory.json5#11.0.0",
+  extends: [
+    'github>home-operations/renovate-presets#11.0.0',
+    'github>home-operations/renovate-presets//apps/cnpg.json5#11.0.0',
+    'github>home-operations/renovate-presets//apps/grafanaDashboards.json5#11.0.0',
+    'github>home-operations/renovate-presets//apps/phanpy.json5#11.0.0',
+    'github>home-operations/renovate-presets//apps/talosFactory.json5#11.0.0',
     'github>aquaproj/aqua-renovate-config#2.15.0',
     'local>Homelab/Talos-Flux//.gitlab/renovate/customManagers.json5',
     'local>Homelab/Talos-Flux//.gitlab/renovate/groups.json5',
@@ -15,18 +16,26 @@
     'security:openssf-scorecard',
     ':timezone(Europe/Paris)',
   ],
-  dependencyDashboard: true,
+  dependencyDashboard: {
+    enabled: true,
+  },
   prConcurrentLimit: 3,
   configWarningReuseIssue: true,
   configMigration: true,
   gitLabIgnoreApprovals: true,
-  suppressNotifications: ['prEditedNotification', 'prIgnoreNotification'],
+  suppressNotifications: [
+    'prEditedNotification',
+    'prIgnoreNotification',
+  ],
   rebaseWhen: 'behind-base-branch',
   packageRules: [
-      {
-      description: "Hold Rook-Ceph at v1.19.x",
-      matchPackageNames: ["/rook-ceph/", "/rook-ceph-cluster/"],
-      allowedVersions: "<1.20.0",
+    {
+      description: 'Hold Rook-Ceph at v1.19.x',
+      matchPackageNames: [
+        '/rook-ceph/',
+        '/rook-ceph-cluster/',
+      ],
+      allowedVersions: '<1.20.0',
     },
-  ]
+  ],
 }
