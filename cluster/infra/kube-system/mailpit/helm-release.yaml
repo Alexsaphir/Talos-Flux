@@ -44,7 +44,7 @@ spec:
               tag: v1.34.0
 
             args:
-              - --db-file
+              - --database
               - /var/lib/mailpit/mailpit.db
               - --smtp-auth-accept-any
               - --smtp-auth-allow-insecure
