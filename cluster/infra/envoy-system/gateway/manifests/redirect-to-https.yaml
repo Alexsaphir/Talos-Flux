@@ -16,3 +16,21 @@ spec:
           requestRedirect:
             scheme: https
             statusCode: 301
+
+---
+# Route-level policy replaces the Gateway-wide `authelia` ext-authz for this
+# route only, so the redirect is served before Authelia (which rejects every
+# http:// target with a 400). Anything else reaching the http listener still
+# goes through Authelia and is denied.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: https-redirect
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: https-redirect
+
+  authorization:
+    defaultAction: Allow
