@@ -18,7 +18,7 @@ packages:
   # Secrets
   - name: FiloSottile/age@v1.3.2
   - name: mozilla/sops@v3.13.3
-  - name: bitwarden/sdk-sm@bws-v1.0.0
+  - name: bitwarden/sdk-sm@bws-v2.1.0
 
   # Talos
   - name: siderolabs/talos@v1.14.6
