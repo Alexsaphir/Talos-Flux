@@ -4,7 +4,9 @@
     {
       customType: 'regex',
       description: 'Update GitLab CI components pinned through $CI_SERVER_FQDN',
-      managerFilePatterns: ['/(^|/)\\.gitlab-ci\\.ya?ml$/'],
+      managerFilePatterns: [
+        '/(^|/)\\.gitlab-ci\\.ya?ml$/'
+      ],
       matchStrings: [
         'component:\\s+\\$CI_SERVER_FQDN\\/(?<depName>[^@\\s]+)\\/[^@\\/\\s]+@(?<currentValue>\\S+)',
       ],
@@ -12,5 +14,16 @@
       registryUrlTemplate: 'https://gitlab.alexsaphir.com',
       versioningTemplate: 'semver',
     },
+    {
+      description: "Process CNPG ImageCatalog extension image references",
+      customType: "regex",
+      managerFilePatterns: [
+        "/\\.ya?ml$/"
+      ],
+      matchStrings: [
+        "reference:\\s+(?<depName>[^@\\s]+):(?<currentValue>[^@\\s/]+)(?:@(?<currentDigest>sha256:[a-f0-9]+))?",
+      ],
+      datasourceTemplate: "docker",
+    }
   ],
 }
