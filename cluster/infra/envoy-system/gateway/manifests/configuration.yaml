@@ -40,6 +40,7 @@ spec:
               memory: 2Gi
 
       envoyService:
+        allocateLoadBalancerNodePorts: false
         externalTrafficPolicy: Cluster
 
   # The wasm bouncer must run before authelia (ext_authz)
