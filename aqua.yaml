@@ -38,7 +38,7 @@ packages:
   - name: helmfile/helmfile@v1.8.5
 
   # Infrastructure
-  - name: opentofu/opentofu@v1.13.9
+  - name: opentofu/opentofu@v1.13.10
   - name: gruntwork-io/terragrunt@v1.2.2
   - name: hashicorp/terraform@v1.17.2
   - name: home-operations/flate@v0.8.0
