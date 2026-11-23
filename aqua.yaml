@@ -35,7 +35,7 @@ packages:
 
   - name: helm/helm@v4.3.2
   - name: kubernetes-sigs/kustomize@kustomize/v5.8.3
-  - name: helmfile/helmfile@v1.8.4
+  - name: helmfile/helmfile@v1.8.5
 
   # Infrastructure
   - name: opentofu/opentofu@v1.13.9
