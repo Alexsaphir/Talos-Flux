@@ -4,7 +4,7 @@
 # https://aquaproj.github.io/
 registries:
   - type: standard
-    ref: v4.592.0 # renovate: depName=aquaproj/aqua-registry
+    ref: v4.593.0 # renovate: depName=aquaproj/aqua-registry
 packages:
   # Utils
   - name: direnv/direnv@v2.38.2
@@ -21,7 +21,7 @@ packages:
   - name: bitwarden/sdk-sm@bws-v2.1.0
 
   # Talos
-  - name: siderolabs/talos@v1.14.6
+  - name: siderolabs/talos@v1.14.7
   - name: postfinance/topf@v0.6.2
 
   # Cluster
@@ -39,6 +39,6 @@ packages:
 
   # Infrastructure
   - name: opentofu/opentofu@v1.13.10
-  - name: gruntwork-io/terragrunt@v1.2.2
+  - name: gruntwork-io/terragrunt@v1.2.3
   - name: hashicorp/terraform@v1.17.2
   - name: home-operations/flate@v0.8.0
