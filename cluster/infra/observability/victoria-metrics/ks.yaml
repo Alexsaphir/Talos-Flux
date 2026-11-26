@@ -45,7 +45,6 @@ metadata:
 spec:
   dependsOn:
     - name: victoria-metrics-operator
-    - name: victoria-logs-collector
 
   wait: true
 

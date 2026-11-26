@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kube-state-metrics
+  name: &app node-exporter
   namespace: &namespace observability
 spec:
   healthChecks:
@@ -13,7 +13,7 @@ spec:
 
   prune: true
   interval: 1h
-  path: cluster/infra/observability/kube-state-metrics
+  path: cluster/infra/observability/exporters/node-exporter
   sourceRef:
     kind: GitRepository
     name: talos-kubernetes

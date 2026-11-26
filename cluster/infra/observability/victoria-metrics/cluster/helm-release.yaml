@@ -22,6 +22,11 @@ spec:
     kind: OCIRepository
     name: *app
 
+  valuesFrom:
+    - kind: ConfigMap
+      name: flux-metrics-configmap
+      valuesKey: flux-metrics.yaml
+
   values:
     fullnameOverride: *app
 
@@ -35,6 +40,27 @@ spec:
 
     defaultDashboards:
       enabled: true
+      dashboards:
+        k8s-resources-multicluster:
+          enabled: false
+        k8s-resources-windows-cluster:
+          enabled: false
+        k8s-resources-windows-namespace:
+          enabled: false
+        k8s-resources-windows-pod:
+          enabled: false
+        k8s-windows-cluster-rsrc-use:
+          enabled: false
+        k8s-windows-node-rsrc-use:
+          enabled: false
+        nodes-aix:
+          enabled: false
+        nodes-darwin:
+          enabled: false
+        prometheus:
+          enabled: false
+        prometheus-remote-write:
+          enabled: false
       grafanaOperator:
         enabled: true
         spec:
@@ -60,7 +86,9 @@ spec:
           create: false
         # count:up0
         RecordingRulesNoData:
-          enabled: false
+          spec:
+            # The kube-scheduler quantile rules often have no samples
+            expr: sum(vmalert_recording_rules_last_evaluation_samples{group!="kube-scheduler.rules"}) without(id) < 1
 
       groups:
         kubeApiserverBurnrate:
@@ -98,12 +126,21 @@ spec:
             namespace: envoy-system
 
       spec:
-        retentionPeriod: 90d
+        retentionPeriod: 1y
         useStrictSecurity: true
 
         extraArgs:
           enableTCP6: 'true'
-
+          downsampling.period: 30d:5m,180d:1h
+          eula: 'true'
+        image:
+          repository: victoriametrics/victoria-metrics
+          tag: v1.157.0-enterprise
+        resources:
+          requests:
+            cpu: 150m
+          limits:
+            memory: 4Gi
         storage:
           accessModes:
             - ReadWriteOnce
@@ -111,6 +148,58 @@ spec:
             requests:
               storage: 50Gi
           storageClassName: ceph-block
+
+    vlsingle:
+      enabled: true
+      route:
+        enabled: true
+        hostnames:
+          - vlogs.${DOMAIN_NAME}
+        parentRefs:
+          - name: envoy
+            namespace: envoy-system
+      spec:
+        retentionMaxDiskSpaceUsageBytes: 45GiB
+        retentionPeriod: 1y
+        storage:
+          storageClassName: ceph-block
+          resources:
+            requests:
+              storage: 50Gi
+
+    vmagent:
+      spec:
+        useStrictSecurity: true
+        # scrapeInterval: 30s
+        extraArgs:
+          enableTCP6: 'true'
+          # Hides dropped targets and pre-relabel labels on the targets page
+          promscrape.dropOriginalLabels: 'true'
+          # kube-apiserver serves about 13 MB of metrics, close to the 16 MiB default
+          promscrape.maxScrapeSize: 32MiB
+        # Clamp the intervals that other charts set on their monitors to the 20s default
+        maxScrapeInterval: 20s
+        minScrapeInterval: 20s
+
+        resources:
+          requests:
+            cpu: 50m
+          limits:
+            memory: 1Gi
+
+    vlagent:
+      enabled: true
+      spec:
+        k8sCollector:
+          decolorizeFields:
+            - _msg
+          streamFields:
+            - kubernetes.pod_name
+            - kubernetes.pod_namespace
+            - kubernetes.container_name
+            - kubernetes.pod_labels.app.kubernetes.io/name
+        remoteWriteSettings:
+          maxDiskUsagePerURL: 10GB
 
     vmalert:
       spec:
@@ -128,23 +217,6 @@ spec:
         parentRefs:
           - name: envoy
             namespace: envoy-system
-
-    vmagent:
-      spec:
-        useStrictSecurity: true
-        # scrapeInterval: 30s
-        extraArgs:
-          enableTCP6: 'true'
-
-          promscrape.dropOriginalLabels: 'true'
-          promscrape.maxScrapeSize: 50MiB
-          promscrape.streamParse: 'true'
-
-        resources:
-          requests:
-            cpu: 400m
-          limits:
-            memory: 1Gi
 
     vmauth:
       enabled: true
@@ -249,16 +321,9 @@ spec:
 
       spec:
         externalURL: https://alertmanager.${DOMAIN_NAME}
-        rollingUpdateStrategy: RollingUpdate
-        useStrictSecurity: true
-        disableNamespaceMatcher: true
+
         image:
           repository: quay.io/prometheus/alertmanager
-        securityContext:
-          runAsGroup: 2000
-          runAsNonRoot: true
-          runAsUser: 1000
-          fsGroup: 2000
         storage:
           volumeClaimTemplate:
             spec:
@@ -274,41 +339,16 @@ spec:
     prometheus-node-exporter:
       enabled: false
 
-    kubeApiServer:
-      vmScrape:
-        spec:
-          endpoints:
-            - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
-              port: https
-              scheme: https
-              tlsConfig:
-                caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-                serverName: kubernetes
-              metricRelabelConfigs:
-                # Drop high-cardinality histogram buckets (keep _sum/_count for averages).
-                # Trade-off: K8s SLI dashboards lose P99 latency panels.
-                - action: drop
-                  sourceLabels: [ __name__ ]
-                  regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
-                - action: drop
-                  sourceLabels: [ __name__ ]
-                  regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
-                # Admission control is patched out by Talos; no point in scraping.
-                - action: drop
-                  sourceLabels: [ __name__ ]
-                  regex: apiserver_admission_.+
-                # Watch cache & long-running rq are platform-engineering metrics.
-                - action: drop
-                  sourceLabels: [ __name__ ]
-                  regex: apiserver_(longrunning_requests|registered_watchers|init_events_total)
-                # Drop remaining high-cardinality apiserver histogram buckets (keep _sum/_count).
-                - action: drop
-                  sourceLabels: [ __name__ ]
-                  regex: apiserver_(watch_events_dispatch_duration_seconds|watch_list_duration_seconds|storage_list_duration_seconds|request_body_size_bytes|watch_cache_read_wait_seconds|watch_cache_initialization_duration_seconds)_bucket
-
     kubelet:
       vmScrape:
         spec:
+          # This list replaces the chart's rules, which also copy every node label onto each series
+          relabelConfigs:
+            - sourceLabels: [ __metrics_path__ ]
+              targetLabel: metrics_path
+            - targetLabel: job
+              replacement: kubelet
+
           metricRelabelConfigs:
             # Drop high-cardinality labels.
             - action: labeldrop
@@ -338,20 +378,55 @@ spec:
             - action: drop
               sourceLabels: [ __name__ ]
               regex: (kubelet_runtime_operations|kubelet_pod_worker_duration_seconds|kubelet_pleg_relist_duration_seconds|volume_manager_.+)_bucket
-
-
+    kubeApiServer:
+      vmScrape:
+        spec:
+          endpoints:
+            - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+              port: https
+              scheme: https
+              tlsConfig:
+                caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+                serverName: kubernetes
+              metricRelabelConfigs:
+                - action: drop
+                  regex: (etcd_request|apiserver_request_slo|apiserver_request_sli|apiserver_request)_duration_seconds_bucket;(0\.15|0\.2|0\.3|0\.35|0\.4|0\.45|0\.6|0\.7|0\.8|0\.9|1\.25|1\.5|1\.75|2|3|3\.5|4|4\.5|6|7|8|9|15|20|40|45|50)(\.0)?
+                  sourceLabels: [ __name__, le ]
+                - action: drop
+                  regex: (apiserver_request_body_size_bytes|apiserver_response_sizes|apiserver_storage_list_duration_seconds|apiserver_watch_cache_initialization_duration_seconds|apiserver_watch_cache_read_wait_seconds|apiserver_watch_events_dispatch_duration_seconds|apiserver_watch_events_sizes|apiserver_watch_list_duration_seconds|etcd_request_duration_seconds)_(bucket|count|sum)
+                  sourceLabels: [ __name__ ]
     kubeControllerManager:
-      enabled: false
+      vmScrape:
+        spec:
+          endpoints:
+            - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+              port: http-metrics
+              scheme: https
+              tlsConfig:
+                insecureSkipVerify: true
     kubeEtcd:
-      enabled: false
-    kubeProxy:
-      enabled: false
+      service:
+        port: 2381
+        targetPort: 2381
+        selector:
+          component: kube-apiserver # etcd runs on control plane nodes
+      vmScrape:
+        spec:
+          endpoints:
+            - port: http-metrics
+              scheme: http
     kubeScheduler:
-      enabled: false
+      vmScrape:
+        spec:
+          endpoints:
+            - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+              port: http-metrics
+              scheme: https
+              tlsConfig:
+                insecureSkipVerify: true
 
-    additionalVictoriaMetricsMap:
+    extraRules:
       dockerhub-rules:
-        create: true
         groups:
           - name: dockerhub
             rules:
@@ -361,9 +436,7 @@ spec:
                 expr: count(time() - container_last_seen{image=~"(docker.io).*",container!=""} < 30) > 100
                 labels:
                   severity: critical
-
       oom-rules:
-        create: true
         groups:
           - name: oom
             rules:

@@ -65,7 +65,8 @@ spec:
     plugins:
       plugin_admin_enabled: 'false'
       preinstall_auto_update: 'false'
-      disable_plugins: 'grafana-lokiexplore-app,grafana-pyroscope-app,grafana-exploretraces-app,loki'
+      preinstall: victoriametrics-logs-datasource@0.34.0
+      disable_plugins: 'grafana-lokiexplore-app,grafana-pyroscope-app,grafana-exploretraces-app,loki,grafana-metricsdrilldown-app'
     security:
       angular_support_enabled: 'true'
 
