@@ -1,6 +1,3 @@
-[files]
-exclude = ['pyproject.toml', '*.lock', '.mise.toml']
-
 [format.rules]
 key-value-equals-sign-alignment = true
 line-width                      = 120
